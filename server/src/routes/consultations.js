@@ -378,10 +378,14 @@ router.post('/:id/message', protect, async (req, res) => {
 
     const io = req.app.get('io');
     if (io) {
-      io.to(cons._id.toString()).emit('receive_message', {
-        consultationId: cons._id,
-        message: { ...message, sender: req.user.full_name },
-        timestamp: message.timestamp,
+      io.to(String(cons._id)).emit('receive_message', {
+        consultationId: String(cons._id),
+        message: {
+          ...message,
+          sender_id: String(message.sender_id),
+          sender: req.user.full_name,
+          timestamp: message.timestamp,
+        },
       });
     }
 

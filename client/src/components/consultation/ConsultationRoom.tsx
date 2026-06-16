@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { X, Send, Video, VideoOff, Phone, MessageCircle, Clock, Wallet, Mic, MicOff, PhoneOff } from 'lucide-react';
 import { useAuth } from '../../context/Auth';
-import { API_BASE, SOCKET_URL } from '../../config/api';
+import { API_BASE, createSocketOptions } from '../../config/api';
 import FreeTrialModal from './FreeTrialModal';
 import ReviewModal from './ReviewModal';
 
@@ -51,8 +51,22 @@ export default function ConsultationRoom({ consultation, onClose, onComplete }: 
   const [wasRejected, setWasRejected] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const ringRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const offerSentRef = useRef(false);
+  const statusRef = useRef(status);
+  statusRef.current = status;
 
   const socketRef = useRef<Socket | null>(null);
+
+  const appendMessage = (incoming: Message) => {
+    setMessages((prev) => {
+      const duplicate = prev.some((m) =>
+        m.text === incoming.text &&
+        (m.sender_id === incoming.sender_id || m.sender === incoming.sender) &&
+        Math.abs(new Date(m.timestamp).getTime() - new Date(incoming.timestamp).getTime()) < 3000
+      );
+      return duplicate ? prev : [...prev, incoming];
+    });
+  };
   const localVideoRef = useRef<HTMLVideoElement>(null);
   const remoteVideoRef = useRef<HTMLVideoElement>(null);
   const pcRef = useRef<RTCPeerConnection | null>(null);
@@ -78,16 +92,21 @@ export default function ConsultationRoom({ consultation, onClose, onComplete }: 
   const TypeIcon = consType === 'chat' ? MessageCircle : consType === 'call' ? Phone : Video;
   const typeLabel = consType === 'chat' ? 'Chat' : consType === 'call' ? 'Audio Call' : 'Video Call';
 
+  const beginCall = async () => {
+    if (offerSentRef.current) return;
+    if (consType === 'video') await startVideoCall();
+    if (consType === 'call') await startAudioCall();
+    offerSentRef.current = true;
+  };
+
   useEffect(() => {
-    const socket = io(SOCKET_URL || window.location.origin, {
-      path: '/socket.io',
-      transports: ['polling', 'websocket'],
-    });
+    const { url, options } = createSocketOptions(token);
+    const socket = io(url || window.location.origin, options);
     socketRef.current = socket;
-    socket.emit('join_room', roomId);
+    socket.emit('join_room', { consultationId: roomId, role: user?.role });
 
     socket.on('receive_message', (data: any) => {
-      if (data.consultationId === roomId) setMessages(prev => [...prev, data.message]);
+      if (String(data.consultationId) === String(roomId)) appendMessage(data.message);
     });
 
     socket.on('consultation_status_update', (data: any) => {
@@ -107,6 +126,22 @@ export default function ConsultationRoom({ consultation, onClose, onComplete }: 
         setWasRejected(true);
         setStatus('cancelled');
         endMedia();
+      }
+    });
+
+    socket.on('call_accepted', (data: any) => {
+      if (String(data.consultationId) !== String(roomId)) return;
+      setStatus('active');
+      if (isCaller && (consType === 'call' || consType === 'video')) {
+        beginCall();
+      }
+    });
+
+    socket.on('participant_joined', (data: any) => {
+      if (String(data.consultationId) !== String(roomId)) return;
+      if (isCaller && statusRef.current === 'active' && data.role === 'astrologer' && (consType === 'call' || consType === 'video')) {
+        offerSentRef.current = false;
+        beginCall();
       }
     });
 
@@ -164,11 +199,12 @@ export default function ConsultationRoom({ consultation, onClose, onComplete }: 
       socket.emit('stop_billing', { consultationId: roomId });
       socket.emit('leave_room', roomId);
       socket.disconnect();
+      offerSentRef.current = false;
       endMedia();
       if (timerRef.current) clearInterval(timerRef.current);
       if (ringRef.current) clearInterval(ringRef.current);
     };
-  }, [roomId, consType, isAstro]);
+  }, [roomId, consType, isAstro, token, user?.role]);
 
   // Ringing tone for caller while waiting
   useEffect(() => {
@@ -197,9 +233,8 @@ export default function ConsultationRoom({ consultation, onClose, onComplete }: 
   useEffect(() => {
     if (status === 'active' && socketRef.current) {
       socketRef.current.emit('start_billing', { consultationId: roomId });
-      if (isCaller) {
-        if (consType === 'video') startVideoCall();
-        if (consType === 'call') startAudioCall();
+      if (isCaller && (consType === 'call' || consType === 'video')) {
+        beginCall();
       }
     }
   }, [status, roomId, consType, isCaller]);
@@ -292,17 +327,18 @@ export default function ConsultationRoom({ consultation, onClose, onComplete }: 
       sender: user?.full_name,
       timestamp: new Date().toISOString(),
     };
-    setMessages(prev => [...prev, msg]);
+    appendMessage(msg);
     setNewMessage('');
     try {
-      await fetch(`${API_BASE}/consultations/${roomId}/message`, {
+      const res = await fetch(`${API_BASE}/consultations/${roomId}/message`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({ text: msg.text }),
       });
-      socketRef.current?.emit('send_message', { consultationId: roomId, message: msg, sender: user?.full_name });
+      if (!res.ok) throw new Error('Failed to send');
     } catch (e) {
       console.error('Failed to send message', e);
+      setMessages((prev) => prev.filter((m) => m !== msg && m.text !== msg.text));
     }
   };
 

@@ -23,7 +23,7 @@ export default function AstroPanelLayout() {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, token, signOut, refreshUser } = useAuth();
-  const { connected } = useSocket();
+  const { connected, connectionError } = useSocket();
   const [isOnline, setIsOnline] = useState(false);
   const [activeRoom, setActiveRoom] = useState<any>(null);
   const polledIds = useRef<Set<string>>(new Set());
@@ -125,7 +125,8 @@ export default function AstroPanelLayout() {
 
       {!connected && (
         <div className="bg-red-600 text-white text-center text-sm py-2 px-4">
-          Real-time connection lost — refresh page or check backend is running on port 5000
+          Real-time connection lost — calls &amp; chat alerts may not work.
+          {connectionError ? ` (${connectionError})` : ' Set VITE_SOCKET_URL to your backend on Render, then redeploy frontend.'}
         </div>
       )}
       {!isOnline && (

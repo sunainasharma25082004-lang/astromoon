@@ -111,9 +111,19 @@ io.on('connection', (socket) => {
   });
 
   // Join a consultation room (chat / video room)
-  socket.on('join_room', (consultationId) => {
-    socket.join(consultationId);
-    console.log(`Socket ${socket.id} joined room ${consultationId}`);
+  socket.on('join_room', (payload) => {
+    const roomId = typeof payload === 'string'
+      ? payload
+      : payload?.consultationId;
+    const role = typeof payload === 'object' ? payload?.role : undefined;
+    if (!roomId) return;
+    socket.join(String(roomId));
+    if (role) socket.data.role = role;
+    socket.to(String(roomId)).emit('participant_joined', {
+      consultationId: String(roomId),
+      role: role || socket.data.role || 'unknown',
+    });
+    console.log(`Socket ${socket.id} joined room ${roomId}`, { role: socket.data.role });
   });
 
   // Leave room
@@ -121,14 +131,13 @@ io.on('connection', (socket) => {
     socket.leave(consultationId);
   });
 
-  // Chat message
+  // Legacy socket-only chat (prefer POST /consultations/:id/message which persists + broadcasts once)
   socket.on('send_message', ({ consultationId, message, sender }) => {
-    // Broadcast to everyone in the room (including sender for confirmation)
-    io.to(consultationId).emit('receive_message', {
-      consultationId,
+    io.to(String(consultationId)).emit('receive_message', {
+      consultationId: String(consultationId),
       message,
       sender,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
   });
 
@@ -175,9 +184,11 @@ io.on('connection', (socket) => {
     socket.to(consultationId).emit('typing_indicator', { consultationId, user, role });
   });
 
-  // Incoming call signaling
+  // Incoming call signaling — room + astrologers_live for panel alerts
   socket.on('call_request', ({ consultationId, type }) => {
-    socket.to(consultationId).emit('incoming_call', { consultationId, type });
+    const roomId = String(consultationId);
+    io.to(roomId).emit('incoming_call', { consultationId: roomId, type });
+    io.to('astrologers_live').emit('incoming_call', { consultationId: roomId, type });
   });
 
   socket.on('call_accept', ({ consultationId }) => {

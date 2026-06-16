@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useRef, useCallback, useState, Re
 import { io, Socket } from 'socket.io-client';
 import toast from 'react-hot-toast';
 import { useAuth } from './Auth';
-import { SOCKET_URL } from '../config/api';
+import { createSocketOptions, SOCKET_URL } from '../config/api';
 
 type PanelUpdate = {
   resource: string;
@@ -18,6 +18,7 @@ type PanelUpdate = {
 interface SocketContextType {
   subscribe: (resources: string | string[], callback: () => void) => () => void;
   connected: boolean;
+  connectionError: string | null;
 }
 
 const SocketContext = createContext<SocketContextType | null>(null);
@@ -27,6 +28,7 @@ export function SocketProvider({ children }: { children: ReactNode }) {
   const socketRef = useRef<Socket | null>(null);
   const listenersRef = useRef<Map<string, Set<() => void>>>(new Map());
   const [connected, setConnected] = useState(false);
+  const [connectionError, setConnectionError] = useState<string | null>(null);
 
   const subscribe = useCallback((resources: string | string[], callback: () => void) => {
     const keys = Array.isArray(resources) ? resources : [resources];
@@ -72,13 +74,8 @@ export function SocketProvider({ children }: { children: ReactNode }) {
       return;
     }
 
-    const socket = io(SOCKET_URL || window.location.origin, {
-      path: '/socket.io',
-      transports: ['polling', 'websocket'],
-      auth: { token },
-      reconnection: true,
-      reconnectionAttempts: 10,
-    });
+    const { url, options } = createSocketOptions(token);
+    const socket = io(url || window.location.origin, options);
     socketRef.current = socket;
 
     const joinRooms = () => {
@@ -92,15 +89,25 @@ export function SocketProvider({ children }: { children: ReactNode }) {
 
     socket.on('connect', () => {
       setConnected(true);
+      setConnectionError(null);
       joinRooms();
     });
 
     socket.io.on('reconnect', () => {
+      setConnectionError(null);
       joinRooms();
     });
 
     socket.on('disconnect', () => {
       setConnected(false);
+    });
+
+    socket.on('connect_error', (err) => {
+      setConnected(false);
+      const hint = !SOCKET_URL && !import.meta.env.DEV
+        ? 'Set VITE_API_URL or VITE_SOCKET_URL to your backend URL on Render.'
+        : 'Check backend is running and CORS allows this site.';
+      setConnectionError(err.message || hint);
     });
 
     socket.on('incoming_consultation', handleIncoming);
@@ -113,14 +120,6 @@ export function SocketProvider({ children }: { children: ReactNode }) {
 
       if (data.resource === 'notifications' && data.title) {
         toast(data.message || data.title, { icon: '🔔', duration: 4500 });
-      }
-
-      if (
-        data.resource === 'consultations' &&
-        data.action === 'incoming' &&
-        user.role === 'astrologer'
-      ) {
-        handleIncoming(data);
       }
 
       if (
@@ -143,7 +142,7 @@ export function SocketProvider({ children }: { children: ReactNode }) {
   }, [token, user?.id, user?.role, user?.astrologer_profile_id, dispatch, refreshUser, handleIncoming]);
 
   return (
-    <SocketContext.Provider value={{ subscribe, connected }}>
+    <SocketContext.Provider value={{ subscribe, connected, connectionError }}>
       {children}
     </SocketContext.Provider>
   );

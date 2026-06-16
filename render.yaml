@@ -25,6 +25,8 @@ services:
     envVars:
       - key: VITE_API_URL
         sync: false
+      - key: VITE_SOCKET_URL
+        sync: false
     routes:
       - type: rewrite
         source: /*

@@ -9,11 +9,26 @@ function resolveSocketUrl() {
   if (rawApiUrl.startsWith('http')) {
     return rawApiUrl.replace(/\/api$/, '');
   }
-  if (typeof window !== 'undefined') return window.location.origin;
   return '';
 }
 
 export const SOCKET_URL = resolveSocketUrl();
+
+export function createSocketOptions(token?: string | null) {
+  const url = SOCKET_URL || (import.meta.env.DEV ? undefined : undefined);
+  return {
+    url: url || undefined,
+    options: {
+      path: '/socket.io',
+      transports: ['polling', 'websocket'] as ('polling' | 'websocket')[],
+      auth: token ? { token } : undefined,
+      reconnection: true,
+      reconnectionAttempts: 15,
+      reconnectionDelay: 1000,
+      timeout: 20000,
+    },
+  };
+}
 
 export function authHeaders(token?: string | null) {
   const t = token || (typeof localStorage !== 'undefined' ? localStorage.getItem('token') : null);

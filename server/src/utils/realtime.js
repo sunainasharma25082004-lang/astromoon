@@ -94,6 +94,5 @@ export function emitIncomingToAstrologer(io, {
     const size = io.sockets.adapter.rooms.get(room)?.size || 0;
     console.log(`[incoming] → ${room} (${size} socket(s))`, payload.type, user?.full_name);
     io.to(room).emit('incoming_consultation', payload);
-    io.to(room).emit('panel:update', payload);
   });
 }
