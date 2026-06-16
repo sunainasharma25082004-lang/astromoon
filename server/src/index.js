@@ -36,23 +36,56 @@ const app = express();
 const httpServer = createServer(app);
 const PORT = process.env.PORT || 5000;
 
-// Allow common local dev origins (localhost, 127.0.0.1, alternate Vite ports)
+function normalizeOrigin(url) {
+  if (!url) return null;
+  try {
+    return new URL(url.trim()).origin;
+  } catch {
+    return url.trim().replace(/\/$/, '');
+  }
+}
+
+// FRONTEND_URL or FRONTEND_URLS (comma-separated) for production CORS
 const allowedOrigins = new Set(
   [
     process.env.FRONTEND_URL,
+    process.env.FRONTEND_URLS,
     'http://localhost:5173',
     'http://localhost:5174',
     'http://127.0.0.1:5173',
     'http://127.0.0.1:5174',
-  ].filter(Boolean)
+  ]
+    .filter(Boolean)
+    .flatMap((value) => String(value).split(','))
+    .map(normalizeOrigin)
+    .filter(Boolean)
 );
+
+function isAllowedOrigin(origin) {
+  if (!origin) return true;
+
+  const normalized = normalizeOrigin(origin);
+  if (allowedOrigins.has(normalized)) return true;
+  if (/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) return true;
+
+  // Render deploys: allow frontend/backend *.onrender.com in production
+  if (
+    process.env.NODE_ENV === 'production' &&
+    /^https:\/\/[\w-]+\.onrender\.com$/.test(normalized)
+  ) {
+    return true;
+  }
+
+  return false;
+}
 
 const corsOptions = {
   origin(origin, callback) {
-    if (!origin || allowedOrigins.has(origin) || /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
+    if (isAllowedOrigin(origin)) {
       callback(null, origin || true);
       return;
     }
+    console.warn(`CORS blocked for origin: ${origin}`);
     callback(new Error(`CORS blocked for origin: ${origin}`));
   },
   credentials: true,
@@ -188,6 +221,15 @@ app.use('/api/notifications', notificationRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/content', contentRoutes);
 app.use('/api/applications', applicationRoutes);
+
+app.get('/', (req, res) => {
+  res.json({
+    status: 'ok',
+    message: 'Celestial Guidance API',
+    health: '/api/health',
+    apiBase: '/api',
+  });
+});
 
 // Health
 app.get('/api/health', (req, res) => {

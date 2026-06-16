@@ -1,5 +1,19 @@
-export const API_BASE = import.meta.env.VITE_API_URL || '/api';
-export const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || (import.meta.env.DEV ? '' : (typeof window !== 'undefined' ? window.location.origin : ''));
+const rawApiUrl = (import.meta.env.VITE_API_URL || '/api').replace(/\/$/, '');
+export const API_BASE = rawApiUrl;
+
+function resolveSocketUrl() {
+  if (import.meta.env.VITE_SOCKET_URL) {
+    return String(import.meta.env.VITE_SOCKET_URL).replace(/\/$/, '');
+  }
+  if (import.meta.env.DEV) return '';
+  if (rawApiUrl.startsWith('http')) {
+    return rawApiUrl.replace(/\/api$/, '');
+  }
+  if (typeof window !== 'undefined') return window.location.origin;
+  return '';
+}
+
+export const SOCKET_URL = resolveSocketUrl();
 
 export function authHeaders(token?: string | null) {
   const t = token || (typeof localStorage !== 'undefined' ? localStorage.getItem('token') : null);
