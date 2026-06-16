@@ -6,6 +6,8 @@ import WalletTransaction from '../models/WalletTransaction.js';
 import Withdrawal from '../models/Withdrawal.js';
 import Review from '../models/Review.js';
 import AstrologerApplication from '../models/AstrologerApplication.js';
+import AstrologerPackage from '../models/AstrologerPackage.js';
+import Order from '../models/Order.js';
 import Notification from '../models/Notification.js';
 import PlatformSettings from '../models/PlatformSettings.js';
 import { protect, authorize } from '../middleware/auth.js';
@@ -105,6 +107,68 @@ router.get('/astrologers', async (req, res) => {
   const filter = status ? { approval_status: status } : {};
   const astros = await Astrologer.find(filter).sort({ createdAt: -1 });
   res.json(astros);
+});
+
+router.post('/astrologers', async (req, res) => {
+  try {
+    const {
+      full_name, avatar_url, expertise, languages, skills, experience,
+      bio, education, certifications, chat_price, call_price, video_price,
+      is_featured, is_new, availability_status, available_slots,
+    } = req.body;
+    if (!full_name) return res.status(400).json({ message: 'full_name is required' });
+
+    const astro = await Astrologer.create({
+      full_name,
+      avatar_url,
+      expertise: expertise || [],
+      languages: languages || ['Hindi', 'English'],
+      skills: skills || [],
+      experience: experience || 0,
+      bio: bio || '',
+      education: education || '',
+      certifications: certifications || [],
+      chat_price: chat_price ?? 10,
+      call_price: call_price ?? 15,
+      video_price: video_price ?? 20,
+      is_verified: true,
+      approval_status: 'approved',
+      is_available: true,
+      is_featured: is_featured ?? false,
+      is_new: is_new ?? true,
+      availability_status: availability_status || 'offline',
+      is_online: availability_status === 'online',
+      available_slots: available_slots || [],
+    });
+    adminBroadcast(req.app.get('io'), [RESOURCES.ASTROLOGERS, RESOURCES.STATS]);
+    res.status(201).json(astro);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.post('/astrologers/:id/packages', async (req, res) => {
+  try {
+    const pkg = await AstrologerPackage.create({
+      ...req.body,
+      astrologer_id: req.params.id,
+    });
+    res.status(201).json(pkg);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.get('/orders', async (req, res) => {
+  try {
+    const orders = await Order.find()
+      .populate('user_id', 'full_name email phone')
+      .sort({ createdAt: -1 })
+      .limit(200);
+    res.json(orders);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
 router.post('/astrologers/:id/approve', async (req, res) => {

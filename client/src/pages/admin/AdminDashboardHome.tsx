@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Users, UserCheck, DollarSign, FileText, AlertTriangle, Check, Shield } from 'lucide-react';
+import { Users, UserCheck, DollarSign, ShoppingBag, AlertTriangle, Check, Shield, Package } from 'lucide-react';
 import { useAuth } from '../../context/Auth';
 import { apiFetch } from '../../config/api';
 import { useRealtimeData } from '../../hooks/useRealtimeData';
@@ -10,25 +10,25 @@ export default function AdminDashboardHome() {
   const [stats, setStats] = useState<any>(null);
   const [users, setUsers] = useState<any[]>([]);
   const [astrologers, setAstrologers] = useState<any[]>([]);
-  const [consultations, setConsultations] = useState<any[]>([]);
+  const [orders, setOrders] = useState<any[]>([]);
 
   const loadAdminData = async () => {
     if (!token) return;
     try {
-      const [s, u, a, c] = await Promise.all([
+      const [s, u, a, o] = await Promise.all([
         apiFetch('/admin/stats', {}, token),
         apiFetch('/admin/users?limit=30', {}, token),
         apiFetch('/admin/astrologers', {}, token),
-        apiFetch('/admin/consultations', {}, token),
+        apiFetch('/admin/orders', {}, token),
       ]);
       setStats(s);
       setUsers(Array.isArray(u) ? u : []);
       setAstrologers(Array.isArray(a) ? a : []);
-      setConsultations(Array.isArray(c) ? c : []);
+      setOrders(Array.isArray(o) ? o : []);
     } catch {}
   };
 
-  useRealtimeData(loadAdminData, ['stats', 'users', 'astrologers', 'consultations', 'transactions', 'withdrawals', 'applications'], [token]);
+  useRealtimeData(loadAdminData, ['stats', 'users', 'astrologers', 'orders', 'transactions'], [token]);
 
   const approveAstro = async (id: string) => {
     if (!token) return;
@@ -71,9 +71,9 @@ export default function AdminDashboardHome() {
               <div className="text-sm text-slate-400">Revenue</div>
             </div>
             <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5">
-              <FileText className="w-5 h-5 text-amber-400 mb-3" />
-              <div className="text-3xl font-semibold text-white">{stats.totalConsultations}</div>
-              <div className="text-sm text-slate-400">Consultations</div>
+              <ShoppingBag className="w-5 h-5 text-amber-400 mb-3" />
+              <div className="text-3xl font-semibold text-white">{orders.length}</div>
+              <div className="text-sm text-slate-400">Shop Orders</div>
             </div>
           </>
         ) : (
@@ -120,10 +120,15 @@ export default function AdminDashboardHome() {
             <div className="font-medium text-white">Financials</div>
             <div className="text-xs text-slate-400 mt-1">Transactions &amp; payouts</div>
           </Link>
-          <Link to="/admin/moderation" className="block bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-2xl p-5">
-            <Shield className="mb-2 text-red-400 w-5 h-5" />
-            <div className="font-medium text-white">Moderation</div>
-            <div className="text-xs text-slate-400 mt-1">Reports &amp; flagged content</div>
+          <Link to="/admin/products" className="block bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-2xl p-5">
+            <ShoppingBag className="mb-2 text-amber-400 w-5 h-5" />
+            <div className="font-medium text-white">Shop Products</div>
+            <div className="text-xs text-slate-400 mt-1">Upload &amp; manage products</div>
+          </Link>
+          <Link to="/admin/orders" className="block bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-2xl p-5">
+            <Package className="mb-2 text-sky-400 w-5 h-5" />
+            <div className="font-medium text-white">Shop Orders</div>
+            <div className="text-xs text-slate-400 mt-1">User purchase history</div>
           </Link>
         </div>
       </div>
@@ -142,14 +147,18 @@ export default function AdminDashboardHome() {
           </div>
         </div>
         <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5">
-          <div className="font-medium mb-3 text-white text-sm">Recent Consultations</div>
+          <div className="font-medium mb-3 text-white text-sm flex justify-between">
+            <span>Recent Shop Orders</span>
+            <Link to="/admin/orders" className="text-xs text-sky-400">View all</Link>
+          </div>
           <div className="text-xs space-y-1.5 max-h-48 overflow-auto">
-            {consultations.slice(0, 5).map((c: any) => (
-              <div key={c._id} className="flex justify-between px-2 py-1.5 bg-slate-950 rounded-lg text-slate-400">
-                <span>{c.user_id?.full_name} → {c.astrologer_id?.full_name}</span>
-                <span className="text-amber-400 capitalize">{c.type} • ₹{c.total_amount}</span>
+            {orders.slice(0, 5).map((o: any) => (
+              <div key={o._id} className="flex justify-between px-2 py-1.5 bg-slate-950 rounded-lg text-slate-400">
+                <span>{o.user_id?.full_name || 'User'}</span>
+                <span className="text-emerald-400">₹{o.total}</span>
               </div>
             ))}
+            {orders.length === 0 && <div className="text-slate-500 text-center py-4">No orders yet</div>}
           </div>
         </div>
       </div>

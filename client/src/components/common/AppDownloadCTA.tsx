@@ -1,14 +1,16 @@
-import { Download, Smartphone } from 'lucide-react';
+import { Download, Smartphone, MessageCircle, Phone, Video } from 'lucide-react';
 import { APP_NAME, APP_PLAY_STORE_URL, APP_APK_DOWNLOAD_URL } from '../../constants';
 
 interface AppDownloadCTAProps {
   variant?: 'card' | 'inline';
   subtitle?: string;
+  showConsultTypes?: boolean;
 }
 
 export function AppDownloadCTA({
   variant = 'card',
   subtitle = 'Chat, call & video consultations are available in our mobile app.',
+  showConsultTypes = false,
 }: AppDownloadCTAProps) {
   const apkReady = Boolean(APP_APK_DOWNLOAD_URL);
 
@@ -36,11 +38,27 @@ export function AppDownloadCTA({
     </div>
   );
 
+  const consultTypes = showConsultTypes && (
+    <div className="grid grid-cols-3 gap-2 mb-4">
+      {[
+        { Icon: MessageCircle, label: 'Chat', color: 'bg-blue-50 text-blue-700 border-blue-100' },
+        { Icon: Phone, label: 'Audio Call', color: 'bg-green-50 text-green-700 border-green-100' },
+        { Icon: Video, label: 'Video Call', color: 'bg-purple-50 text-purple-700 border-purple-100' },
+      ].map(({ Icon, label, color }) => (
+        <div key={label} className={`flex flex-col items-center py-3 rounded-xl border text-xs font-medium ${color}`}>
+          <Icon className="w-4 h-4 mb-1" />
+          {label}
+        </div>
+      ))}
+    </div>
+  );
+
   if (variant === 'inline') {
     return (
       <div className="rounded-2xl border border-primary-100 bg-gradient-to-br from-primary-50 to-violet-50 p-5 sm:p-6">
         <p className="text-sm font-semibold text-gray-900 mb-1">Continue on {APP_NAME} App</p>
         <p className="text-sm text-gray-600 mb-4">{subtitle}</p>
+        {consultTypes}
         {buttons}
       </div>
     );
@@ -49,10 +67,11 @@ export function AppDownloadCTA({
   return (
     <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 sticky top-24">
       <h3 className="text-lg font-semibold text-gray-900 mb-2">Get the App</h3>
-      <p className="text-sm text-gray-600 mb-5">{subtitle}</p>
+      <p className="text-sm text-gray-600 mb-4">{subtitle}</p>
+      {consultTypes}
       {buttons}
       <p className="text-xs text-gray-400 text-center mt-4">
-        Install the app to chat, call or video consult with this astrologer.
+        Live consultations work only in the app — website is for browsing profiles & shopping.
       </p>
     </div>
   );

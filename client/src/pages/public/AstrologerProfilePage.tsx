@@ -1,16 +1,23 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import {
-  BadgeCheck, Clock, Globe,
-  Heart, Share2, Award, ChevronLeft
+  BadgeCheck, Clock, Globe, Heart, Share2, Award, ChevronLeft,
+  MessageCircle, Phone, Video, Calendar, Sparkles
 } from 'lucide-react';
-import { formatDate } from '../../utils/dateUtils';
+import { formatDate, formatCurrency } from '../../utils/dateUtils';
 import { StarRating } from '../../components/common/StarRating';
 import { AppDownloadCTA } from '../../components/common/AppDownloadCTA';
-
 import { apiFetch, withId } from '../../config/api';
 
 const SAVED_KEY = 'celestial_saved_astrologers';
+
+interface Package {
+  _id: string;
+  name: string;
+  duration_minutes: number;
+  price: number;
+  type: string;
+}
 
 interface Review {
   id: string;
@@ -27,6 +34,7 @@ interface Astrologer {
   avatar_url?: string;
   expertise: string[];
   languages: string[];
+  skills?: string[];
   experience: number;
   bio?: string;
   education?: string;
@@ -39,6 +47,9 @@ interface Astrologer {
   total_consultations: number;
   is_online: boolean;
   is_verified: boolean;
+  availability_status?: string;
+  available_slots?: { day: string; start_time: string; end_time: string }[];
+  packages?: Package[];
 }
 
 export default function AstrologerProfilePage() {
@@ -46,21 +57,18 @@ export default function AstrologerProfilePage() {
   const [astrologer, setAstrologer] = useState<Astrologer | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'about' | 'reviews'>('about');
+  const [activeTab, setActiveTab] = useState<'about' | 'reviews' | 'packages'>('about');
   const [isSaved, setIsSaved] = useState(false);
 
   useEffect(() => {
-    if (id) {
-      fetchAstrologer();
-      fetchReviews();
-    }
+    if (id) fetchAstrologer();
   }, [id]);
 
   const fetchAstrologer = async () => {
     try {
       const data = await apiFetch(`/astrologers/${id}`);
       const astro = withId(data);
-      setAstrologer(astro);
+      setAstrologer({ ...astro, packages: data.packages || [] });
       if (data.reviews) {
         setReviews(data.reviews.map((r: any) => ({
           id: r._id,
@@ -78,21 +86,6 @@ export default function AstrologerProfilePage() {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const fetchReviews = async () => {
-    if (!id) return;
-    try {
-      const data = await apiFetch(`/reviews/astrologer/${id}`);
-      setReviews(data.map((r: any) => ({
-        id: r._id,
-        rating: r.rating,
-        comment: r.comment,
-        user_name: r.user_id?.full_name || 'User',
-        created_at: r.createdAt,
-        consultation_type: r.consultation_type || 'chat',
-      })));
-    } catch {}
   };
 
   const toggleSave = () => {
@@ -122,45 +115,37 @@ export default function AstrologerProfilePage() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Astrologer not found</h2>
-          <Link to="/astrologers" className="text-primary-600 hover:underline">
-            Browse all astrologers
-          </Link>
+          <Link to="/astrologers" className="text-primary-600 hover:underline">Browse all astrologers</Link>
         </div>
       </div>
     );
   }
 
+  const isOnline = astrologer.availability_status === 'online' || astrologer.is_online;
+
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Back Button */}
-        <Link
-          to="/astrologers"
-          className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-6"
-        >
-          <ChevronLeft className="w-5 h-5 mr-1" />
-          Back to Astrologers
+        <Link to="/astrologers" className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-6">
+          <ChevronLeft className="w-5 h-5 mr-1" />Back to Astrologers
         </Link>
 
-        {/* Profile Header */}
         <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden mb-6">
-          {/* Banner */}
           <div className="h-32 bg-gradient-to-r from-cosmic-navy via-cosmic-purple to-cosmic-light relative">
             <div className="absolute inset-0 stars-pattern opacity-30" />
           </div>
 
           <div className="px-6 lg:px-8 pb-6">
             <div className="flex flex-col md:flex-row md:items-end gap-6 -mt-16">
-              {/* Avatar */}
               <div className="relative">
                 <img
                   src={astrologer.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(astrologer.full_name)}&background=7c3aed&color=fff&size=200`}
                   alt={astrologer.full_name}
                   className="w-32 h-32 rounded-2xl border-4 border-white shadow-xl object-cover"
                 />
-                {astrologer.is_online && (
+                {isOnline && (
                   <div className="absolute -bottom-2 -right-2 px-3 py-1 bg-green-500 text-white text-sm font-medium rounded-full shadow-lg">
-                    Online
+                    {astrologer.availability_status === 'busy' ? 'Busy' : 'Online'}
                   </div>
                 )}
                 {astrologer.is_verified && (
@@ -170,55 +155,33 @@ export default function AstrologerProfilePage() {
                 )}
               </div>
 
-              {/* Info */}
               <div className="flex-1">
-                <h1 className="text-2xl md:text-3xl font-display font-bold text-gray-900 mb-1">
-                  {astrologer.full_name}
-                </h1>
-                <div className="flex items-center gap-4 text-sm text-gray-600 mb-3">
-                  <span className="flex items-center">
-                    <Clock className="w-4 h-4 mr-1" />
-                    {astrologer.experience} Years Experience
-                  </span>
-                  <span className="flex items-center">
-                    <Globe className="w-4 h-4 mr-1" />
-                    {astrologer.languages.join(', ')}
-                  </span>
+                <h1 className="text-2xl md:text-3xl font-display font-bold text-gray-900 mb-1">{astrologer.full_name}</h1>
+                <div className="flex items-center gap-4 text-sm text-gray-600 mb-3 flex-wrap">
+                  <span className="flex items-center"><Clock className="w-4 h-4 mr-1" />{astrologer.experience} Years Experience</span>
+                  <span className="flex items-center"><Globe className="w-4 h-4 mr-1" />{astrologer.languages?.join(', ')}</span>
                 </div>
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="flex items-center">
-                    <StarRating rating={astrologer.rating} size="md" />
-                    <span className="ml-2 text-gray-600">{astrologer.rating} ({astrologer.total_reviews} reviews)</span>
-                  </div>
+                  <StarRating rating={astrologer.rating} size="md" />
+                  <span className="text-gray-600">{astrologer.rating} ({astrologer.total_reviews} reviews)</span>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  {astrologer.expertise.map((exp) => (
-                    <span key={exp} className="px-3 py-1 bg-primary-50 text-primary-700 text-sm rounded-full">
-                      {exp}
-                    </span>
+                  {astrologer.expertise?.map((exp) => (
+                    <span key={exp} className="px-3 py-1 bg-primary-50 text-primary-700 text-sm rounded-full">{exp}</span>
                   ))}
                 </div>
               </div>
 
-              {/* Actions */}
               <div className="flex gap-2">
-                <button
-                  onClick={toggleSave}
-                  className={`p-3 rounded-xl border transition-colors ${
-                    isSaved
-                      ? 'bg-red-50 border-red-200 text-red-500'
-                      : 'bg-white border-gray-200 text-gray-400 hover:text-red-500'
-                  }`}
-                >
+                <button onClick={toggleSave} className={`p-3 rounded-xl border transition-colors ${isSaved ? 'bg-red-50 border-red-200 text-red-500' : 'bg-white border-gray-200 text-gray-400 hover:text-red-500'}`}>
                   <Heart className={`w-5 h-5 ${isSaved ? 'fill-current' : ''}`} />
                 </button>
-                <button className="p-3 rounded-xl border border-gray-200 bg-white text-gray-400 hover:text-gray-600">
+                <button onClick={() => navigator.share?.({ title: astrologer.full_name, url: window.location.href })} className="p-3 rounded-xl border border-gray-200 bg-white text-gray-400 hover:text-gray-600">
                   <Share2 className="w-5 h-5" />
                 </button>
               </div>
             </div>
 
-            {/* Stats */}
             <div className="grid grid-cols-3 gap-4 mt-6 pt-6 border-t border-gray-100">
               <div className="text-center">
                 <div className="text-2xl font-bold text-gray-900">{astrologer.total_consultations}+</div>
@@ -233,52 +196,60 @@ export default function AstrologerProfilePage() {
                 <div className="text-sm text-gray-500">Years Experience</div>
               </div>
             </div>
+
+            {/* Pricing info (informative) */}
+            <div className="grid grid-cols-3 gap-3 mt-4">
+              {[
+                { Icon: MessageCircle, label: 'Chat', price: astrologer.chat_price, color: 'bg-blue-50 text-blue-700' },
+                { Icon: Phone, label: 'Audio Call', price: astrologer.call_price, color: 'bg-green-50 text-green-700' },
+                { Icon: Video, label: 'Video Call', price: astrologer.video_price, color: 'bg-purple-50 text-purple-700' },
+              ].map(({ Icon, label, price, color }) => (
+                <div key={label} className={`flex flex-col items-center py-3 rounded-xl ${color}`}>
+                  <Icon className="w-5 h-5 mb-1" />
+                  <span className="text-xs font-medium">{label}</span>
+                  <span className="text-sm font-bold mt-0.5">{formatCurrency(price)}/min</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-6">
-          {/* Left Column - About & Reviews */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Tabs */}
             <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
               <div className="flex border-b border-gray-100">
-                <button
-                  onClick={() => setActiveTab('about')}
-                  className={`flex-1 px-6 py-4 font-medium transition-colors ${
-                    activeTab === 'about'
-                      ? 'text-primary-600 border-b-2 border-primary-600'
-                      : 'text-gray-500 hover:text-gray-700'
-                  }`}
-                >
-                  About
-                </button>
-                <button
-                  onClick={() => setActiveTab('reviews')}
-                  className={`flex-1 px-6 py-4 font-medium transition-colors ${
-                    activeTab === 'reviews'
-                      ? 'text-primary-600 border-b-2 border-primary-600'
-                      : 'text-gray-500 hover:text-gray-700'
-                  }`}
-                >
-                  Reviews ({astrologer.total_reviews})
-                </button>
+                {(['about', 'reviews', 'packages'] as const).map(tab => (
+                  <button
+                    key={tab}
+                    onClick={() => setActiveTab(tab)}
+                    className={`flex-1 px-6 py-4 font-medium transition-colors capitalize ${activeTab === tab ? 'text-primary-600 border-b-2 border-primary-600' : 'text-gray-500 hover:text-gray-700'}`}
+                  >
+                    {tab === 'reviews' ? `Reviews (${astrologer.total_reviews})` : tab}
+                  </button>
+                ))}
               </div>
 
               <div className="p-6">
-                {activeTab === 'about' ? (
+                {activeTab === 'about' && (
                   <div className="space-y-6">
-                    {/* Bio */}
                     <div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-3">About</h3>
-                      <p className="text-gray-600 leading-relaxed">{astrologer.bio}</p>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3">About {astrologer.full_name}</h3>
+                      <p className="text-gray-600 leading-relaxed">{astrologer.bio || 'Profile details coming soon.'}</p>
                     </div>
 
-                    <AppDownloadCTA
-                      variant="inline"
-                      subtitle={`To connect with ${astrologer.full_name}, download our app — calls & chat work best on mobile.`}
-                    />
+                    {astrologer.skills && astrologer.skills.length > 0 && (
+                      <div>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-3">Skills & Specializations</h3>
+                        <div className="flex flex-wrap gap-2">
+                          {astrologer.skills.map(s => (
+                            <span key={s} className="inline-flex items-center px-3 py-1 bg-violet-50 text-violet-700 rounded-lg text-sm">
+                              <Sparkles className="w-3.5 h-3.5 mr-1.5" />{s}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
 
-                    {/* Education */}
                     {astrologer.education && (
                       <div>
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">Education</h3>
@@ -286,39 +257,73 @@ export default function AstrologerProfilePage() {
                       </div>
                     )}
 
-                    {/* Certifications */}
                     {astrologer.certifications && astrologer.certifications.length > 0 && (
                       <div>
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">Certifications</h3>
                         <div className="flex flex-wrap gap-2">
                           {astrologer.certifications.map((cert) => (
                             <span key={cert} className="inline-flex items-center px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-sm">
-                              <Award className="w-4 h-4 mr-2" />
-                              {cert}
+                              <Award className="w-4 h-4 mr-2" />{cert}
                             </span>
                           ))}
                         </div>
                       </div>
                     )}
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    {reviews.length > 0 ? (
-                      reviews.map((review) => (
-                        <div key={review.id} className="border-b border-gray-100 pb-4 last:border-0">
-                          <div className="flex items-center justify-between mb-2">
-                            <div>
-                              <span className="font-medium text-gray-900">{review.user_name}</span>
-                              <span className="text-sm text-gray-500 ml-2 capitalize">{review.consultation_type}</span>
+
+                    {astrologer.available_slots && astrologer.available_slots.length > 0 && (
+                      <div>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center"><Calendar className="w-5 h-5 mr-2" />Availability Schedule</h3>
+                        <div className="grid sm:grid-cols-2 gap-2">
+                          {astrologer.available_slots.map((slot, i) => (
+                            <div key={i} className="flex items-center justify-between px-4 py-2.5 bg-gray-50 rounded-xl text-sm">
+                              <span className="font-medium text-gray-800 capitalize">{slot.day}</span>
+                              <span className="text-gray-500">{slot.start_time} – {slot.end_time}</span>
                             </div>
-                            <StarRating rating={review.rating} size="sm" />
-                          </div>
-                          <p className="text-gray-600 text-sm">{review.comment}</p>
-                          <p className="text-xs text-gray-400 mt-2">{formatDate(review.created_at)}</p>
+                          ))}
                         </div>
-                      ))
-                    ) : (
+                      </div>
+                    )}
+
+                    <AppDownloadCTA
+                      variant="inline"
+                      showConsultTypes
+                      subtitle={`To chat, call or video consult with ${astrologer.full_name}, download our app.`}
+                    />
+                  </div>
+                )}
+
+                {activeTab === 'reviews' && (
+                  <div className="space-y-4">
+                    {reviews.length > 0 ? reviews.map((review) => (
+                      <div key={review.id} className="border-b border-gray-100 pb-4 last:border-0">
+                        <div className="flex items-center justify-between mb-2">
+                          <div>
+                            <span className="font-medium text-gray-900">{review.user_name}</span>
+                            <span className="text-sm text-gray-500 ml-2 capitalize">{review.consultation_type}</span>
+                          </div>
+                          <StarRating rating={review.rating} size="sm" />
+                        </div>
+                        <p className="text-gray-600 text-sm">{review.comment}</p>
+                        <p className="text-xs text-gray-400 mt-2">{formatDate(review.created_at)}</p>
+                      </div>
+                    )) : (
                       <p className="text-center text-gray-500 py-8">No reviews yet</p>
+                    )}
+                  </div>
+                )}
+
+                {activeTab === 'packages' && (
+                  <div className="space-y-3">
+                    {(astrologer.packages || []).length > 0 ? astrologer.packages!.map(pkg => (
+                      <div key={pkg._id} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
+                        <div>
+                          <div className="font-medium text-gray-900">{pkg.name}</div>
+                          <div className="text-sm text-gray-500 capitalize">{pkg.type} • {pkg.duration_minutes} minutes</div>
+                        </div>
+                        <div className="font-bold text-primary-700">{formatCurrency(pkg.price)}</div>
+                      </div>
+                    )) : (
+                      <p className="text-center text-gray-500 py-8">No packages listed. Per-minute rates shown above.</p>
                     )}
                   </div>
                 )}
@@ -326,15 +331,14 @@ export default function AstrologerProfilePage() {
             </div>
           </div>
 
-          {/* Right Column - App download */}
           <div>
             <AppDownloadCTA
-              subtitle={`Book ${astrologer.full_name} for chat, audio or video — open the ${astrologer.is_online ? 'app while they are online' : 'app and get notified when online'}.`}
+              showConsultTypes
+              subtitle={`Connect with ${astrologer.full_name} via chat, audio or video — download the app${isOnline ? ' while they are online' : ''}.`}
             />
           </div>
         </div>
       </div>
-
     </div>
   );
 }

@@ -1,14 +1,14 @@
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Users, UserCheck, DollarSign, BarChart3, Shield, FileText, Settings, LogOut, Lock, ClipboardList } from 'lucide-react';
+import { LayoutDashboard, Users, UserCheck, ShoppingBag, Package, DollarSign, BarChart3, Shield, Settings, LogOut, Lock } from 'lucide-react';
 import { useAuth } from '../../context/Auth';
 import { useSocket } from '../../context/SocketContext';
 
 const sidebar = [
   { label: 'Overview', path: '/admin', icon: LayoutDashboard },
-  { label: 'Manage Users', path: '/admin/users', icon: Users },
+  { label: 'Users', path: '/admin/users', icon: Users },
   { label: 'Astrologers', path: '/admin/astrologers', icon: UserCheck },
-  { label: 'Applications', path: '/admin/applications', icon: ClipboardList },
-  { label: 'Consultations', path: '/admin/consultations', icon: FileText },
+  { label: 'Shop Products', path: '/admin/products', icon: ShoppingBag },
+  { label: 'Shop Orders', path: '/admin/orders', icon: Package },
   { label: 'Transactions', path: '/admin/transactions', icon: DollarSign },
   { label: 'Reports', path: '/admin/reports', icon: BarChart3 },
   { label: 'Moderation', path: '/admin/moderation', icon: Shield },
@@ -27,8 +27,8 @@ export default function AdminPanelLayout() {
         <div className="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 bg-red-500/15 border border-red-500/30 rounded-lg flex items-center justify-center"><Lock className="w-4 h-4 text-red-400" /></div>
-            <span className="font-semibold text-white text-sm">Admin Control Center</span>
-            <span className="text-[10px] bg-red-500/20 text-red-300 px-2 py-0.5 rounded-full border border-red-500/30">ADMIN PANEL</span>
+            <span className="font-semibold text-white text-sm">Admin Panel</span>
+            <span className="text-[10px] bg-red-500/20 text-red-300 px-2 py-0.5 rounded-full border border-red-500/30">ADMIN</span>
             <span className={`text-[10px] px-2 py-0.5 rounded-full border ${connected ? 'border-emerald-500/40 text-emerald-400 bg-emerald-500/10' : 'border-slate-600 text-slate-500'}`}>
               {connected ? '● LIVE' : '○ offline'}
             </span>

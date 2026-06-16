@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Eye, EyeOff, Mail, Lock, User, Users, Check, Sparkles } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, User, Check, Sparkles } from 'lucide-react';
 import { useAuth } from '../../context/Auth';
 
 export default function RegisterPage() {
@@ -10,7 +10,7 @@ export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [selectedRole, setSelectedRole] = useState<'user' | 'astrologer'>('user');
+
   const [form, setForm] = useState({ full_name: '', email: '', password: '', confirmPassword: '', agreeTerms: false });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -18,11 +18,8 @@ export default function RegisterPage() {
     if (form.password !== form.confirmPassword) { setError('Passwords do not match'); return; }
     setLoading(true);
     try { 
-      const loggedUser = await signUp(form.email, form.password, form.full_name, selectedRole); 
-      // Redirect based on chosen + returned role
-      const r = loggedUser?.role || selectedRole;
-      if (r === 'admin') navigate('/admin');
-      else if (r === 'astrologer') navigate('/astro');
+      const loggedUser = await signUp(form.email, form.password, form.full_name, 'user');
+      if (loggedUser?.role === 'admin') navigate('/admin');
       else navigate('/dashboard');
     }
     catch (err: any) { setError(err.message || 'Registration failed'); }
@@ -37,7 +34,7 @@ export default function RegisterPage() {
           <div className="w-24 h-24 mx-auto mb-8 bg-gradient-to-br from-gold-light to-gold rounded-full flex items-center justify-center"><Sparkles className="w-12 h-12 text-cosmic-dark" /></div>
           <h2 className="text-4xl font-display font-bold mb-4">Join Celestial Guidance</h2>
           <p className="text-white/80 max-w-md mb-8">Start your cosmic journey today</p>
-          <div className="space-y-4 text-left">{['Get 100 bonus on signup', 'Free Kundli generation', 'Access to 500+ astrologers'].map((b, i) => (
+          <div className="space-y-4 text-left">{['Shop spiritual products', 'Free Kundli generation', 'Browse expert astrologers'].map((b, i) => (
             <motion.div key={b} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.1 }} className="flex items-center text-white/90">
               <div className="w-6 h-6 rounded-full bg-gold/20 flex items-center justify-center mr-3"><Check className="w-4 h-4 text-gold-light" /></div>{b}
             </motion.div>
@@ -53,28 +50,7 @@ export default function RegisterPage() {
               <span className="font-display text-2xl font-bold">Celestial Guidance</span>
             </Link>
             <h1 className="text-3xl font-display font-bold mb-2">Create Account</h1>
-            <p className="text-gray-600">Join as a User or an Astrologer</p>
-          </div>
-
-          {/* Role choice at signup time */}
-          <div className="mb-5">
-            <p className="text-xs font-medium text-gray-500 mb-2 tracking-wider">I WANT TO JOIN AS</p>
-            <div className="grid grid-cols-2 gap-3">
-              <button
-                type="button"
-                onClick={() => setSelectedRole('user')}
-                className={`p-3 rounded-2xl border-2 flex items-center justify-center gap-2 text-sm font-medium transition ${selectedRole === 'user' ? 'border-primary-600 bg-primary-50 text-primary-700' : 'border-gray-200 text-gray-600 hover:bg-gray-50'}`}
-              >
-                <User className="w-4 h-4" /> User (Get consultations)
-              </button>
-              <button
-                type="button"
-                onClick={() => setSelectedRole('astrologer')}
-                className={`p-3 rounded-2xl border-2 flex items-center justify-center gap-2 text-sm font-medium transition ${selectedRole === 'astrologer' ? 'border-cosmic-purple bg-purple-50 text-cosmic-purple' : 'border-gray-200 text-gray-600 hover:bg-gray-50'}`}
-              >
-                <Users className="w-4 h-4" /> Astrologer (Offer services)
-              </button>
-            </div>
+            <p className="text-gray-600">Create your account to shop &amp; save astrologers</p>
           </div>
 
           {error && <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">{error}</div>}

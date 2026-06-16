@@ -23,39 +23,27 @@ import LoginPage from './pages/auth/Login';
 import RegisterPage from './pages/auth/Register';
 import UserProfilePage from './pages/user/ProfilePage';
 
-/* ── USER PANEL (panels/user/) ── */
+/* ── USER PANEL ── */
 import UserPanelLayout from './panels/user/Layout';
 import UserDashboard from './panels/user/Dashboard';
-import UserConsultations from './panels/user/Consultations';
-import UserWallet from './panels/user/Wallet';
 import UserOrders from './panels/user/Orders';
 import UserKundlis from './panels/user/Kundlis';
 import UserSaved from './panels/user/Saved';
 import UserNotifications from './panels/user/Notifications';
 import UserSettings from './panels/user/Settings';
-import BecomeAstrologer from './panels/user/BecomeAstrologer';
+import UserWallet from './panels/user/Wallet';
 
-/* ── ASTROLOGER PANEL (panels/astrologer/) ── */
-import AstroPanelLayout from './panels/astrologer/Layout';
-import AstroDashboard from './panels/astrologer/Dashboard';
-import AstroConsultations from './panels/astrologer/Consultations';
-import AstroEarnings from './panels/astrologer/Earnings';
-import AstroAvailability from './panels/astrologer/Availability';
-import AstroProfile from './panels/astrologer/Profile';
-import AstroReviews from './panels/astrologer/Reviews';
-import AstroSettings from './panels/astrologer/Settings';
-
-/* ── ADMIN PANEL (panels/admin/) ── */
+/* ── ADMIN PANEL ── */
 import AdminPanelLayout from './panels/admin/Layout';
 import AdminDashboard from './panels/admin/Dashboard';
 import AdminUsers from './panels/admin/Users';
 import AdminAstrologers from './panels/admin/Astrologers';
-import AdminConsultations from './panels/admin/Consultations';
+import AdminProducts from './panels/admin/Products';
+import AdminOrders from './panels/admin/Orders';
 import AdminTransactions from './panels/admin/Transactions';
 import AdminReports from './panels/admin/Reports';
 import AdminModeration from './panels/admin/Moderation';
 import AdminSettings from './panels/admin/Settings';
-import AdminApplications from './panels/admin/Applications';
 
 export default function App() {
   return (
@@ -87,27 +75,14 @@ export default function App() {
               {/* USER PANEL */}
               <Route path="/dashboard" element={<ProtectedRoute allowedRoles={['user']}><UserPanelLayout /></ProtectedRoute>}>
                 <Route index element={<UserDashboard />} />
-                <Route path="consultations" element={<UserConsultations />} />
                 <Route path="orders" element={<UserOrders />} />
                 <Route path="kundlis" element={<UserKundlis />} />
                 <Route path="saved" element={<UserSaved />} />
                 <Route path="notifications" element={<UserNotifications />} />
                 <Route path="settings" element={<UserSettings />} />
-                <Route path="become-astrologer" element={<BecomeAstrologer />} />
               </Route>
               <Route path="/wallet" element={<ProtectedRoute allowedRoles={['user']}><UserPanelLayout /></ProtectedRoute>}>
                 <Route index element={<UserWallet />} />
-              </Route>
-
-              {/* ASTROLOGER PANEL */}
-              <Route path="/astro" element={<ProtectedRoute allowedRoles={['astrologer']}><AstroPanelLayout /></ProtectedRoute>}>
-                <Route index element={<AstroDashboard />} />
-                <Route path="consultations" element={<AstroConsultations />} />
-                <Route path="earnings" element={<AstroEarnings />} />
-                <Route path="availability" element={<AstroAvailability />} />
-                <Route path="profile" element={<AstroProfile />} />
-                <Route path="reviews" element={<AstroReviews />} />
-                <Route path="settings" element={<AstroSettings />} />
               </Route>
 
               {/* ADMIN PANEL */}
@@ -115,8 +90,8 @@ export default function App() {
                 <Route index element={<AdminDashboard />} />
                 <Route path="users" element={<AdminUsers />} />
                 <Route path="astrologers" element={<AdminAstrologers />} />
-                <Route path="applications" element={<AdminApplications />} />
-                <Route path="consultations" element={<AdminConsultations />} />
+                <Route path="products" element={<AdminProducts />} />
+                <Route path="orders" element={<AdminOrders />} />
                 <Route path="transactions" element={<AdminTransactions />} />
                 <Route path="reports" element={<AdminReports />} />
                 <Route path="moderation" element={<AdminModeration />} />

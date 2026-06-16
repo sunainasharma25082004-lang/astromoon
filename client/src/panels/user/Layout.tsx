@@ -1,5 +1,5 @@
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Wallet, MessageCircle, ShoppingBag, Heart, FileText, Bell, Settings, User, LogOut, Sparkles, Star } from 'lucide-react';
+import { LayoutDashboard, Wallet, ShoppingBag, Heart, FileText, Bell, Settings, User, LogOut, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 import { useAuth } from '../../context/Auth';
 import { useRealtimeData } from '../../hooks/useRealtimeData';
@@ -10,13 +10,11 @@ import { APP_NAME } from '../../constants';
 const sidebar = [
   { label: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
   { label: 'Wallet', path: '/wallet', icon: Wallet },
-  { label: 'Consultations', path: '/dashboard/consultations', icon: MessageCircle },
-  { label: 'Orders', path: '/dashboard/orders', icon: ShoppingBag },
+  { label: 'My Orders', path: '/dashboard/orders', icon: ShoppingBag },
+  { label: 'Saved Astrologers', path: '/dashboard/saved', icon: Heart },
   { label: 'My Kundlis', path: '/dashboard/kundlis', icon: FileText },
-  { label: 'Saved', path: '/dashboard/saved', icon: Heart },
   { label: 'Notifications', path: '/dashboard/notifications', icon: Bell },
   { label: 'Settings', path: '/dashboard/settings', icon: Settings },
-  { label: 'Become Astrologer', path: '/dashboard/become-astrologer', icon: Star },
 ];
 
 export default function UserPanelLayout() {
@@ -26,7 +24,6 @@ export default function UserPanelLayout() {
   const { connected } = useSocket();
   const [unreadCount, setUnreadCount] = useState(0);
   const wallet = user?.wallet_balance || 0;
-  const freeMins = user?.free_minutes_remaining ?? 5;
 
   const loadUnread = () => {
     if (!token) return;
@@ -46,7 +43,7 @@ export default function UserPanelLayout() {
               <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center"><Sparkles className="w-4 h-4" /></div>
               <span className="font-display font-bold text-sm hidden sm:block">{APP_NAME}</span>
             </Link>
-            <span className="text-xs bg-white/20 px-2.5 py-1 rounded-full font-medium">USER PANEL</span>
+            <span className="text-xs bg-white/20 px-2.5 py-1 rounded-full font-medium">MY ACCOUNT</span>
             <span className={`hidden sm:inline text-[10px] px-2 py-0.5 rounded-full ${connected ? 'bg-emerald-400/25 text-emerald-100' : 'bg-white/10 text-white/60'}`}>
               {connected ? '● LIVE' : '○ sync'}
             </span>
@@ -55,10 +52,8 @@ export default function UserPanelLayout() {
             <Link to="/wallet" className="hidden sm:flex items-center gap-1.5 bg-white/15 px-3 py-1.5 rounded-full hover:bg-white/25">
               <Wallet className="w-3.5 h-3.5" /> ₹{Math.floor(wallet)}
             </Link>
-            {freeMins > 0 && !user?.free_trial_used && (
-              <span className="hidden md:block text-xs bg-emerald-400/30 px-2 py-1 rounded-full">{freeMins} min free</span>
-            )}
-            <Link to="/astrologers" className="text-xs bg-white text-blue-600 px-3 py-1.5 rounded-full font-semibold hover:bg-blue-50">Book Astrologer</Link>
+            <Link to="/astrologers" className="text-xs bg-white text-blue-600 px-3 py-1.5 rounded-full font-semibold hover:bg-blue-50">Browse Astrologers</Link>
+            <Link to="/shop" className="hidden sm:block text-xs bg-white/15 px-3 py-1.5 rounded-full hover:bg-white/25">Shop</Link>
             <button onClick={async () => { await signOut(); navigate('/'); }} className="p-1.5 hover:bg-white/15 rounded-lg"><LogOut className="w-4 h-4" /></button>
           </div>
         </div>

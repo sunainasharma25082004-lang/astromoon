@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Eye, EyeOff, Mail, Lock, Phone, ArrowRight, Sparkles, User, Users } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, Phone, ArrowRight, Sparkles, User, Shield } from 'lucide-react';
 import { useAuth } from '../../context/Auth';
 
-type LoginRole = 'user' | 'astrologer';
+type LoginRole = 'user' | 'admin';
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     const role = searchParams.get('role');
-    if (role === 'astrologer' || role === 'user') setSelectedRole(role);
+    if (role === 'admin') setSelectedRole('admin');
   }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -33,13 +33,8 @@ export default function LoginPage() {
         const role = loggedUser.role || 'user';
 
         // Role-based redirect (respects what is actually stored in DB)
-        if (role === 'admin') {
-          navigate('/admin');
-        } else if (role === 'astrologer') {
-          navigate('/astro');
-        } else {
-          navigate('/dashboard');
-        }
+        if (role === 'admin') navigate('/admin');
+        else navigate('/dashboard');
       } else if (!otpSent) {
         await sendOtp(form.phone);
         setOtpSent(true);
@@ -48,7 +43,6 @@ export default function LoginPage() {
         const loggedUser = await signInOtp(form.phone, form.otp);
         const role = loggedUser.role || 'user';
         if (role === 'admin') navigate('/admin');
-        else if (role === 'astrologer') navigate('/astro');
         else navigate('/dashboard');
       }
     } catch (err: any) {
@@ -71,38 +65,37 @@ export default function LoginPage() {
             <p className="text-gray-600">Sign in to continue your journey</p>
           </div>
 
-          {/* Role selector - asks at login time as requested */}
           <div className="mb-6">
             <p className="text-xs font-medium text-gray-500 mb-2 tracking-wider">LOGIN AS</p>
             <div className="grid grid-cols-2 gap-3">
               <button
                 type="button"
                 onClick={() => setSelectedRole('user')}
-                className={`flex flex-col items-center justify-center gap-2 p-4 rounded-2xl border-2 transition-all ${selectedRole === 'user' 
-                  ? 'border-primary-600 bg-primary-50 text-primary-700 shadow-sm' 
+                className={`flex flex-col items-center justify-center gap-2 p-4 rounded-2xl border-2 transition-all ${selectedRole === 'user'
+                  ? 'border-primary-600 bg-primary-50 text-primary-700 shadow-sm'
                   : 'border-gray-200 hover:border-gray-300 text-gray-600 hover:bg-gray-50'}`}
               >
                 <User className="w-6 h-6" />
                 <div>
                   <div className="font-semibold">User</div>
-                  <div className="text-[11px] text-gray-500">Seek guidance &amp; consultations</div>
+                  <div className="text-[11px] text-gray-500">Shop, orders &amp; saved astrologers</div>
                 </div>
               </button>
               <button
                 type="button"
-                onClick={() => setSelectedRole('astrologer')}
-                className={`flex flex-col items-center justify-center gap-2 p-4 rounded-2xl border-2 transition-all ${selectedRole === 'astrologer' 
-                  ? 'border-cosmic-purple bg-purple-50 text-cosmic-purple shadow-sm' 
+                onClick={() => setSelectedRole('admin')}
+                className={`flex flex-col items-center justify-center gap-2 p-4 rounded-2xl border-2 transition-all ${selectedRole === 'admin'
+                  ? 'border-red-500 bg-red-50 text-red-700 shadow-sm'
                   : 'border-gray-200 hover:border-gray-300 text-gray-600 hover:bg-gray-50'}`}
               >
-                <Users className="w-6 h-6" />
+                <Shield className="w-6 h-6" />
                 <div>
-                  <div className="font-semibold">Astrologer</div>
-                  <div className="text-[11px] text-gray-500">Professional dashboard</div>
+                  <div className="font-semibold">Admin</div>
+                  <div className="text-[11px] text-gray-500">Manage site &amp; content</div>
                 </div>
               </button>
             </div>
-            <p className="text-[10px] text-center mt-1.5 text-gray-400">Your actual panel is determined by your account role</p>
+            <p className="text-[10px] text-center mt-1.5 text-gray-400">Live consultations are in the mobile app only</p>
           </div>
 
           <div className="flex bg-gray-100 rounded-xl p-1 mb-6">
@@ -136,7 +129,7 @@ export default function LoginPage() {
         <div className="relative h-full flex flex-col items-center justify-center p-12 text-center text-white">
           <div className="w-24 h-24 mx-auto mb-8 bg-gradient-to-br from-gold-light to-gold rounded-full flex items-center justify-center"><Sparkles className="w-12 h-12 text-cosmic-dark" /></div>
           <h2 className="text-4xl font-display font-bold mb-4">Discover Your Path</h2>
-          <p className="text-white/80 max-w-md mb-8">Connect with expert astrologers for personalized guidance.</p>
+          <p className="text-white/80 max-w-md mb-8">Browse astrologer profiles, shop spiritual products &amp; download our app for live consultations.</p>
           <div className="flex justify-center gap-8">{[{ v: '500+', l: 'Astrologers' }, { v: '1M+', l: 'Users' }, { v: '4.9', l: 'Rating' }].map(s => <div key={s.l} className="text-center"><div className="text-3xl font-bold text-gold-light">{s.v}</div><div className="text-white/60 text-sm">{s.l}</div></div>)}</div>
         </div>
       </div>

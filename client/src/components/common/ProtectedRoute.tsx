@@ -29,9 +29,8 @@ export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) 
   const role = user.role || 'user';
 
   if (allowedRoles && allowedRoles.length > 0 && !allowedRoles.includes(role)) {
-    // Wrong role trying to access panel → send to their correct home
     if (role === 'admin') return <Navigate to="/admin" replace />;
-    if (role === 'astrologer') return <Navigate to="/astro" replace />;
+    if (role === 'astrologer') return <Navigate to="/" replace />;
     return <Navigate to="/dashboard" replace />;
   }
 

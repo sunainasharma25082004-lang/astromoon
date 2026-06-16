@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import { Sparkles, Mail, Phone, Facebook, Twitter, Instagram, Youtube } from 'lucide-react';
-import { APP_NAME } from '../../constants';
+import { Sparkles, Facebook, Twitter, Instagram, Youtube, Download } from 'lucide-react';
+import { APP_NAME, APP_PLAY_STORE_URL } from '../../constants';
 
 export function Footer() {
   return (
@@ -12,12 +12,14 @@ export function Footer() {
               <div className="w-10 h-10 bg-gradient-to-br from-gold-light to-gold rounded-full flex items-center justify-center"><Sparkles className="w-6 h-6 text-cosmic-dark" /></div>
               <span className="font-display text-xl font-bold">{APP_NAME}</span>
             </Link>
-            <p className="text-white/70 text-sm mb-6">Your trusted platform for Vedic astrology consultations.</p>
-            <div className="flex gap-3">{[Facebook, Twitter, Instagram, Youtube].map((Icon, i) => (<a key={i} href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"><Icon className="w-5 h-5" /></a>))}</div>
+            <p className="text-white/70 text-sm mb-6">Your trusted platform for Vedic astrology — browse profiles, shop &amp; consult via our app.</p>
+            <a href={APP_PLAY_STORE_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm bg-emerald-600 hover:bg-emerald-500 px-4 py-2 rounded-xl transition">
+              <Download className="w-4 h-4" /> Download App
+            </a>
           </div>
 
-          {[['Services', [{ label: 'Chat with Astrologer', path: '/astrologers?type=chat' }, { label: 'Talk to Astrologer', path: '/astrologers?type=call' }, { label: 'Free Kundli', path: '/kundli' }, { label: 'Horoscope', path: '/horoscope' }]],
-            ['Explore', [{ label: 'Blog', path: '/blog' }, { label: 'Shop', path: '/shop' }, { label: 'Astrologers', path: '/astrologers' }]],
+          {[['Explore', [{ label: 'Astrologers', path: '/astrologers' }, { label: 'Shop', path: '/shop' }, { label: 'Blog', path: '/blog' }, { label: 'Free Kundli', path: '/kundli' }]],
+            ['Tools', [{ label: 'Horoscope', path: '/horoscope' }, { label: 'Kundli Generator', path: '/kundli' }]],
             ['Support', [{ label: 'Help & FAQ', path: '/#faq' }, { label: 'Privacy', path: '/#privacy' }, { label: 'Terms', path: '/#terms' }]]].map(([title, links]: any) => (
               <div key={title}>
                 <h3 className="font-semibold text-gold-light mb-4">{title}</h3>

@@ -1,13 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Sparkles, Wallet, Bell, User, ChevronDown, LogOut, LayoutDashboard } from 'lucide-react';
+import { Menu, X, Sparkles, Wallet, Bell, User, ChevronDown, LogOut, LayoutDashboard, Download } from 'lucide-react';
 import { useAuth } from '../../context/Auth';
-import { APP_NAME } from '../../constants';
+import { APP_NAME, APP_PLAY_STORE_URL } from '../../constants';
 
 const navItems = [
-  { label: 'Chat with Astrologer', path: '/astrologers?type=chat' },
-  { label: 'Talk to Astrologer', path: '/astrologers?type=call' },
+  { label: 'Astrologers', path: '/astrologers' },
   { label: 'Free Kundli', path: '/kundli' },
   { label: 'Horoscope', path: '/horoscope' },
   { label: 'Shop', path: '/shop' },
@@ -24,8 +23,8 @@ export function Header() {
   const showAsLoggedIn = isAuthenticated || (isInitializing && !!user);
 
   const role = user?.role || 'user';
-  const dashboardLink = role === 'admin' ? '/admin' : role === 'astrologer' ? '/astro' : '/dashboard';
-  const dashboardLabel = role === 'admin' ? 'Admin Panel' : role === 'astrologer' ? 'Astro Panel' : 'Dashboard';
+  const dashboardLink = role === 'admin' ? '/admin' : '/dashboard';
+  const dashboardLabel = role === 'admin' ? 'Admin Panel' : 'My Account';
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -53,15 +52,12 @@ export function Header() {
           </Link>
 
           <nav className="hidden lg:flex items-center space-x-1">
-            {navItems.slice(0, 4).map((item) => (
+            {navItems.map((item) => (
               <Link key={item.path} to={item.path} className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${isScrolled ? 'text-gray-700 hover:text-primary-600 hover:bg-primary-50' : 'text-white/90 hover:text-white hover:bg-white/10'}`}>{item.label}</Link>
             ))}
-            <div className="relative group">
-              <button className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center ${isScrolled ? 'text-gray-700 hover:bg-gray-100' : 'text-white/90 hover:bg-white/10'}`}>More<ChevronDown className="w-4 h-4 ml-1" /></button>
-              <div className="absolute top-full right-0 mt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all bg-white rounded-xl shadow-xl py-2 overflow-hidden">
-                {navItems.slice(4).map((item) => (<Link key={item.path} to={item.path} className="block px-4 py-2 text-gray-700 hover:bg-primary-50 hover:text-primary-600">{item.label}</Link>))}
-              </div>
-            </div>
+            <a href={APP_PLAY_STORE_URL} target="_blank" rel="noopener noreferrer" className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1 ${isScrolled ? 'text-emerald-700 hover:bg-emerald-50' : 'text-emerald-300 hover:bg-white/10'}`}>
+              <Download className="w-3.5 h-3.5" />Get App
+            </a>
           </nav>
 
           <div className="flex items-center gap-1 sm:gap-2">
@@ -107,7 +103,6 @@ export function Header() {
         </div>
       </div>
 
-      {/* Mobile Menu */}
       <AnimatePresence>
         {isOpen && (
           <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="lg:hidden bg-white border-t shadow-xl">
@@ -115,6 +110,7 @@ export function Header() {
               {navItems.map((item) => (
                 <Link key={item.path} to={item.path} className="block px-4 py-3 text-gray-700 hover:bg-primary-50 rounded-lg">{item.label}</Link>
               ))}
+              <a href={APP_PLAY_STORE_URL} target="_blank" rel="noopener noreferrer" className="block px-4 py-3 text-emerald-700 hover:bg-emerald-50 rounded-lg font-medium">Download App</a>
               <div className="pt-2 border-t">
                 {showAsLoggedIn ? (
                   <>
