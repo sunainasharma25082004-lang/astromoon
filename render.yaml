@@ -27,6 +27,10 @@ services:
         sync: false
       - key: VITE_SOCKET_URL
         sync: false
+      - key: VITE_PLAY_STORE_URL
+        sync: false
+      - key: VITE_APK_DOWNLOAD_URL
+        sync: false
     routes:
       - type: rewrite
         source: /*

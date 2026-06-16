@@ -1,4 +1,10 @@
 export const APP_NAME = 'Celestial Guidance';
+
+export const APP_PLAY_STORE_URL =
+  import.meta.env.VITE_PLAY_STORE_URL || 'https://play.google.com/store/apps';
+
+export const APP_APK_DOWNLOAD_URL =
+  import.meta.env.VITE_APK_DOWNLOAD_URL || '';
 export const ZODIAC_SIGNS = [
   { id: 'aries', name: 'Aries', symbol: '♈', dates: 'Mar 21 - Apr 19', element: 'Fire' },
   { id: 'taurus', name: 'Taurus', symbol: '♉', dates: 'Apr 20 - May 20', element: 'Earth' },

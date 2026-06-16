@@ -1,14 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useParams, useSearchParams, Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { useParams, Link } from 'react-router-dom';
 import {
-  Star, MessageCircle, Phone, Video, BadgeCheck, Clock, Globe,
+  BadgeCheck, Clock, Globe,
   Heart, Share2, Award, ChevronLeft
 } from 'lucide-react';
-import { formatCurrency, formatDate } from '../../utils/dateUtils';
-import { Button } from '../../components/common/Button';
+import { formatDate } from '../../utils/dateUtils';
 import { StarRating } from '../../components/common/StarRating';
-import { ConsultationModal } from '../../components/common/ConsultationModal';
+import { AppDownloadCTA } from '../../components/common/AppDownloadCTA';
 
 import { apiFetch, withId } from '../../config/api';
 
@@ -45,16 +43,11 @@ interface Astrologer {
 
 export default function AstrologerProfilePage() {
   const { id } = useParams<{ id: string }>();
-  const [searchParams] = useSearchParams();
   const [astrologer, setAstrologer] = useState<Astrologer | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'about' | 'reviews'>('about');
-  const [consultationType, setConsultationType] = useState<'chat' | 'call' | 'video'>(
-    (searchParams.get('action') as 'chat' | 'call' | 'video') || 'chat'
-  );
   const [isSaved, setIsSaved] = useState(false);
-  const [showConsultModal, setShowConsultModal] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -280,6 +273,11 @@ export default function AstrologerProfilePage() {
                       <p className="text-gray-600 leading-relaxed">{astrologer.bio}</p>
                     </div>
 
+                    <AppDownloadCTA
+                      variant="inline"
+                      subtitle={`To connect with ${astrologer.full_name}, download our app — calls & chat work best on mobile.`}
+                    />
+
                     {/* Education */}
                     {astrologer.education && (
                       <div>
@@ -328,88 +326,15 @@ export default function AstrologerProfilePage() {
             </div>
           </div>
 
-          {/* Right Column - Book Consultation */}
+          {/* Right Column - App download */}
           <div>
-            <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 sticky top-24">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Book Consultation</h3>
-
-              {/* Consultation Type Selection */}
-              <div className="space-y-2 mb-6">
-                {(['chat', 'call', 'video'] as const).map((type) => (
-                  <button
-                    key={type}
-                    onClick={() => setConsultationType(type)}
-                    className={`w-full p-4 rounded-xl border-2 flex items-center justify-between transition-all ${
-                      consultationType === type
-                        ? 'border-primary-500 bg-primary-50'
-                        : 'border-gray-200 hover:border-gray-300'
-                    }`}
-                  >
-                    <div className="flex items-center">
-                      {type === 'chat' && <MessageCircle className="w-5 h-5 text-blue-500 mr-3" />}
-                      {type === 'call' && <Phone className="w-5 h-5 text-green-500 mr-3" />}
-                      {type === 'video' && <Video className="w-5 h-5 text-purple-500 mr-3" />}
-                      <span className="font-medium text-gray-900 capitalize">{type}</span>
-                    </div>
-                    <span className="font-semibold text-primary-600">
-                      {formatCurrency(type === 'chat' ? astrologer.chat_price : type === 'call' ? astrologer.call_price : astrologer.video_price)}/min
-                    </span>
-                  </button>
-                ))}
-              </div>
-
-              {/* Separate action buttons */}
-              <div className="grid grid-cols-3 gap-2 mb-3">
-                {(['chat', 'call', 'video'] as const).map((t) => {
-                  const Icon = t === 'chat' ? MessageCircle : t === 'call' ? Phone : Video;
-                  const color = t === 'chat' ? 'blue' : t === 'call' ? 'green' : 'purple';
-                  return (
-                    <button
-                      key={t}
-                      onClick={() => { setConsultationType(t); setShowConsultModal(true); }}
-                      disabled={!astrologer.is_online}
-                      className={`flex flex-col items-center py-3 rounded-xl text-xs font-medium disabled:opacity-40 ${
-                        color === 'blue' ? 'bg-blue-50 text-blue-700 hover:bg-blue-100' : color === 'green' ? 'bg-green-50 text-green-700 hover:bg-green-100' : 'bg-purple-50 text-purple-700 hover:bg-purple-100'
-                      }`}
-                    >
-                      <Icon className="w-5 h-5 mb-1" />
-                      {t === 'call' ? 'Call' : t.charAt(0).toUpperCase() + t.slice(1)}
-                    </button>
-                  );
-                })}
-              </div>
-              <Button
-                variant="cosmic"
-                size="lg"
-                className="w-full"
-                disabled={!astrologer.is_online}
-                onClick={() => setShowConsultModal(true)}
-              >
-                {astrologer.is_online ? (
-                  <>Start {consultationType === 'call' ? 'Audio Call' : consultationType.charAt(0).toUpperCase() + consultationType.slice(1)}</>
-                ) : (
-                  'Astrologer is Offline'
-                )}
-              </Button>
-
-              {!astrologer.is_online && (
-                <p className="text-sm text-gray-500 text-center mt-3">
-                  This astrologer is currently unavailable. You can save their profile for later.
-                </p>
-              )}
-            </div>
+            <AppDownloadCTA
+              subtitle={`Book ${astrologer.full_name} for chat, audio or video — open the ${astrologer.is_online ? 'app while they are online' : 'app and get notified when online'}.`}
+            />
           </div>
         </div>
       </div>
 
-      {astrologer && (
-        <ConsultationModal
-          isOpen={showConsultModal}
-          onClose={() => setShowConsultModal(false)}
-          astrologer={astrologer}
-          initialType={consultationType}
-        />
-      )}
     </div>
   );
 }
