@@ -69,8 +69,11 @@ export default function ConsultationRoom({ consultation, onClose, onComplete }: 
   };
   const localVideoRef = useRef<HTMLVideoElement>(null);
   const remoteVideoRef = useRef<HTMLVideoElement>(null);
+  const remoteAudioRef = useRef<HTMLAudioElement | null>(null);
   const pcRef = useRef<RTCPeerConnection | null>(null);
   const localStreamRef = useRef<MediaStream | null>(null);
+  const pendingAnswerRef = useRef<RTCSessionDescriptionInit | null>(null);
+  const pendingCandidatesRef = useRef<RTCIceCandidateInit[]>([]);
 
   const isAstro = user?.role === 'astrologer';
   const isCaller = !isAstro;
@@ -92,11 +95,60 @@ export default function ConsultationRoom({ consultation, onClose, onComplete }: 
   const TypeIcon = consType === 'chat' ? MessageCircle : consType === 'call' ? Phone : Video;
   const typeLabel = consType === 'chat' ? 'Chat' : consType === 'call' ? 'Audio Call' : 'Video Call';
 
+  const playRemoteStream = (stream: MediaStream) => {
+    if (consType === 'video' && remoteVideoRef.current) {
+      remoteVideoRef.current.srcObject = stream;
+      remoteVideoRef.current.muted = false;
+      remoteVideoRef.current.volume = 1;
+      remoteVideoRef.current.play().catch(() => {});
+    }
+    if (consType === 'call') {
+      if (!remoteAudioRef.current) {
+        const el = document.createElement('audio');
+        el.autoplay = true;
+        el.setAttribute('playsinline', 'true');
+        document.body.appendChild(el);
+        remoteAudioRef.current = el;
+      }
+      remoteAudioRef.current.srcObject = stream;
+      remoteAudioRef.current.muted = false;
+      remoteAudioRef.current.volume = 1;
+      remoteAudioRef.current.play().catch(() => {});
+    }
+  };
+
+  const flushPendingSignal = async () => {
+    const pc = pcRef.current;
+    if (!pc) return;
+
+    if (pendingAnswerRef.current && !pc.remoteDescription) {
+      try {
+        await pc.setRemoteDescription(new RTCSessionDescription(pendingAnswerRef.current));
+        pendingAnswerRef.current = null;
+      } catch (e) {
+        console.error('Failed to apply queued answer', e);
+      }
+    }
+
+    if (pc.remoteDescription && pendingCandidatesRef.current.length) {
+      const queued = [...pendingCandidatesRef.current];
+      pendingCandidatesRef.current = [];
+      for (const candidate of queued) {
+        try {
+          await pc.addIceCandidate(new RTCIceCandidate(candidate));
+        } catch (e) {
+          console.error('Failed to add queued ICE candidate', e);
+        }
+      }
+    }
+  };
+
   const beginCall = async () => {
     if (offerSentRef.current) return;
     if (consType === 'video') await startVideoCall();
     if (consType === 'call') await startAudioCall();
     offerSentRef.current = true;
+    await flushPendingSignal();
   };
 
   useEffect(() => {
@@ -168,24 +220,50 @@ export default function ConsultationRoom({ consultation, onClose, onComplete }: 
       socket.on('offer', async ({ offer }: any) => {
         if (!isAstro) return;
         try {
+          if (pcRef.current && pcRef.current.signalingState !== 'stable') {
+            pcRef.current.close();
+            pcRef.current = null;
+          }
           await prepareCalleeMedia(consType === 'video');
           const pc = pcRef.current || createPeerConnection();
           await pc.setRemoteDescription(new RTCSessionDescription(offer));
           const answer = await pc.createAnswer();
           await pc.setLocalDescription(answer);
           socket.emit('answer', { consultationId: roomId, answer });
+          await flushPendingSignal();
         } catch (e) {
           console.error('Failed to answer call', e);
         }
       });
 
       socket.on('answer', async ({ answer }: any) => {
-        if (!isCaller || !pcRef.current) return;
-        await pcRef.current.setRemoteDescription(new RTCSessionDescription(answer));
+        if (!isCaller) return;
+        if (!pcRef.current) {
+          pendingAnswerRef.current = answer;
+          return;
+        }
+        try {
+          await pcRef.current.setRemoteDescription(new RTCSessionDescription(answer));
+          pendingAnswerRef.current = null;
+          await flushPendingSignal();
+        } catch (e) {
+          console.error('Failed to apply answer', e);
+          pendingAnswerRef.current = answer;
+        }
       });
 
-      socket.on('ice_candidate', ({ candidate }: any) => {
-        if (candidate && pcRef.current) pcRef.current.addIceCandidate(new RTCIceCandidate(candidate)).catch(console.error);
+      socket.on('ice_candidate', async ({ candidate }: any) => {
+        if (!candidate) return;
+        const pc = pcRef.current;
+        if (!pc || !pc.remoteDescription) {
+          pendingCandidatesRef.current.push(candidate);
+          return;
+        }
+        try {
+          await pc.addIceCandidate(new RTCIceCandidate(candidate));
+        } catch (e) {
+          console.error('Failed to add ICE candidate', e);
+        }
       });
     }
 
@@ -205,6 +283,12 @@ export default function ConsultationRoom({ consultation, onClose, onComplete }: 
       if (ringRef.current) clearInterval(ringRef.current);
     };
   }, [roomId, consType, isAstro, token, user?.role]);
+
+  // Astrologer: open mic/camera as soon as session is active (before WebRTC offer arrives)
+  useEffect(() => {
+    if (!isAstro || status !== 'active' || consType === 'chat') return;
+    prepareCalleeMedia(consType === 'video').catch(console.error);
+  }, [isAstro, status, consType]);
 
   // Ringing tone for caller while waiting
   useEffect(() => {
@@ -240,47 +324,61 @@ export default function ConsultationRoom({ consultation, onClose, onComplete }: 
   }, [status, roomId, consType, isCaller]);
 
   function createPeerConnection() {
-    const pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
+    const pc = new RTCPeerConnection({
+      iceServers: [
+        { urls: 'stun:stun.l.google.com:19302' },
+        { urls: 'stun:stun1.l.google.com:19302' },
+      ],
+    });
     pc.onicecandidate = (event) => {
       if (event.candidate && socketRef.current) {
         socketRef.current.emit('ice_candidate', { consultationId: roomId, candidate: event.candidate });
       }
     };
     pc.ontrack = (event) => {
-      if (remoteVideoRef.current) remoteVideoRef.current.srcObject = event.streams[0];
-      if (consType === 'call' && event.streams[0]) {
-        const audio = new Audio();
-        audio.srcObject = event.streams[0];
-        audio.play().catch(() => {});
-      }
+      const stream = event.streams[0];
+      if (stream) playRemoteStream(stream);
     };
     pcRef.current = pc;
     return pc;
   }
 
   async function prepareCalleeMedia(withVideo: boolean) {
-    if (localStreamRef.current) return;
-    const stream = await navigator.mediaDevices.getUserMedia({ video: withVideo, audio: true });
-    localStreamRef.current = stream;
-    if (withVideo && localVideoRef.current) localVideoRef.current.srcObject = stream;
     const pc = pcRef.current || createPeerConnection();
-    stream.getTracks().forEach(track => pc.addTrack(track, stream));
-    setIsAudioOn(true);
-    if (withVideo) setIsVideoOn(true);
+    if (!localStreamRef.current) {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: withVideo, audio: true });
+      localStreamRef.current = stream;
+      if (withVideo && localVideoRef.current) localVideoRef.current.srcObject = stream;
+      stream.getTracks().forEach((track) => {
+        const existing = pc.getSenders().find((s) => s.track?.kind === track.kind);
+        if (!existing) pc.addTrack(track, stream);
+      });
+      setIsAudioOn(true);
+      if (withVideo) setIsVideoOn(true);
+    }
+    return pc;
   }
 
   async function startVideoCall() {
     try {
+      if (pcRef.current && pcRef.current.signalingState !== 'stable') {
+        pcRef.current.close();
+        pcRef.current = null;
+      }
       const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
       localStreamRef.current = stream;
       if (localVideoRef.current) localVideoRef.current.srcObject = stream;
       const pc = pcRef.current || createPeerConnection();
-      stream.getTracks().forEach(track => pc.addTrack(track, stream));
-      const offer = await pc.createOffer();
+      stream.getTracks().forEach((track) => {
+        const existing = pc.getSenders().find((s) => s.track?.kind === track.kind);
+        if (!existing) pc.addTrack(track, stream);
+      });
+      const offer = await pc.createOffer({ offerToReceiveAudio: true, offerToReceiveVideo: true });
       await pc.setLocalDescription(offer);
       socketRef.current?.emit('offer', { consultationId: roomId, offer });
       setIsVideoOn(true);
       setIsAudioOn(true);
+      await flushPendingSignal();
     } catch {
       alert('Camera/microphone access needed for video call.');
     }
@@ -288,25 +386,41 @@ export default function ConsultationRoom({ consultation, onClose, onComplete }: 
 
   async function startAudioCall() {
     try {
+      if (pcRef.current && pcRef.current.signalingState !== 'stable') {
+        pcRef.current.close();
+        pcRef.current = null;
+      }
       const stream = await navigator.mediaDevices.getUserMedia({ video: false, audio: true });
       localStreamRef.current = stream;
       const pc = pcRef.current || createPeerConnection();
-      stream.getTracks().forEach(track => pc.addTrack(track, stream));
-      const offer = await pc.createOffer();
+      stream.getTracks().forEach((track) => {
+        const existing = pc.getSenders().find((s) => s.track?.kind === track.kind);
+        if (!existing) pc.addTrack(track, stream);
+      });
+      const offer = await pc.createOffer({ offerToReceiveAudio: true, offerToReceiveVideo: false });
       await pc.setLocalDescription(offer);
       socketRef.current?.emit('offer', { consultationId: roomId, offer });
       setIsAudioOn(true);
+      await flushPendingSignal();
     } catch {
       alert('Microphone access needed for audio call.');
     }
   }
 
   function endMedia() {
-    localStreamRef.current?.getTracks().forEach(t => t.stop());
+    localStreamRef.current?.getTracks().forEach((t) => t.stop());
+    localStreamRef.current = null;
     pcRef.current?.close();
     pcRef.current = null;
+    pendingAnswerRef.current = null;
+    pendingCandidatesRef.current = [];
     if (localVideoRef.current) localVideoRef.current.srcObject = null;
     if (remoteVideoRef.current) remoteVideoRef.current.srcObject = null;
+    if (remoteAudioRef.current) {
+      remoteAudioRef.current.srcObject = null;
+      remoteAudioRef.current.remove();
+      remoteAudioRef.current = null;
+    }
     setIsVideoOn(false);
     setIsAudioOn(false);
   }

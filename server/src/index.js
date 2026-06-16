@@ -141,17 +141,20 @@ io.on('connection', (socket) => {
     });
   });
 
-  // WebRTC signaling
+  // WebRTC signaling — broadcast to everyone else in the consultation room
   socket.on('offer', ({ consultationId, offer }) => {
-    socket.to(consultationId).emit('offer', { offer });
+    const roomId = String(consultationId);
+    socket.to(roomId).emit('offer', { offer });
   });
 
   socket.on('answer', ({ consultationId, answer }) => {
-    socket.to(consultationId).emit('answer', { answer });
+    const roomId = String(consultationId);
+    socket.to(roomId).emit('answer', { answer });
   });
 
   socket.on('ice_candidate', ({ consultationId, candidate }) => {
-    socket.to(consultationId).emit('ice_candidate', { candidate });
+    const roomId = String(consultationId);
+    socket.to(roomId).emit('ice_candidate', { candidate });
   });
 
   // Consultation status updates (live)
