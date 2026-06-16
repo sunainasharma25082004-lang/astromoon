@@ -4,7 +4,7 @@ import AstrologerPackage from '../models/AstrologerPackage.js';
 import Review from '../models/Review.js';
 import PlatformSettings from '../models/PlatformSettings.js';
 import { protect, authorize } from '../middleware/auth.js';
-import { clampPrice } from '../utils/helpers.js';
+import { clampPrice, isValidObjectId } from '../utils/helpers.js';
 import { emitPanelUpdate, RESOURCES } from '../utils/realtime.js';
 
 const router = express.Router();
@@ -120,6 +120,9 @@ router.get('/earnings/summary', protect, authorize('astrologer'), async (req, re
 
 router.get('/:id', async (req, res) => {
   try {
+    if (!isValidObjectId(req.params.id)) {
+      return res.status(400).json({ message: 'Invalid astrologer id' });
+    }
     const astro = await Astrologer.findById(req.params.id);
     if (!astro) return res.status(404).json({ message: 'Astrologer not found' });
 

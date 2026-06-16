@@ -3,11 +3,15 @@ import Review from '../models/Review.js';
 import Astrologer from '../models/Astrologer.js';
 import { protect, authorize } from '../middleware/auth.js';
 import { emitPanelUpdate, RESOURCES } from '../utils/realtime.js';
+import { isValidObjectId } from '../utils/helpers.js';
 
 const router = express.Router();
 
 router.get('/astrologer/:id', async (req, res) => {
   try {
+    if (!isValidObjectId(req.params.id)) {
+      return res.status(400).json({ message: 'Invalid astrologer id' });
+    }
     const reviews = await Review.find({ astrologer_id: req.params.id, is_reported: false })
       .populate('user_id', 'full_name avatar_url')
       .sort({ createdAt: -1 })

@@ -25,6 +25,12 @@ export function LiveAstrologers() {
           <p className="text-white/70 max-w-2xl mx-auto">Connect instantly with our online astrologers</p>
         </div>
 
+        {astrologers.length === 0 && (
+          <p className="text-center text-white/70 text-sm mb-6">
+            No astrologers online yet. <Link to="/astrologers" className="underline text-white">Browse all astrologers</Link> or seed the database.
+          </p>
+        )}
+
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
           {astrologers.map((astro, index) => (
             <motion.div key={astro.id} initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }} whileHover={{ y: -5 }} className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/10 group">

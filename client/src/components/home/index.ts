@@ -1,5 +1,5 @@
 export { HeroSection } from './Hero';
-export { LiveAstrologers } from './Live';
+export { LiveAstrologers } from './LiveAstrologers';
 export { DailyHoroscope } from './Horoscope';
 export { FreeServices } from './Services';
 export { ShopSection } from './Shop';

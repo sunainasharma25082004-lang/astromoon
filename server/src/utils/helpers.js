@@ -1,4 +1,10 @@
 import crypto from 'crypto';
+import mongoose from 'mongoose';
+
+export function isValidObjectId(id) {
+  if (!id || typeof id !== 'string') return false;
+  return mongoose.Types.ObjectId.isValid(id) && String(new mongoose.Types.ObjectId(id)) === id;
+}
 
 export function generateReferralCode(name = 'USER') {
   const prefix = name.replace(/[^a-zA-Z]/g, '').slice(0, 4).toUpperCase() || 'STAR';
