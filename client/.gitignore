@@ -1,0 +1,14 @@
+# Frontend specific (Vite)
+.env
+.env.local
+.env.*.local
+node_modules/
+dist/
+*.local
+*.log
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

@@ -1,0 +1,21 @@
+{
+  "name": "celestial-guidance",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Celestial Guidance - Astrology platform (Client + Server)",
+  "scripts": {
+    "dev": "npm run dev:full",
+    "dev:client": "cd client && npm run dev",
+    "dev:server": "cd server && npm run dev",
+    "dev:full": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
+    "install:all": "cd client && npm install && cd ../server && npm install",
+    "build": "cd client && npm run build",
+    "start": "cd server && npm start",
+    "preview": "cd client && npm run preview",
+    "seed": "cd server && npm run seed",
+    "start:prod": "cd client && npm run build && cd ../server && set NODE_ENV=production&& npm start"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

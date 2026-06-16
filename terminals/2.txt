@@ -1,0 +1,2399 @@
+---
+pid: 8060
+cwd: "C:\Users\hi\OneDrive\Desktop\all web\project"
+command: "cd \"C:\\Users\\hi\\OneDrive\\Desktop\\all web\\project\\server\"; npm run dev"
+started_at: 2026-06-15T17:55:04.506Z
+running_for_ms: 865025   
+---
+
+> celestial-guidance-backend@1.0.0 dev
+> node --watch src/index.js
+
+✅ MongoDB connected
+node:events:487
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE: address already in use :::5000
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at Server.listen (node:net:2170:7)
+    at start (file:///C:/Users/hi/OneDrive/Desktop/all%20web/project/server/src/index.js:233:16)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+Emitted 'error' event on Server instance at:
+    at emitErrorNT (node:net:2044:8)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+  code: 'EADDRINUSE',
+  errno: -4091,
+  syscall: 'listen',
+  address: '::',
+  port: 5000
+}
+
+Node.js v25.9.0
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+Restarting 'src/index.js'
+✅ MongoDB connected
+🚀 Backend running on http://localhost:5000
+   API base: http://localhost:5000/api
+   Socket.io ready for real-time chat & video
+Socket connected: BgOFJrPV2MdTb9c2AAAC
+Socket BgOFJrPV2MdTb9c2AAAC joined panel rooms {
+  userId: '6a2fb50d0510933f12a57938',
+  role: 'user',
+  astrologerProfileId: null
+}
+Socket connected: _DzLY13yXU2QBGV2AAAF
+Socket connected: iexyPZ0_mtbPNn2EAAAG
+Socket _DzLY13yXU2QBGV2AAAF joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+Socket disconnected: BgOFJrPV2MdTb9c2AAAC
+Socket disconnected: _DzLY13yXU2QBGV2AAAF
+Socket disconnected: iexyPZ0_mtbPNn2EAAAG
+GET /api/consultations/for-astro 304 201.674 ms - -
+GET /api/astrologers/earnings/summary 304 233.271 ms - -
+GET /api/consultations/for-astro 304 140.309 ms - -
+GET /api/astrologers/earnings/summary 304 259.915 ms - -
+Socket connected: 2OAnZy5T3NEJBu3pAAAJ
+Socket 2OAnZy5T3NEJBu3pAAAJ joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+Socket connected: 6QdPRMyIYpddAN-mAAAM
+GET /api/astrologers 200 60.106 ms - 4442
+GET /api/astrologers 304 63.222 ms - -
+Socket connected: wKgZyvNA0gSu3ua3AAAN
+Socket 6QdPRMyIYpddAN-mAAAM joined panel rooms {
+  userId: '6a2fb50d0510933f12a57938',
+  role: 'user',
+  astrologerProfileId: null
+}
+Socket wKgZyvNA0gSu3ua3AAAN joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793c',
+  role: 'admin',
+  astrologerProfileId: null
+}
+Socket disconnected: wKgZyvNA0gSu3ua3AAAN
+Socket disconnected: 2OAnZy5T3NEJBu3pAAAJ
+Socket disconnected: 6QdPRMyIYpddAN-mAAAM
+GET /api/auth/me 304 117.380 ms - -
+GET /api/auth/me 304 102.877 ms - -
+Socket connected: U8Dk8xCPYtXq3heDAAAQ
+GET /api/auth/me 200 157.176 ms - 1546
+Socket U8Dk8xCPYtXq3heDAAAQ joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793c',
+  role: 'admin',
+  astrologerProfileId: null
+}
+GET /api/auth/me 304 162.085 ms - -
+GET /api/astrologers 304 70.129 ms - -
+GET /api/auth/me 304 79.933 ms - -
+GET /api/astrologers 304 65.181 ms - -
+Socket connected: jQfC3jPaVLB27ooyAAAV
+Socket connected: kSjL2mT-6wWFakROAAAW
+Socket disconnected: U8Dk8xCPYtXq3heDAAAQ
+Socket kSjL2mT-6wWFakROAAAW joined panel rooms {
+  userId: '6a2fb50d0510933f12a57938',
+  role: 'user',
+  astrologerProfileId: null
+}
+GET /api/auth/me 304 112.794 ms - -
+GET /api/auth/me 304 118.242 ms - -
+Socket jQfC3jPaVLB27ooyAAAV joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+Socket connected: L63Bykl6iJkyflCCAAAa
+Socket disconnected: L63Bykl6iJkyflCCAAAa
+Socket connected: TgyqDZczpMxz-3oCAAAc
+Socket TgyqDZczpMxz-3oCAAAc joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793c',
+  role: 'admin',
+  astrologerProfileId: null
+}
+GET /api/admin/users?limit=30 304 105.940 ms - -
+GET /api/admin/consultations 304 198.553 ms - -
+GET /api/admin/astrologers 304 93.787 ms - -
+GET /api/admin/users?limit=30 304 98.434 ms - -
+GET /api/admin/consultations 304 226.787 ms - -
+GET /api/admin/astrologers 304 98.016 ms - -
+GET /api/admin/stats 304 570.568 ms - -
+GET /api/admin/stats 304 147.097 ms - -
+Socket connected: -DSt4L41cB2Z6ZVHAAAd
+Socket -DSt4L41cB2Z6ZVHAAAd joined panel rooms {
+  userId: '6a2fb50d0510933f12a57938',
+  role: 'user',
+  astrologerProfileId: null
+}
+GET /api/consultations/for-astro 304 204.105 ms - -
+GET /api/astrologers/earnings/summary 304 249.235 ms - -
+GET /api/auth/me 304 148.330 ms - -
+GET /api/consultations/for-astro 304 150.871 ms - -
+GET /api/astrologers/earnings/summary 304 209.921 ms - -
+GET /api/auth/me 304 117.263 ms - -
+Socket disconnected: kSjL2mT-6wWFakROAAAW
+Socket disconnected: jQfC3jPaVLB27ooyAAAV
+Socket connected: jWvgXyUL9b4HdrzkAAAf
+Socket connected: _Q4vCDepBDRL5ecLAAAh
+GET /api/auth/me 304 113.418 ms - -
+Socket jWvgXyUL9b4HdrzkAAAf joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+Socket disconnected: -DSt4L41cB2Z6ZVHAAAd
+Socket _Q4vCDepBDRL5ecLAAAh joined panel rooms {
+  userId: '6a2fb50d0510933f12a57938',
+  role: 'user',
+  astrologerProfileId: null
+}
+Socket disconnected: jWvgXyUL9b4HdrzkAAAf
+Socket disconnected: _Q4vCDepBDRL5ecLAAAh
+Socket connected: lvBeApc_m5KOaXtIAAAj
+Socket lvBeApc_m5KOaXtIAAAj joined panel rooms {
+  userId: '6a2fb50d0510933f12a57938',
+  role: 'user',
+  astrologerProfileId: null
+}
+GET /api/auth/me 304 120.716 ms - -
+Socket disconnected: lvBeApc_m5KOaXtIAAAj
+Socket connected: tZxwElF9d9F86MwlAAAo
+GET /api/auth/me 304 90.251 ms - -
+Socket tZxwElF9d9F86MwlAAAo joined panel rooms {
+  userId: '6a2fb50d0510933f12a57938',
+  role: 'user',
+  astrologerProfileId: null
+}
+GET /api/astrologers 304 68.886 ms - -
+Socket disconnected: tZxwElF9d9F86MwlAAAo
+Socket connected: v74iaxBBRj7oO2DLAAAp
+GET /api/astrologers 304 267.907 ms - -
+Socket connected: xGQh_7hN7gcRnoD7AAAt
+Socket disconnected: v74iaxBBRj7oO2DLAAAp
+GET /api/auth/me 304 349.260 ms - -
+Socket xGQh_7hN7gcRnoD7AAAt joined panel rooms {
+  userId: '6a2fb50d0510933f12a57938',
+  role: 'user',
+  astrologerProfileId: null
+}
+Socket connected: -3TS-GEdm9Da52gbAAAw
+GET /api/auth/me 304 123.276 ms - -
+Socket disconnected: -3TS-GEdm9Da52gbAAAw
+Socket connected: dyJ_BTXi8ir789o7AAAy
+Socket dyJ_BTXi8ir789o7AAAy joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 135.861 ms - -
+GET /api/consultations/for-astro 304 167.028 ms - -
+Socket disconnected: dyJ_BTXi8ir789o7AAAy
+GET /api/astrologers/earnings/summary 304 257.076 ms - -
+Socket connected: XPjTz8VTzNBIurJUAAA0
+Socket XPjTz8VTzNBIurJUAAA0 joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 121.137 ms - -
+GET /api/consultations/for-astro 304 176.457 ms - -
+GET /api/auth/me 304 141.245 ms - -
+GET /api/astrologers/earnings/summary 304 242.635 ms - -
+GET /api/auth/me 304 157.091 ms - -
+GET /api/auth/me 304 158.893 ms - -
+Socket disconnected: XPjTz8VTzNBIurJUAAA0
+Socket connected: wc6TKKiTFAJpqhEOAAA2
+Socket wc6TKKiTFAJpqhEOAAA2 joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 152.797 ms - -
+GET /api/auth/me 304 158.807 ms - -
+Socket disconnected: wc6TKKiTFAJpqhEOAAA2
+Socket connected: hCcMcZsc6Ju-qhWbAAA4
+Socket hCcMcZsc6Ju-qhWbAAA4 joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 166.127 ms - -
+GET /api/auth/me 304 150.025 ms - -
+Socket disconnected: hCcMcZsc6Ju-qhWbAAA4
+Socket connected: 4n1jvR1uVgCh8SqIAAA6
+Socket 4n1jvR1uVgCh8SqIAAA6 joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 154.071 ms - -
+GET /api/auth/me 304 152.192 ms - -
+Socket disconnected: 4n1jvR1uVgCh8SqIAAA6
+Socket connected: XLx_-kjAVi9JyDkZAAA8
+Socket XLx_-kjAVi9JyDkZAAA8 joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 149.628 ms - -
+GET /api/auth/me 304 163.424 ms - -
+Socket disconnected: XLx_-kjAVi9JyDkZAAA8
+Socket connected: fCcZIWDSt-UtSYQrAAA-
+Socket fCcZIWDSt-UtSYQrAAA- joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+Socket disconnected: xGQh_7hN7gcRnoD7AAAt
+GET /api/auth/me 304 172.569 ms - -
+GET /api/auth/me 304 181.179 ms - -
+Socket disconnected: fCcZIWDSt-UtSYQrAAA-
+Socket connected: 4JMTWHgbKhu7jgn4AABA
+Socket 4JMTWHgbKhu7jgn4AABA joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 178.504 ms - -
+GET /api/auth/me 304 211.171 ms - -
+Socket disconnected: 4JMTWHgbKhu7jgn4AABA
+Socket connected: _kmV_H1KUiYMyJs-AABC
+Socket _kmV_H1KUiYMyJs-AABC joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 172.015 ms - -
+PATCH /api/astrologers/availability 200 131.344 ms - 1109
+GET /api/admin/astrologers 200 97.783 ms - 5441
+GET /api/admin/users?limit=30 304 107.487 ms - -
+GET /api/admin/consultations 304 185.801 ms - -
+GET /api/admin/users?limit=30 304 87.900 ms - -
+GET /api/admin/astrologers 304 108.991 ms - -
+GET /api/admin/consultations 304 220.339 ms - -
+GET /api/auth/me 200 160.409 ms - 1548
+GET /api/admin/stats 200 649.440 ms - 295
+Socket disconnected: _kmV_H1KUiYMyJs-AABC
+Socket connected: q8p5n5DWRVzzIIMTAABE
+GET /api/admin/stats 304 184.852 ms - -
+Socket q8p5n5DWRVzzIIMTAABE joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 165.714 ms - -
+GET /api/auth/me 304 180.934 ms - -
+Socket disconnected: q8p5n5DWRVzzIIMTAABE
+Socket connected: lhf23ki-tOKfzf_7AABG
+Socket lhf23ki-tOKfzf_7AABG joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 160.718 ms - -
+GET /api/auth/me 304 135.573 ms - -
+Socket disconnected: lhf23ki-tOKfzf_7AABG
+Socket connected: HSDW5aCTxOvKv2fCAABI
+Socket HSDW5aCTxOvKv2fCAABI joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 160.825 ms - -
+GET /api/auth/me 304 136.889 ms - -
+Socket disconnected: HSDW5aCTxOvKv2fCAABI
+Socket connected: aKZ0ThqP1xtHuyWfAABK
+Socket aKZ0ThqP1xtHuyWfAABK joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 154.621 ms - -
+GET /api/auth/me 304 154.113 ms - -
+Socket disconnected: aKZ0ThqP1xtHuyWfAABK
+Socket connected: Gr9Ev_ScFxYemSuiAABM
+Socket Gr9Ev_ScFxYemSuiAABM joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 194.123 ms - -
+GET /api/auth/me 304 146.245 ms - -
+Socket disconnected: Gr9Ev_ScFxYemSuiAABM
+Socket connected: 6qXyPNGtaYpEFCbeAABO
+GET /api/auth/me 304 158.678 ms - -
+Socket 6qXyPNGtaYpEFCbeAABO joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 151.111 ms - -
+Socket disconnected: 6qXyPNGtaYpEFCbeAABO
+Socket connected: YXK_ayytcp7t8qJKAABQ
+Socket YXK_ayytcp7t8qJKAABQ joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 152.103 ms - -
+GET /api/auth/me 304 136.957 ms - -
+Socket disconnected: YXK_ayytcp7t8qJKAABQ
+Socket connected: iSWzNfLEKMHsIZueAABS
+Socket iSWzNfLEKMHsIZueAABS joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 149.238 ms - -
+GET /api/auth/me 304 157.657 ms - -
+Socket disconnected: iSWzNfLEKMHsIZueAABS
+Socket connected: c1mmm5XFfKaYT54UAABU
+Socket c1mmm5XFfKaYT54UAABU joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 151.754 ms - -
+GET /api/auth/me 304 149.748 ms - -
+Socket disconnected: c1mmm5XFfKaYT54UAABU
+Socket connected: FSPS9iVWm7TWBttkAABW
+Socket FSPS9iVWm7TWBttkAABW joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 135.301 ms - -
+GET /api/auth/me 304 165.786 ms - -
+Socket connected: c-ZoVaoP4-hfI8jlAABZ
+Socket disconnected: FSPS9iVWm7TWBttkAABW
+GET /api/astrologers 200 56.639 ms - 4444
+GET /api/astrologers 200 62.282 ms - 4444
+GET /api/auth/me 200 119.203 ms - 467
+Socket c-ZoVaoP4-hfI8jlAABZ joined panel rooms {
+  userId: '6a2fb50d0510933f12a57938',
+  role: 'user',
+  astrologerProfileId: null
+}
+GET /api/auth/me 200 97.321 ms - 467
+Socket connected: 2jcOfISS1IrnWEs_AABb
+Socket disconnected: c-ZoVaoP4-hfI8jlAABZ
+Socket 2jcOfISS1IrnWEs_AABb joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 142.607 ms - -
+Socket connected: 24LiXEEpA-wsuc3CAABd
+Socket disconnected: 24LiXEEpA-wsuc3CAABd
+Socket connected: Y77peag76fYqUPwjAABf
+Socket Y77peag76fYqUPwjAABf joined panel rooms {
+  userId: '6a2fb50d0510933f12a57938',
+  role: 'user',
+  astrologerProfileId: null
+}
+GET /api/auth/me 304 291.326 ms - -
+Socket disconnected: 2jcOfISS1IrnWEs_AABb
+Socket connected: zapB7R_ukmlODiSTAABh
+Socket zapB7R_ukmlODiSTAABh joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 175.899 ms - -
+GET /api/auth/me 304 142.874 ms - -
+Socket disconnected: zapB7R_ukmlODiSTAABh
+Socket connected: bfnkXoG2B-eOvZuHAABj
+Socket bfnkXoG2B-eOvZuHAABj joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 167.592 ms - -
+GET /api/auth/me 304 136.538 ms - -
+Socket disconnected: bfnkXoG2B-eOvZuHAABj
+Socket connected: 06_10YT3pb_gqEZoAABl
+Socket 06_10YT3pb_gqEZoAABl joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 146.213 ms - -
+GET /api/auth/me 304 159.561 ms - -
+Socket disconnected: 06_10YT3pb_gqEZoAABl
+Socket connected: psVT2mpMC1Dcj2XGAABn
+Socket psVT2mpMC1Dcj2XGAABn joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 134.764 ms - -
+GET /api/auth/me 304 146.444 ms - -
+Socket disconnected: psVT2mpMC1Dcj2XGAABn
+Socket connected: AVyiMDWsAd_f8kRIAABp
+Socket AVyiMDWsAd_f8kRIAABp joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 146.368 ms - -
+GET /api/auth/me 304 153.338 ms - -
+Socket disconnected: AVyiMDWsAd_f8kRIAABp
+Socket connected: AMCefhD9R_V5HKkwAABr
+Socket AMCefhD9R_V5HKkwAABr joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 142.573 ms - -
+GET /api/auth/me 304 134.061 ms - -
+Socket disconnected: AMCefhD9R_V5HKkwAABr
+Socket connected: sTkAvVCgt8WiRasDAABt
+Socket sTkAvVCgt8WiRasDAABt joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 143.716 ms - -
+GET /api/auth/me 304 139.195 ms - -
+Socket disconnected: sTkAvVCgt8WiRasDAABt
+Socket connected: y9yJoAI6c9McRas6AABv
+Socket y9yJoAI6c9McRas6AABv joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 147.893 ms - -
+GET /api/auth/me 304 144.673 ms - -
+Socket disconnected: y9yJoAI6c9McRas6AABv
+Socket connected: hd8XFDfu2y5U4rD2AABx
+Socket hd8XFDfu2y5U4rD2AABx joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 147.119 ms - -
+GET /api/auth/me 304 153.108 ms - -
+Socket disconnected: hd8XFDfu2y5U4rD2AABx
+Socket connected: tR_h_hhtkAafPSTjAABz
+Socket tR_h_hhtkAafPSTjAABz joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 150.680 ms - -
+GET /api/auth/me 304 137.069 ms - -
+Socket disconnected: tR_h_hhtkAafPSTjAABz
+Socket connected: ZGIDf7TtPNQWK0tcAAB1
+Socket ZGIDf7TtPNQWK0tcAAB1 joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 146.728 ms - -
+GET /api/auth/me 304 152.345 ms - -
+Socket disconnected: ZGIDf7TtPNQWK0tcAAB1
+Socket connected: 4KP5omKX-hQ8v3FRAAB3
+Socket 4KP5omKX-hQ8v3FRAAB3 joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 164.117 ms - -
+GET /api/auth/me 304 143.959 ms - -
+Socket disconnected: 4KP5omKX-hQ8v3FRAAB3
+Socket connected: 9Ic-l-HnBvwL-uOYAAB5
+Socket 9Ic-l-HnBvwL-uOYAAB5 joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 146.780 ms - -
+GET /api/auth/me 304 137.656 ms - -
+Socket disconnected: 9Ic-l-HnBvwL-uOYAAB5
+Socket connected: bsy7O1Lloop_neSbAAB7
+Socket bsy7O1Lloop_neSbAAB7 joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 139.165 ms - -
+GET /api/auth/me 304 140.200 ms - -
+Socket disconnected: bsy7O1Lloop_neSbAAB7
+Socket connected: Zm2b-1O2tNOtglW7AAB9
+Socket Zm2b-1O2tNOtglW7AAB9 joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 139.888 ms - -
+GET /api/auth/me 304 152.439 ms - -
+Socket disconnected: Zm2b-1O2tNOtglW7AAB9
+Socket connected: HgmPorD9NO2KowpDAAB_
+Socket HgmPorD9NO2KowpDAAB_ joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 176.873 ms - -
+GET /api/auth/me 304 134.135 ms - -
+Socket disconnected: HgmPorD9NO2KowpDAAB_
+Socket connected: 8_zpbRUH7EzDxPYlAACB
+Socket 8_zpbRUH7EzDxPYlAACB joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 146.989 ms - -
+GET /api/auth/me 304 136.060 ms - -
+Socket disconnected: 8_zpbRUH7EzDxPYlAACB
+Socket connected: eSROU58cw5nfarqEAACD
+Socket eSROU58cw5nfarqEAACD joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 148.943 ms - -
+GET /api/auth/me 304 147.780 ms - -
+Socket disconnected: eSROU58cw5nfarqEAACD
+Socket connected: aKFW-C7FVJ8cSwKsAACF
+Socket aKFW-C7FVJ8cSwKsAACF joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 161.421 ms - -
+GET /api/auth/me 304 146.072 ms - -
+Socket disconnected: aKFW-C7FVJ8cSwKsAACF
+Socket connected: XpREwGqbHQP0dfV1AACH
+Socket XpREwGqbHQP0dfV1AACH joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 149.518 ms - -
+GET /api/auth/me 304 176.353 ms - -
+Socket disconnected: XpREwGqbHQP0dfV1AACH
+Socket connected: 2x0HZ0VEQ4xBZELIAACJ
+Socket 2x0HZ0VEQ4xBZELIAACJ joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 149.233 ms - -
+Socket disconnected: 2x0HZ0VEQ4xBZELIAACJ
+GET /api/auth/me 304 159.574 ms - -
+GET /api/auth/me 200 151.338 ms - 1548
+Socket connected: s69z4k6oVLmFSjb8AACM
+GET /api/auth/me 304 163.198 ms - -
+Socket s69z4k6oVLmFSjb8AACM joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+Socket disconnected: s69z4k6oVLmFSjb8AACM
+Socket connected: nnNzEP4MdTVqRbNNAACP
+Socket nnNzEP4MdTVqRbNNAACP joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/consultations/for-astro 304 162.382 ms - -
+GET /api/auth/me 304 182.934 ms - -
+GET /api/astrologers/earnings/summary 304 291.886 ms - -
+GET /api/consultations/for-astro 304 170.189 ms - -
+GET /api/auth/me 304 146.702 ms - -
+GET /api/astrologers/earnings/summary 304 264.532 ms - -
+GET /api/auth/me 304 167.709 ms - -
+GET /api/auth/me 304 167.633 ms - -
+Socket disconnected: nnNzEP4MdTVqRbNNAACP
+Socket connected: 8KWoS6RFRQ2gAVlLAACR
+Socket 8KWoS6RFRQ2gAVlLAACR joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 164.713 ms - -
+GET /api/auth/me 304 152.631 ms - -
+Socket disconnected: 8KWoS6RFRQ2gAVlLAACR
+Socket connected: Ojj4yb7BmISSek2TAACT
+Socket Ojj4yb7BmISSek2TAACT joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 148.818 ms - -
+GET /api/auth/me 304 161.826 ms - -
+Socket disconnected: Ojj4yb7BmISSek2TAACT
+Socket connected: E_T-PeH27GhzLDmwAACV
+Socket E_T-PeH27GhzLDmwAACV joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 152.633 ms - -
+GET /api/auth/me 304 166.814 ms - -
+Socket disconnected: E_T-PeH27GhzLDmwAACV
+Socket connected: AzZfOjQs0wxtpw3oAACX
+Socket AzZfOjQs0wxtpw3oAACX joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 159.754 ms - -
+GET /api/auth/me 304 169.910 ms - -
+Socket disconnected: AzZfOjQs0wxtpw3oAACX
+Socket connected: 8NY5UpgJpVJFh7IwAACZ
+Socket 8NY5UpgJpVJFh7IwAACZ joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 156.136 ms - -
+GET /api/auth/me 304 145.167 ms - -
+Socket disconnected: 8NY5UpgJpVJFh7IwAACZ
+Socket connected: rrJklkPB06Tv7P0zAACb
+Socket rrJklkPB06Tv7P0zAACb joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 151.633 ms - -
+GET /api/auth/me 304 146.839 ms - -
+Socket disconnected: rrJklkPB06Tv7P0zAACb
+Socket connected: zI-Tx6ytTLwGsMyjAACd
+Socket zI-Tx6ytTLwGsMyjAACd joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 146.325 ms - -
+GET /api/auth/me 304 167.797 ms - -
+Socket disconnected: zI-Tx6ytTLwGsMyjAACd
+Socket connected: 2rFtKAInZptJ2jSPAACf
+Socket 2rFtKAInZptJ2jSPAACf joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 163.291 ms - -
+GET /api/auth/me 304 163.689 ms - -
+Socket disconnected: 2rFtKAInZptJ2jSPAACf
+Socket connected: 8a4LRIiiZIItNbEZAACh
+Socket 8a4LRIiiZIItNbEZAACh joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 172.481 ms - -
+GET /api/auth/me 304 156.208 ms - -
+Socket disconnected: 8a4LRIiiZIItNbEZAACh
+Socket connected: 4I2lVWpGIYr2TFirAACj
+Socket 4I2lVWpGIYr2TFirAACj joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 161.667 ms - -
+GET /api/auth/me 304 155.454 ms - -
+Socket disconnected: 4I2lVWpGIYr2TFirAACj
+Socket connected: 6EmaVavUgk6OpoqoAACl
+Socket 6EmaVavUgk6OpoqoAACl joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 185.997 ms - -
+GET /api/auth/me 304 159.832 ms - -
+Socket disconnected: 6EmaVavUgk6OpoqoAACl
+Socket connected: jNY5b38Q0Q5nPl5lAACn
+Socket jNY5b38Q0Q5nPl5lAACn joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 148.014 ms - -
+GET /api/auth/me 304 173.856 ms - -
+Socket disconnected: jNY5b38Q0Q5nPl5lAACn
+Socket connected: KQUNAR-BauwIbr-aAACp
+Socket KQUNAR-BauwIbr-aAACp joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 163.165 ms - -
+GET /api/auth/me 304 164.756 ms - -
+Socket disconnected: KQUNAR-BauwIbr-aAACp
+Socket connected: Exqx4JhVDEe15KwRAACr
+Socket Exqx4JhVDEe15KwRAACr joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 158.384 ms - -
+GET /api/auth/me 304 180.399 ms - -
+Socket disconnected: Exqx4JhVDEe15KwRAACr
+Socket connected: fYb_zcOoNpJwHJNZAACt
+Socket fYb_zcOoNpJwHJNZAACt joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 155.911 ms - -
+GET /api/auth/me 304 159.739 ms - -
+Socket disconnected: fYb_zcOoNpJwHJNZAACt
+Socket connected: ar5e3sWrGEnMTQISAACv
+Socket ar5e3sWrGEnMTQISAACv joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 166.890 ms - -
+GET /api/auth/me 304 158.482 ms - -
+Socket disconnected: ar5e3sWrGEnMTQISAACv
+Socket connected: AOzvQPyMPHWedYJAAACx
+Socket AOzvQPyMPHWedYJAAACx joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 158.073 ms - -
+GET /api/auth/me 304 173.056 ms - -
+Socket disconnected: AOzvQPyMPHWedYJAAACx
+Socket connected: SI2y5hJqKh-t1sXdAACz
+Socket SI2y5hJqKh-t1sXdAACz joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 151.816 ms - -
+GET /api/auth/me 304 180.152 ms - -
+Socket disconnected: SI2y5hJqKh-t1sXdAACz
+Socket connected: 5eaeGXvhZwvqcaYGAAC1
+Socket 5eaeGXvhZwvqcaYGAAC1 joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 153.247 ms - -
+GET /api/auth/me 304 153.114 ms - -
+Socket disconnected: 5eaeGXvhZwvqcaYGAAC1
+Socket connected: lJoJWGVYb3PoJGToAAC3
+Socket lJoJWGVYb3PoJGToAAC3 joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 152.364 ms - -
+GET /api/auth/me 304 161.925 ms - -
+Socket disconnected: lJoJWGVYb3PoJGToAAC3
+Socket connected: s9Y8QMChoGFEnD-zAAC5
+Socket s9Y8QMChoGFEnD-zAAC5 joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 154.650 ms - -
+GET /api/auth/me 304 171.833 ms - -
+Socket disconnected: s9Y8QMChoGFEnD-zAAC5
+Socket connected: JqhjZ_fzNVtTB4ILAAC7
+Socket JqhjZ_fzNVtTB4ILAAC7 joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 151.088 ms - -
+GET /api/auth/me 304 165.574 ms - -
+Socket disconnected: JqhjZ_fzNVtTB4ILAAC7
+Socket connected: erqeB-pkX0NYItyaAAC9
+Socket erqeB-pkX0NYItyaAAC9 joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 169.643 ms - -
+GET /api/auth/me 304 167.035 ms - -
+Socket disconnected: erqeB-pkX0NYItyaAAC9
+Socket connected: 5-MfR9tl5IDqt8hmAAC_
+Socket 5-MfR9tl5IDqt8hmAAC_ joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 160.645 ms - -
+GET /api/auth/me 304 158.225 ms - -
+Socket disconnected: 5-MfR9tl5IDqt8hmAAC_
+Socket connected: tSEuS6s6j_oNOP35AADB
+Socket tSEuS6s6j_oNOP35AADB joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 160.184 ms - -
+GET /api/auth/me 304 154.355 ms - -
+Socket disconnected: tSEuS6s6j_oNOP35AADB
+Socket connected: z4rObzB2Bcs8CuyFAADD
+Socket z4rObzB2Bcs8CuyFAADD joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 147.460 ms - -
+GET /api/auth/me 304 146.765 ms - -
+Socket disconnected: z4rObzB2Bcs8CuyFAADD
+Socket connected: EQEnANlcYnnkcJkVAADF
+Socket EQEnANlcYnnkcJkVAADF joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 160.677 ms - -
+GET /api/auth/me 304 175.400 ms - -
+Socket disconnected: EQEnANlcYnnkcJkVAADF
+Socket connected: KOsuHGLRy2RGsVuFAADH
+Socket KOsuHGLRy2RGsVuFAADH joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 152.655 ms - -
+GET /api/auth/me 304 152.702 ms - -
+Socket disconnected: KOsuHGLRy2RGsVuFAADH
+Socket connected: vVaXaSuIpNtEWUR8AADJ
+Socket vVaXaSuIpNtEWUR8AADJ joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 170.247 ms - -
+GET /api/auth/me 304 152.323 ms - -
+Socket disconnected: vVaXaSuIpNtEWUR8AADJ
+Socket connected: R34a8rri5_RS2syOAADL
+Socket R34a8rri5_RS2syOAADL joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 169.957 ms - -
+GET /api/auth/me 304 154.011 ms - -
+Socket disconnected: R34a8rri5_RS2syOAADL
+Socket connected: TCND5xAtVHsvBim2AADN
+Socket TCND5xAtVHsvBim2AADN joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 155.819 ms - -
+GET /api/auth/me 304 153.983 ms - -
+Socket disconnected: TCND5xAtVHsvBim2AADN
+Socket connected: ez2_cAKTS939iQo9AADP
+Socket ez2_cAKTS939iQo9AADP joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 151.386 ms - -
+GET /api/auth/me 304 158.411 ms - -
+Socket disconnected: ez2_cAKTS939iQo9AADP
+Socket connected: 0eCUHh6E4Hz4hDDcAADR
+Socket 0eCUHh6E4Hz4hDDcAADR joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 152.896 ms - -
+GET /api/auth/me 304 152.484 ms - -
+Socket disconnected: 0eCUHh6E4Hz4hDDcAADR
+Socket connected: ML-N8zLRHYy85FMAAADT
+Socket ML-N8zLRHYy85FMAAADT joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 181.617 ms - -
+GET /api/auth/me 304 158.345 ms - -
+Socket disconnected: ML-N8zLRHYy85FMAAADT
+Socket connected: 7bS29Kp21tVuakVUAADV
+Socket 7bS29Kp21tVuakVUAADV joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 150.488 ms - -
+GET /api/auth/me 304 149.331 ms - -
+Socket disconnected: 7bS29Kp21tVuakVUAADV
+Socket connected: WTmz6sNNyMEuhYAUAADX
+Socket WTmz6sNNyMEuhYAUAADX joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 165.980 ms - -
+GET /api/auth/me 304 160.149 ms - -
+Socket disconnected: WTmz6sNNyMEuhYAUAADX
+Socket connected: xL57aNmXFdZTKzYcAADZ
+Socket xL57aNmXFdZTKzYcAADZ joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 160.183 ms - -
+GET /api/auth/me 304 181.870 ms - -
+Socket disconnected: xL57aNmXFdZTKzYcAADZ
+Socket connected: U92k_HklJZr_tWh-AADb
+Socket U92k_HklJZr_tWh-AADb joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 173.575 ms - -
+GET /api/auth/me 304 168.024 ms - -
+Socket disconnected: U92k_HklJZr_tWh-AADb
+Socket connected: YUvlBwCVewIMGsQXAADd
+Socket YUvlBwCVewIMGsQXAADd joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 156.399 ms - -
+GET /api/auth/me 304 167.412 ms - -
+Socket disconnected: YUvlBwCVewIMGsQXAADd
+Socket connected: DBc2M2bhuB4kFAckAADf
+Socket DBc2M2bhuB4kFAckAADf joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 155.365 ms - -
+GET /api/auth/me 304 178.266 ms - -
+Socket disconnected: DBc2M2bhuB4kFAckAADf
+Socket connected: QF2clNJIXJTQZ16tAADh
+Socket QF2clNJIXJTQZ16tAADh joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 160.520 ms - -
+GET /api/auth/me 304 168.002 ms - -
+Socket disconnected: QF2clNJIXJTQZ16tAADh
+Socket connected: bn5Q2icwtwMFDMiqAADj
+Socket bn5Q2icwtwMFDMiqAADj joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 160.118 ms - -
+GET /api/auth/me 304 174.873 ms - -
+Socket disconnected: bn5Q2icwtwMFDMiqAADj
+Socket connected: 201OcI8Hvt_DC597AADl
+Socket 201OcI8Hvt_DC597AADl joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 153.159 ms - -
+GET /api/auth/me 304 161.730 ms - -
+Socket disconnected: 201OcI8Hvt_DC597AADl
+Socket connected: 2x_K9raym6s5UVRsAADn
+Socket 2x_K9raym6s5UVRsAADn joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 197.016 ms - -
+GET /api/auth/me 304 163.429 ms - -
+Socket disconnected: 2x_K9raym6s5UVRsAADn
+Socket connected: HwQF0xmoF0OGP3EsAADp
+Socket HwQF0xmoF0OGP3EsAADp joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 170.576 ms - -
+GET /api/auth/me 304 157.938 ms - -
+Socket disconnected: HwQF0xmoF0OGP3EsAADp
+Socket connected: PuTFecuEX3tlnDBIAADr
+Socket PuTFecuEX3tlnDBIAADr joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 169.022 ms - -
+GET /api/auth/me 304 171.506 ms - -
+Socket disconnected: PuTFecuEX3tlnDBIAADr
+Socket connected: NfB1SG0BsUk1BBEqAADt
+Socket NfB1SG0BsUk1BBEqAADt joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 156.810 ms - -
+GET /api/auth/me 304 182.169 ms - -
+Socket disconnected: NfB1SG0BsUk1BBEqAADt
+Socket connected: MFmZQzp243RzAdgIAADv
+Socket MFmZQzp243RzAdgIAADv joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 167.611 ms - -
+GET /api/auth/me 304 161.883 ms - -
+Socket disconnected: MFmZQzp243RzAdgIAADv
+Socket connected: rF0nwa0CN4MhdvevAADx
+Socket rF0nwa0CN4MhdvevAADx joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 164.316 ms - -
+GET /api/auth/me 304 167.249 ms - -
+Socket disconnected: rF0nwa0CN4MhdvevAADx
+Socket connected: p4o7Xbxey82ZUa-9AADz
+Socket p4o7Xbxey82ZUa-9AADz joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 176.869 ms - -
+GET /api/auth/me 304 178.505 ms - -
+Socket disconnected: p4o7Xbxey82ZUa-9AADz
+Socket connected: bCUPerQgq2rkQDEiAAD1
+Socket bCUPerQgq2rkQDEiAAD1 joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 162.759 ms - -
+GET /api/auth/me 304 154.652 ms - -
+Socket disconnected: bCUPerQgq2rkQDEiAAD1
+Socket connected: EBVX7MJMXCXupn_7AAD3
+Socket EBVX7MJMXCXupn_7AAD3 joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 151.715 ms - -
+GET /api/auth/me 304 168.527 ms - -
+Socket disconnected: EBVX7MJMXCXupn_7AAD3
+Socket connected: BNpGuwPOM4XAUdzmAAD5
+Socket BNpGuwPOM4XAUdzmAAD5 joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 169.046 ms - -
+GET /api/auth/me 304 181.233 ms - -
+Socket disconnected: BNpGuwPOM4XAUdzmAAD5
+Socket connected: sUfaOkTzpxfg15oDAAD7
+Socket sUfaOkTzpxfg15oDAAD7 joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 169.973 ms - -
+GET /api/auth/me 304 153.103 ms - -
+Socket disconnected: sUfaOkTzpxfg15oDAAD7
+Socket connected: pIGU_nIJ9uQfYVebAAD9
+Socket pIGU_nIJ9uQfYVebAAD9 joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 160.431 ms - -
+GET /api/auth/me 304 169.768 ms - -
+Socket disconnected: pIGU_nIJ9uQfYVebAAD9
+Socket connected: H6yehuUq7M5Cq8REAAD_
+Socket H6yehuUq7M5Cq8REAAD_ joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 178.465 ms - -
+GET /api/auth/me 304 153.915 ms - -
+Socket disconnected: H6yehuUq7M5Cq8REAAD_
+Socket connected: KlXnPD00b5FnQa7dAAEB
+Socket KlXnPD00b5FnQa7dAAEB joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 173.333 ms - -
+GET /api/auth/me 304 173.788 ms - -
+Socket disconnected: KlXnPD00b5FnQa7dAAEB
+Socket connected: ULrBN6vinuWlo14RAAED
+Socket ULrBN6vinuWlo14RAAED joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 163.377 ms - -
+GET /api/auth/me 304 149.797 ms - -
+Socket disconnected: ULrBN6vinuWlo14RAAED
+Socket connected: VNFkrOrPX5QfL3EZAAEF
+Socket VNFkrOrPX5QfL3EZAAEF joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 158.859 ms - -
+GET /api/auth/me 304 168.659 ms - -
+Socket disconnected: VNFkrOrPX5QfL3EZAAEF
+Socket connected: A6kBJjCcxT7BRNNFAAEH
+Socket A6kBJjCcxT7BRNNFAAEH joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 155.597 ms - -
+GET /api/auth/me 304 152.956 ms - -
+Socket disconnected: A6kBJjCcxT7BRNNFAAEH
+Socket connected: WFrRWUyQ4_v6dorGAAEJ
+Socket WFrRWUyQ4_v6dorGAAEJ joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 158.642 ms - -
+GET /api/auth/me 304 183.266 ms - -
+Socket disconnected: WFrRWUyQ4_v6dorGAAEJ
+Socket connected: t6HWWvySGsbHhIj6AAEL
+Socket t6HWWvySGsbHhIj6AAEL joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 146.454 ms - -
+GET /api/auth/me 304 157.470 ms - -
+Socket disconnected: t6HWWvySGsbHhIj6AAEL
+Socket connected: CJiY3o7zU7Ag8OtvAAEN
+Socket CJiY3o7zU7Ag8OtvAAEN joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+[incoming] → astro_6a2fb50d0510933f12a5792c (0 socket(s)) video Demo User
+POST /api/consultations/book 201 502.490 ms - 799
+GET /api/auth/me 304 149.402 ms - -
+GET /api/admin/astrologers 200 110.399 ms - 5439
+GET /api/admin/users?limit=30 304 122.378 ms - -
+Socket connected: Z9wy1xN9--20d0w1AAEQ
+Socket Z9wy1xN9--20d0w1AAEQ joined room 6a303f8a644764b7ce53f32e
+GET /api/admin/astrologers 304 99.335 ms - -
+GET /api/admin/consultations 200 244.594 ms - 20897
+GET /api/admin/users?limit=30 304 134.409 ms - -
+GET /api/auth/me 304 144.970 ms - -
+GET /api/admin/consultations 304 168.466 ms - -
+Socket disconnected: CJiY3o7zU7Ag8OtvAAEN
+Socket connected: u1i3wS-uv4rMy9GqAAES
+Socket u1i3wS-uv4rMy9GqAAES joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/admin/stats 200 527.956 ms - 295
+GET /api/auth/me 304 157.975 ms - -
+GET /api/admin/stats 304 161.529 ms - -
+GET /api/auth/me 304 157.082 ms - -
+Socket disconnected: u1i3wS-uv4rMy9GqAAES
+Socket connected: KRNzVkUnXe8KhUW1AAEU
+Socket KRNzVkUnXe8KhUW1AAEU joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 155.335 ms - -
+GET /api/auth/me 304 155.589 ms - -
+Socket disconnected: KRNzVkUnXe8KhUW1AAEU
+Socket connected: jIuKC3HtdQxGma-aAAEW
+Socket jIuKC3HtdQxGma-aAAEW joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 148.083 ms - -
+GET /api/auth/me 304 144.269 ms - -
+Socket disconnected: jIuKC3HtdQxGma-aAAEW
+Socket connected: xErC23BnmUYMgL8lAAEY
+Socket xErC23BnmUYMgL8lAAEY joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 148.460 ms - -
+GET /api/auth/me 304 166.456 ms - -
+Socket disconnected: xErC23BnmUYMgL8lAAEY
+Socket connected: Kbx_JSXRi-cJ1ekVAAEa
+Socket Kbx_JSXRi-cJ1ekVAAEa joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 157.722 ms - -
+GET /api/auth/me 304 172.192 ms - -
+Socket disconnected: Kbx_JSXRi-cJ1ekVAAEa
+Socket connected: -czV-5gMIBm1snbpAAEc
+Socket -czV-5gMIBm1snbpAAEc joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 169.566 ms - -
+GET /api/auth/me 304 151.555 ms - -
+Socket disconnected: -czV-5gMIBm1snbpAAEc
+Socket connected: Mmb6kA0PujTkcIgJAAEe
+Socket Mmb6kA0PujTkcIgJAAEe joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 160.811 ms - -
+GET /api/auth/me 304 159.932 ms - -
+Socket disconnected: Mmb6kA0PujTkcIgJAAEe
+Socket connected: dxcpXZfiuhKQT14YAAEg
+Socket dxcpXZfiuhKQT14YAAEg joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 169.522 ms - -
+GET /api/auth/me 304 166.352 ms - -
+Socket disconnected: dxcpXZfiuhKQT14YAAEg
+Socket connected: bSNgaiV6fW6KvXCaAAEi
+Socket bSNgaiV6fW6KvXCaAAEi joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 147.132 ms - -
+GET /api/auth/me 304 180.892 ms - -
+Socket disconnected: bSNgaiV6fW6KvXCaAAEi
+Socket connected: xfDMDL6x8d7fCUdpAAEk
+Socket xfDMDL6x8d7fCUdpAAEk joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 162.586 ms - -
+GET /api/auth/me 304 170.788 ms - -
+Socket disconnected: xfDMDL6x8d7fCUdpAAEk
+Socket connected: SAgn7CBgc5pYi7uRAAEm
+Socket SAgn7CBgc5pYi7uRAAEm joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 163.192 ms - -
+GET /api/auth/me 304 168.976 ms - -
+Socket disconnected: SAgn7CBgc5pYi7uRAAEm
+Socket connected: DNfO8ofB4qHHNFVKAAEo
+Socket DNfO8ofB4qHHNFVKAAEo joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 156.601 ms - -
+GET /api/auth/me 304 163.351 ms - -
+Socket disconnected: DNfO8ofB4qHHNFVKAAEo
+Socket connected: 8F8t7UHP6iDSnteyAAEq
+Socket 8F8t7UHP6iDSnteyAAEq joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 166.045 ms - -
+GET /api/auth/me 304 157.095 ms - -
+Socket disconnected: 8F8t7UHP6iDSnteyAAEq
+Socket connected: C7r1OsPyC7U0yI1UAAEs
+Socket C7r1OsPyC7U0yI1UAAEs joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 164.503 ms - -
+GET /api/auth/me 304 174.547 ms - -
+Socket disconnected: C7r1OsPyC7U0yI1UAAEs
+Socket connected: q6csly7krOXQQDGAAAEu
+Socket q6csly7krOXQQDGAAAEu joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 165.773 ms - -
+GET /api/auth/me 304 168.816 ms - -
+Socket disconnected: q6csly7krOXQQDGAAAEu
+Socket connected: G4D6vhx2h8WEySJhAAEw
+Socket G4D6vhx2h8WEySJhAAEw joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 159.649 ms - -
+GET /api/auth/me 304 158.926 ms - -
+Socket disconnected: G4D6vhx2h8WEySJhAAEw
+Socket connected: m3ewLDZ5fagsgmZ-AAEy
+Socket m3ewLDZ5fagsgmZ-AAEy joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 177.088 ms - -
+Socket connected: jN3n8bn_-9o_-9HOAAE1
+Socket jN3n8bn_-9o_-9HOAAE1 joined room 6a303e46a2204523317f37f0
+GET /api/auth/me 304 144.283 ms - -
+Socket disconnected: m3ewLDZ5fagsgmZ-AAEy
+Socket connected: cP4QFGrqeSqGhEF8AAE3
+Socket cP4QFGrqeSqGhEF8AAE3 joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 160.086 ms - -
+GET /api/auth/me 304 158.678 ms - -
+Socket disconnected: cP4QFGrqeSqGhEF8AAE3
+Socket connected: 8Gid7OAedGjyI2uAAAE5
+Socket 8Gid7OAedGjyI2uAAAE5 joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 157.544 ms - -
+GET /api/auth/me 304 164.788 ms - -
+Socket disconnected: 8Gid7OAedGjyI2uAAAE5
+Socket connected: SYSv13VbsP4KU_YgAAE7
+Socket SYSv13VbsP4KU_YgAAE7 joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 159.892 ms - -
+GET /api/auth/me 304 148.094 ms - -
+Socket disconnected: SYSv13VbsP4KU_YgAAE7
+Socket connected: fJkt3AbOQZxMq6byAAE9
+Socket fJkt3AbOQZxMq6byAAE9 joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 149.291 ms - -
+GET /api/auth/me 304 156.600 ms - -
+Socket disconnected: fJkt3AbOQZxMq6byAAE9
+Socket connected: jY72rPHSjb6ntiCfAAE_
+Socket jY72rPHSjb6ntiCfAAE_ joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 154.894 ms - -
+GET /api/auth/me 304 167.902 ms - -
+Socket disconnected: jY72rPHSjb6ntiCfAAE_
+Socket connected: mCdNgyq7OiPz_xp8AAFB
+Socket mCdNgyq7OiPz_xp8AAFB joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 173.053 ms - -
+GET /api/auth/me 304 156.007 ms - -
+Socket disconnected: mCdNgyq7OiPz_xp8AAFB
+Socket connected: WTkuijvAmF2mZ5r6AAFD
+Socket WTkuijvAmF2mZ5r6AAFD joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 149.277 ms - -
+GET /api/auth/me 304 146.049 ms - -
+Socket disconnected: WTkuijvAmF2mZ5r6AAFD
+Socket connected: ubokxCYxwxxMvo45AAFF
+Socket ubokxCYxwxxMvo45AAFF joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 171.960 ms - -
+GET /api/auth/me 304 152.109 ms - -
+Socket disconnected: ubokxCYxwxxMvo45AAFF
+Socket connected: 8J-R3kuCixJ-p9t-AAFH
+Socket 8J-R3kuCixJ-p9t-AAFH joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 152.280 ms - -
+GET /api/auth/me 304 147.536 ms - -
+Socket disconnected: 8J-R3kuCixJ-p9t-AAFH
+Socket connected: JqKmOT_3ZJGmXyzlAAFJ
+Socket JqKmOT_3ZJGmXyzlAAFJ joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 145.059 ms - -
+GET /api/auth/me 304 175.553 ms - -
+Socket disconnected: JqKmOT_3ZJGmXyzlAAFJ
+Socket connected: vSzU2J6HBF-NU0h-AAFL
+Socket vSzU2J6HBF-NU0h-AAFL joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 158.763 ms - -
+GET /api/auth/me 304 163.705 ms - -
+Socket disconnected: vSzU2J6HBF-NU0h-AAFL
+Socket connected: Q8Q31jKPlNuPW5ceAAFN
+Socket Q8Q31jKPlNuPW5ceAAFN joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 152.171 ms - -
+GET /api/auth/me 304 155.397 ms - -
+Socket disconnected: Q8Q31jKPlNuPW5ceAAFN
+Socket connected: zst5EkU72CNwYiHeAAFP
+Socket zst5EkU72CNwYiHeAAFP joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 143.500 ms - -
+GET /api/auth/me 304 162.771 ms - -
+Socket disconnected: zst5EkU72CNwYiHeAAFP
+Socket connected: HuX4w6718v75RLJAAAFR
+Socket HuX4w6718v75RLJAAAFR joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 165.323 ms - -
+GET /api/auth/me 304 152.531 ms - -
+Socket disconnected: HuX4w6718v75RLJAAAFR
+Socket connected: bmOEILd9Uqic3vuoAAFT
+Socket bmOEILd9Uqic3vuoAAFT joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 165.719 ms - -
+GET /api/auth/me 304 144.606 ms - -
+Socket disconnected: bmOEILd9Uqic3vuoAAFT
+Socket connected: EF0wyV7b5rLpqgJRAAFV
+Socket EF0wyV7b5rLpqgJRAAFV joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 175.644 ms - -
+GET /api/auth/me 304 144.709 ms - -
+Socket disconnected: EF0wyV7b5rLpqgJRAAFV
+Socket connected: XLypi9EZQDA88FGMAAFX
+Socket XLypi9EZQDA88FGMAAFX joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 147.009 ms - -
+GET /api/auth/me 304 159.771 ms - -
+Socket disconnected: XLypi9EZQDA88FGMAAFX
+Socket connected: faTICvuNuwIca30LAAFZ
+Socket faTICvuNuwIca30LAAFZ joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 154.850 ms - -
+GET /api/auth/me 304 160.162 ms - -
+Socket disconnected: faTICvuNuwIca30LAAFZ
+Socket connected: K-2NoFcf5vNtq6_qAAFb
+Socket K-2NoFcf5vNtq6_qAAFb joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 156.175 ms - -
+GET /api/auth/me 304 159.738 ms - -
+Socket disconnected: K-2NoFcf5vNtq6_qAAFb
+Socket connected: 0auPR7Y6DvmCq1aFAAFd
+Socket 0auPR7Y6DvmCq1aFAAFd joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 200 174.796 ms - 1546
+PATCH /api/consultations/6a303e46a2204523317f37f0/accept 200 414.274 ms - 764
+GET /api/admin/astrologers 200 87.499 ms - 5437
+GET /api/admin/users?limit=30 304 99.460 ms - -
+GET /api/admin/consultations 200 197.681 ms - 20936
+GET /api/consultations/for-astro 200 122.823 ms - 5543
+GET /api/auth/me 304 152.760 ms - -
+GET /api/admin/stats 200 532.892 ms - 295
+Socket disconnected: 0auPR7Y6DvmCq1aFAAFd
+Socket connected: bQnWvzn7VFXRZQwDAAFf
+Socket bQnWvzn7VFXRZQwDAAFf joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 144.917 ms - -
+Socket disconnected: bQnWvzn7VFXRZQwDAAFf
+Socket connected: uDZzTNoZbgm3bgSRAAFh
+Socket uDZzTNoZbgm3bgSRAAFh joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 159.394 ms - -
+GET /api/auth/me 304 162.192 ms - -
+GET /api/auth/me 304 161.609 ms - -
+Socket disconnected: uDZzTNoZbgm3bgSRAAFh
+Socket connected: 2RiJhXckvj8JpbJNAAFj
+Socket 2RiJhXckvj8JpbJNAAFj joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 169.548 ms - -
+GET /api/auth/me 304 161.949 ms - -
+Socket disconnected: 2RiJhXckvj8JpbJNAAFj
+Socket connected: 9nXdkGlmjuUD02LzAAFl
+Socket 9nXdkGlmjuUD02LzAAFl joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 159.155 ms - -
+GET /api/auth/me 304 156.037 ms - -
+Socket disconnected: 9nXdkGlmjuUD02LzAAFl
+Socket connected: Svn7r_VxF4axcUSNAAFn
+Socket Svn7r_VxF4axcUSNAAFn joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 162.192 ms - -
+GET /api/auth/me 304 176.259 ms - -
+Socket disconnected: Svn7r_VxF4axcUSNAAFn
+Socket connected: XlA4EGvWqFAo-Qq9AAFp
+Socket XlA4EGvWqFAo-Qq9AAFp joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 147.313 ms - -
+GET /api/auth/me 304 160.716 ms - -
+Socket disconnected: XlA4EGvWqFAo-Qq9AAFp
+Socket connected: Ih9K2cefNg2KlBAaAAFr
+Socket Ih9K2cefNg2KlBAaAAFr joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 149.883 ms - -
+GET /api/auth/me 304 153.401 ms - -
+Socket disconnected: Ih9K2cefNg2KlBAaAAFr
+Socket connected: gwTMnX8MVeaRi5szAAFt
+Socket gwTMnX8MVeaRi5szAAFt joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 156.700 ms - -
+GET /api/auth/me 304 162.849 ms - -
+Socket disconnected: gwTMnX8MVeaRi5szAAFt
+Socket connected: HWuKwLNntz-iuniyAAFv
+Socket HWuKwLNntz-iuniyAAFv joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 169.424 ms - -
+GET /api/auth/me 304 148.320 ms - -
+Socket disconnected: HWuKwLNntz-iuniyAAFv
+Socket connected: r8a0IwONRCem6uz3AAFx
+Socket r8a0IwONRCem6uz3AAFx joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 165.179 ms - -
+GET /api/auth/me 304 150.725 ms - -
+Socket disconnected: r8a0IwONRCem6uz3AAFx
+Socket connected: P3ClLiRHAQMCQn1VAAFz
+Socket P3ClLiRHAQMCQn1VAAFz joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 161.618 ms - -
+GET /api/auth/me 304 149.171 ms - -
+Socket disconnected: P3ClLiRHAQMCQn1VAAFz
+Socket connected: DFDwIkz-Run9K46_AAF1
+Socket DFDwIkz-Run9K46_AAF1 joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 154.196 ms - -
+GET /api/auth/me 304 156.891 ms - -
+Socket disconnected: DFDwIkz-Run9K46_AAF1
+Socket connected: 0NETjJDp6vpwB759AAF3
+Socket 0NETjJDp6vpwB759AAF3 joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 156.919 ms - -
+GET /api/auth/me 304 152.304 ms - -
+Socket disconnected: 0NETjJDp6vpwB759AAF3
+Socket connected: l0ykrqISMdWaAxaGAAF5
+Socket l0ykrqISMdWaAxaGAAF5 joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 163.583 ms - -
+GET /api/auth/me 304 151.094 ms - -
+Socket disconnected: l0ykrqISMdWaAxaGAAF5
+Socket connected: uxNMXQabG1mI6PRsAAF7
+Socket uxNMXQabG1mI6PRsAAF7 joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 160.687 ms - -
+GET /api/auth/me 304 153.561 ms - -
+Socket disconnected: uxNMXQabG1mI6PRsAAF7
+Socket connected: ootJfvtk87MoLeATAAF9
+Socket ootJfvtk87MoLeATAAF9 joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 164.285 ms - -
+GET /api/auth/me 304 171.186 ms - -
+Socket disconnected: ootJfvtk87MoLeATAAF9
+Socket connected: J8sdwQ3IbhskOOTqAAF_
+Socket J8sdwQ3IbhskOOTqAAF_ joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 163.025 ms - -
+GET /api/auth/me 304 166.114 ms - -
+Socket disconnected: J8sdwQ3IbhskOOTqAAF_
+Socket connected: Hyzto7j_OGEjLSUuAAGB
+Socket Hyzto7j_OGEjLSUuAAGB joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 173.695 ms - -
+GET /api/auth/me 304 153.086 ms - -
+Socket disconnected: Hyzto7j_OGEjLSUuAAGB
+Socket connected: nAS1lrR_Uzwv-TCBAAGD
+Socket nAS1lrR_Uzwv-TCBAAGD joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 148.589 ms - -
+GET /api/auth/me 304 157.578 ms - -
+Socket disconnected: nAS1lrR_Uzwv-TCBAAGD
+Socket connected: dR9rNsYZEEkR5kP8AAGF
+Socket dR9rNsYZEEkR5kP8AAGF joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 161.677 ms - -
+GET /api/auth/me 304 143.548 ms - -
+Socket disconnected: dR9rNsYZEEkR5kP8AAGF
+Socket connected: hdG4Ssd5smCk1ki4AAGH
+Socket hdG4Ssd5smCk1ki4AAGH joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 145.971 ms - -
+GET /api/auth/me 304 142.821 ms - -
+Socket disconnected: hdG4Ssd5smCk1ki4AAGH
+Socket connected: 2_gldgnqxd5tedFYAAGJ
+Socket 2_gldgnqxd5tedFYAAGJ joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 157.004 ms - -
+GET /api/auth/me 304 156.740 ms - -
+Socket disconnected: 2_gldgnqxd5tedFYAAGJ
+Socket connected: BleM2wZar_ZNNOkHAAGL
+Socket BleM2wZar_ZNNOkHAAGL joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 147.480 ms - -
+GET /api/auth/me 304 164.232 ms - -
+Socket disconnected: BleM2wZar_ZNNOkHAAGL
+Socket connected: bJU7XSwjuGRoz8hoAAGN
+Socket bJU7XSwjuGRoz8hoAAGN joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 176.181 ms - -
+GET /api/auth/me 304 158.612 ms - -
+Socket disconnected: bJU7XSwjuGRoz8hoAAGN
+Socket connected: JeUxy_Xj-mL1su-3AAGP
+Socket JeUxy_Xj-mL1su-3AAGP joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 161.835 ms - -
+GET /api/auth/me 304 151.512 ms - -
+Socket disconnected: JeUxy_Xj-mL1su-3AAGP
+Socket connected: 4dOSboaqG7B7_suYAAGR
+Socket 4dOSboaqG7B7_suYAAGR joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 148.650 ms - -
+GET /api/auth/me 304 157.552 ms - -
+Socket disconnected: 4dOSboaqG7B7_suYAAGR
+Socket connected: -HhwG_8cxani0HthAAGT
+Socket -HhwG_8cxani0HthAAGT joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 172.971 ms - -
+GET /api/auth/me 304 156.828 ms - -
+Socket disconnected: -HhwG_8cxani0HthAAGT
+Socket connected: ZPVQTis7uQteE1Q3AAGV
+Socket ZPVQTis7uQteE1Q3AAGV joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 161.823 ms - -
+GET /api/auth/me 304 163.282 ms - -
+Socket disconnected: ZPVQTis7uQteE1Q3AAGV
+Socket connected: hBVri9kkE9YYDgw_AAGX
+Socket hBVri9kkE9YYDgw_AAGX joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 160.805 ms - -
+GET /api/auth/me 304 157.149 ms - -
+Socket disconnected: hBVri9kkE9YYDgw_AAGX
+Socket connected: sKG4Yht9qgvExZmsAAGZ
+Socket sKG4Yht9qgvExZmsAAGZ joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 164.157 ms - -
+GET /api/auth/me 304 159.321 ms - -
+Socket disconnected: sKG4Yht9qgvExZmsAAGZ
+Socket connected: w-TDHyG5fRzmWubXAAGb
+Socket w-TDHyG5fRzmWubXAAGb joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 149.660 ms - -
+GET /api/auth/me 304 152.485 ms - -
+Socket disconnected: w-TDHyG5fRzmWubXAAGb
+Socket connected: 8SjfsFKbSq_YI-imAAGd
+Socket 8SjfsFKbSq_YI-imAAGd joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 165.622 ms - -
+GET /api/auth/me 304 154.383 ms - -
+Socket disconnected: 8SjfsFKbSq_YI-imAAGd
+Socket connected: VptiGb17NX1jdaWVAAGf
+Socket VptiGb17NX1jdaWVAAGf joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 159.734 ms - -
+GET /api/auth/me 304 157.331 ms - -
+Socket disconnected: VptiGb17NX1jdaWVAAGf
+Socket connected: Jm4DLezXrfjdSg-wAAGh
+Socket Jm4DLezXrfjdSg-wAAGh joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 187.709 ms - -
+GET /api/auth/me 304 161.585 ms - -
+Socket disconnected: Jm4DLezXrfjdSg-wAAGh
+Socket connected: tVMDsYyM6irlVISRAAGj
+Socket tVMDsYyM6irlVISRAAGj joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 173.154 ms - -
+GET /api/auth/me 304 165.201 ms - -
+Socket disconnected: tVMDsYyM6irlVISRAAGj
+Socket connected: cieJHv9SKXWYKaZNAAGl
+Socket cieJHv9SKXWYKaZNAAGl joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 160.462 ms - -
+GET /api/auth/me 304 154.257 ms - -
+Socket disconnected: cieJHv9SKXWYKaZNAAGl
+Socket connected: emHL25f-9zQmjiVuAAGn
+Socket emHL25f-9zQmjiVuAAGn joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 161.398 ms - -
+GET /api/auth/me 304 163.138 ms - -
+Socket disconnected: emHL25f-9zQmjiVuAAGn
+Socket connected: rDzZQ7iLW2Ih-RWcAAGp
+Socket rDzZQ7iLW2Ih-RWcAAGp joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 154.468 ms - -
+GET /api/auth/me 304 161.140 ms - -
+Socket disconnected: rDzZQ7iLW2Ih-RWcAAGp
+Socket connected: WfsQksrW3q5H-UPaAAGr
+Socket WfsQksrW3q5H-UPaAAGr joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 168.579 ms - -
+GET /api/auth/me 304 124.623 ms - -
+Socket disconnected: WfsQksrW3q5H-UPaAAGr
+Socket connected: tlYTGU0JUM1pWL5OAAGt
+PATCH /api/consultations/6a303e46a2204523317f37f0/complete 200 359.509 ms - 544
+Socket disconnected: jN3n8bn_-9o_-9HOAAE1
+Socket tlYTGU0JUM1pWL5OAAGt joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 200 138.675 ms - 1548
+GET /api/admin/users?limit=30 304 90.180 ms - -
+GET /api/admin/astrologers 200 97.154 ms - 5439
+GET /api/admin/stats 200 173.632 ms - 295
+GET /api/admin/users?limit=30 304 91.655 ms - -
+GET /api/consultations/for-astro 200 159.500 ms - 5584
+GET /api/admin/consultations 200 205.430 ms - 20978
+GET /api/admin/astrologers 304 113.859 ms - -
+GET /api/admin/stats 304 160.188 ms - -
+GET /api/admin/consultations 304 153.556 ms - -
+GET /api/auth/me 304 146.544 ms - -
+Socket disconnected: tlYTGU0JUM1pWL5OAAGt
+Socket connected: 5PnlogUHgH4Ub7PRAAGv
+Socket 5PnlogUHgH4Ub7PRAAGv joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 147.965 ms - -
+GET /api/auth/me 304 138.090 ms - -
+Socket disconnected: 5PnlogUHgH4Ub7PRAAGv
+Socket connected: B5oGxgjyKebPT0WPAAGx
+Socket B5oGxgjyKebPT0WPAAGx joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 136.721 ms - -
+GET /api/auth/me 304 149.460 ms - -
+Socket disconnected: B5oGxgjyKebPT0WPAAGx
+Socket connected: nH1jdmD1w3zGQPP3AAGz
+Socket nH1jdmD1w3zGQPP3AAGz joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 152.346 ms - -
+GET /api/auth/me 304 148.164 ms - -
+Socket disconnected: nH1jdmD1w3zGQPP3AAGz
+Socket connected: 7O1u4Rucjv5gjUveAAG1
+Socket 7O1u4Rucjv5gjUveAAG1 joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 144.367 ms - -
+GET /api/auth/me 304 139.407 ms - -
+Socket disconnected: 7O1u4Rucjv5gjUveAAG1
+Socket connected: Z3yZ509PjN1KsRJYAAG3
+Socket Z3yZ509PjN1KsRJYAAG3 joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 160.479 ms - -
+GET /api/auth/me 304 157.535 ms - -
+Socket disconnected: Z3yZ509PjN1KsRJYAAG3
+Socket connected: yNThqtaO9S8HEj1dAAG5
+Socket yNThqtaO9S8HEj1dAAG5 joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 143.311 ms - -
+GET /api/auth/me 304 146.512 ms - -
+Socket disconnected: yNThqtaO9S8HEj1dAAG5
+Socket connected: c7134bKlz1dEIcuzAAG7
+Socket c7134bKlz1dEIcuzAAG7 joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 159.120 ms - -
+GET /api/auth/me 304 147.288 ms - -
+Socket disconnected: c7134bKlz1dEIcuzAAG7
+Socket connected: Zjn-C9ERXr97Pp1_AAG9
+Socket Zjn-C9ERXr97Pp1_AAG9 joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 161.076 ms - -
+GET /api/auth/me 304 146.895 ms - -
+Socket disconnected: Zjn-C9ERXr97Pp1_AAG9
+Socket connected: Uci2ByweSpabtPtcAAG_
+Socket Uci2ByweSpabtPtcAAG_ joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 155.114 ms - -
+GET /api/auth/me 304 156.060 ms - -
+Socket disconnected: Uci2ByweSpabtPtcAAG_
+Socket connected: JvighxYYlz1G1FMUAAHB
+Socket JvighxYYlz1G1FMUAAHB joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 139.884 ms - -
+GET /api/auth/me 304 166.173 ms - -
+Socket disconnected: JvighxYYlz1G1FMUAAHB
+Socket connected: jJU_xdOx-a1P1MivAAHD
+Socket jJU_xdOx-a1P1MivAAHD joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 139.150 ms - -
+GET /api/auth/me 304 207.880 ms - -
+Socket disconnected: jJU_xdOx-a1P1MivAAHD
+Socket connected: 00C3BSCD3jhQcL-MAAHF
+Socket 00C3BSCD3jhQcL-MAAHF joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 154.474 ms - -
+GET /api/auth/me 304 155.879 ms - -
+Socket disconnected: 00C3BSCD3jhQcL-MAAHF
+Socket connected: usJbqImawWRx9sAFAAHH
+Socket usJbqImawWRx9sAFAAHH joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 154.065 ms - -
+GET /api/auth/me 304 163.781 ms - -
+Socket disconnected: usJbqImawWRx9sAFAAHH
+Socket connected: 3OpMiZFgJjSSJKq0AAHJ
+Socket 3OpMiZFgJjSSJKq0AAHJ joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 148.282 ms - -
+Socket disconnected: 3OpMiZFgJjSSJKq0AAHJ
+GET /api/auth/me 304 141.258 ms - -
+GET /api/auth/me 200 150.895 ms - 1548
+GET /api/auth/me 200 129.076 ms - 1548
+Socket connected: Ec50JNHiSzO-CVNTAAHM
+Socket Ec50JNHiSzO-CVNTAAHM joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+Socket disconnected: Ec50JNHiSzO-CVNTAAHM
+GET /api/consultations/for-astro 200 134.887 ms - 5584
+GET /api/consultations/for-astro 200 169.977 ms - 5584
+GET /api/auth/me 200 175.907 ms - 1548
+GET /api/auth/me 200 134.694 ms - 1548
+GET /api/astrologers/earnings/summary 200 260.189 ms - 209
+Socket connected: WNTBNgks8mMQVXm6AAHP
+GET /api/astrologers/earnings/summary 200 283.220 ms - 209
+Socket WNTBNgks8mMQVXm6AAHP joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 200 128.295 ms - 1548
+GET /api/auth/me 304 131.995 ms - -
+Socket disconnected: WNTBNgks8mMQVXm6AAHP
+Socket connected: lcP_QKOF0aRzhERGAAHR
+Socket lcP_QKOF0aRzhERGAAHR joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 130.492 ms - -
+GET /api/auth/me 304 134.835 ms - -
+Socket disconnected: lcP_QKOF0aRzhERGAAHR
+Socket connected: Q4-yZ0XANaskR9GQAAHT
+Socket Q4-yZ0XANaskR9GQAAHT joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 116.184 ms - -
+GET /api/auth/me 304 207.156 ms - -
+Socket disconnected: Q4-yZ0XANaskR9GQAAHT
+Socket connected: DOu9_-hfV6Wg5GebAAHV
+Socket DOu9_-hfV6Wg5GebAAHV joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 140.208 ms - -
+GET /api/auth/me 304 173.720 ms - -
+Socket disconnected: DOu9_-hfV6Wg5GebAAHV
+Socket connected: 00rqJoOSPGS_GFeTAAHX
+Socket 00rqJoOSPGS_GFeTAAHX joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 164.280 ms - -
+GET /api/auth/me 304 215.146 ms - -
+Socket disconnected: 00rqJoOSPGS_GFeTAAHX
+Socket connected: t6TWqB3pkBQrILddAAHZ
+Socket t6TWqB3pkBQrILddAAHZ joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 191.124 ms - -
+GET /api/auth/me 304 146.536 ms - -
+Socket disconnected: t6TWqB3pkBQrILddAAHZ
+Socket connected: hJYtQxqrLKcLRx-GAAHb
+Socket hJYtQxqrLKcLRx-GAAHb joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 189.628 ms - -
+GET /api/auth/me 304 201.224 ms - -
+Socket disconnected: hJYtQxqrLKcLRx-GAAHb
+Socket connected: DmTrIHdxMnDAtOk2AAHd
+Socket DmTrIHdxMnDAtOk2AAHd joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 233.853 ms - -
+GET /api/auth/me 304 315.950 ms - -
+Socket disconnected: DmTrIHdxMnDAtOk2AAHd
+Socket connected: yrM99B9dH7XtCLydAAHf
+Socket yrM99B9dH7XtCLydAAHf joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 183.118 ms - -
+GET /api/auth/me 304 221.427 ms - -
+Socket disconnected: yrM99B9dH7XtCLydAAHf
+Socket connected: QlOR2Gb9ZNS8P-bmAAHh
+Socket QlOR2Gb9ZNS8P-bmAAHh joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 207.532 ms - -
+GET /api/auth/me 304 167.560 ms - -
+Socket disconnected: QlOR2Gb9ZNS8P-bmAAHh
+Socket connected: W951_fZC1aLH9izJAAHj
+Socket W951_fZC1aLH9izJAAHj joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 191.510 ms - -
+GET /api/auth/me 304 197.153 ms - -
+Socket disconnected: W951_fZC1aLH9izJAAHj
+Socket connected: 2dkQVHAsUwaW4jGpAAHl
+Socket 2dkQVHAsUwaW4jGpAAHl joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 131.213 ms - -
+GET /api/auth/me 304 205.410 ms - -
+Socket disconnected: 2dkQVHAsUwaW4jGpAAHl
+Socket connected: 0o9y3CCILMffvGWqAAHn
+Socket 0o9y3CCILMffvGWqAAHn joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 139.788 ms - -
+GET /api/auth/me 304 217.469 ms - -
+Socket disconnected: 0o9y3CCILMffvGWqAAHn
+Socket connected: f1Lk9gkVspg1AhfRAAHp
+Socket f1Lk9gkVspg1AhfRAAHp joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 267.286 ms - -
+GET /api/auth/me 304 141.164 ms - -
+Socket disconnected: f1Lk9gkVspg1AhfRAAHp
+Socket connected: V-CJRKzdcABjVo_BAAHr
+Socket V-CJRKzdcABjVo_BAAHr joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 197.780 ms - -
+GET /api/auth/me 304 197.932 ms - -
+Socket disconnected: V-CJRKzdcABjVo_BAAHr
+Socket connected: FdmtYthP0HzvpAz2AAHt
+Socket FdmtYthP0HzvpAz2AAHt joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 157.660 ms - -
+GET /api/auth/me 304 157.990 ms - -
+Socket disconnected: FdmtYthP0HzvpAz2AAHt
+Socket connected: 4StDmp-TuP7m1WW2AAHv
+Socket 4StDmp-TuP7m1WW2AAHv joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 139.692 ms - -
+GET /api/auth/me 304 112.220 ms - -
+Socket disconnected: 4StDmp-TuP7m1WW2AAHv
+Socket connected: LToRyCAA13F4U571AAHx
+Socket LToRyCAA13F4U571AAHx joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 126.510 ms - -
+GET /api/auth/me 304 119.380 ms - -
+Socket disconnected: LToRyCAA13F4U571AAHx
+Socket connected: VzdrDPpN4t_x_MSuAAHz
+Socket VzdrDPpN4t_x_MSuAAHz joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 137.837 ms - -
+GET /api/auth/me 304 120.952 ms - -
+Socket disconnected: VzdrDPpN4t_x_MSuAAHz
+Socket connected: xTs-M-S52HpqmOCCAAH1
+Socket xTs-M-S52HpqmOCCAAH1 joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 117.527 ms - -
+GET /api/auth/me 304 139.836 ms - -
+Socket disconnected: xTs-M-S52HpqmOCCAAH1
+Socket connected: C4Bd6kF3QZV8WgOPAAH3
+Socket C4Bd6kF3QZV8WgOPAAH3 joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 158.890 ms - -
+GET /api/auth/me 304 129.283 ms - -
+Socket disconnected: C4Bd6kF3QZV8WgOPAAH3
+Socket connected: xE1z77rO1I82Wt4vAAH5
+Socket xE1z77rO1I82Wt4vAAH5 joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 125.786 ms - -
+GET /api/auth/me 304 133.596 ms - -
+Socket disconnected: xE1z77rO1I82Wt4vAAH5
+Socket connected: WBHRen7NhCKgejLKAAH7
+Socket WBHRen7NhCKgejLKAAH7 joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 126.436 ms - -
+GET /api/auth/me 304 134.833 ms - -
+Socket disconnected: WBHRen7NhCKgejLKAAH7
+Socket connected: 3DLYe7DAI62_GmycAAH9
+Socket 3DLYe7DAI62_GmycAAH9 joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 122.363 ms - -
+GET /api/auth/me 304 119.350 ms - -
+Socket disconnected: 3DLYe7DAI62_GmycAAH9
+Socket connected: dnYZI0n8G9Kgf2hEAAH_
+Socket dnYZI0n8G9Kgf2hEAAH_ joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 139.959 ms - -
+GET /api/auth/me 304 117.599 ms - -
+Socket disconnected: dnYZI0n8G9Kgf2hEAAH_
+Socket connected: 9pwOYdgBBclKPnaNAAIB
+Socket 9pwOYdgBBclKPnaNAAIB joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 139.641 ms - -
+GET /api/auth/me 304 131.281 ms - -
+Socket disconnected: 9pwOYdgBBclKPnaNAAIB
+Socket connected: 2pVzPxobduwPD1_nAAID
+Socket 2pVzPxobduwPD1_nAAID joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 119.509 ms - -
+GET /api/auth/me 304 131.414 ms - -
+Socket disconnected: 2pVzPxobduwPD1_nAAID
+Socket connected: 2rAXCBP8w6rbL9ErAAIF
+Socket 2rAXCBP8w6rbL9ErAAIF joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 133.048 ms - -
+GET /api/auth/me 304 151.906 ms - -
+Socket disconnected: 2rAXCBP8w6rbL9ErAAIF
+Socket connected: pxh-9zEyuSqMwYoyAAIH
+Socket pxh-9zEyuSqMwYoyAAIH joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 121.155 ms - -
+GET /api/auth/me 304 131.499 ms - -
+Socket disconnected: pxh-9zEyuSqMwYoyAAIH
+Socket connected: rJHWyB17ArD2PmmZAAIJ
+Socket rJHWyB17ArD2PmmZAAIJ joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 132.121 ms - -
+GET /api/auth/me 304 145.602 ms - -
+Socket disconnected: rJHWyB17ArD2PmmZAAIJ
+Socket connected: sDbiu6KzDuVYUhoOAAIL
+Socket sDbiu6KzDuVYUhoOAAIL joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 153.893 ms - -
+GET /api/auth/me 304 138.061 ms - -
+Socket disconnected: sDbiu6KzDuVYUhoOAAIL
+Socket connected: hgF0wwHRGoDivurgAAIN
+Socket hgF0wwHRGoDivurgAAIN joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 131.646 ms - -
+GET /api/auth/me 304 138.770 ms - -
+Socket disconnected: hgF0wwHRGoDivurgAAIN
+Socket connected: cNrL5HzlHOGC18MuAAIP
+Socket cNrL5HzlHOGC18MuAAIP joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 125.995 ms - -
+GET /api/auth/me 304 123.753 ms - -
+Socket disconnected: cNrL5HzlHOGC18MuAAIP
+Socket connected: lLpIZI9mC9NWEcNxAAIR
+Socket lLpIZI9mC9NWEcNxAAIR joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 137.013 ms - -
+GET /api/auth/me 304 123.944 ms - -
+Socket disconnected: lLpIZI9mC9NWEcNxAAIR
+Socket connected: Or48R505wtDNYv0VAAIT
+Socket Or48R505wtDNYv0VAAIT joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 132.980 ms - -
+GET /api/auth/me 304 137.709 ms - -
+Socket disconnected: Or48R505wtDNYv0VAAIT
+Socket connected: f0YFjgamodStTVCwAAIV
+Socket f0YFjgamodStTVCwAAIV joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 125.526 ms - -
+GET /api/auth/me 304 137.626 ms - -
+Socket disconnected: f0YFjgamodStTVCwAAIV
+Socket connected: I2xanBQProqZgBB3AAIX
+Socket I2xanBQProqZgBB3AAIX joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 136.853 ms - -
+GET /api/auth/me 304 120.700 ms - -
+Socket disconnected: I2xanBQProqZgBB3AAIX
+Socket connected: s2vt2U567GVSeqJ9AAIZ
+Socket s2vt2U567GVSeqJ9AAIZ joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 116.529 ms - -
+GET /api/auth/me 304 117.786 ms - -
+Socket disconnected: s2vt2U567GVSeqJ9AAIZ
+Socket connected: JssVgtBBI-VgenyVAAIb
+Socket JssVgtBBI-VgenyVAAIb joined panel rooms {
+  userId: '6a2fb50e0510933f12a5793a',
+  role: 'astrologer',
+  astrologerProfileId: '6a2fb50d0510933f12a57927'
+}
+GET /api/auth/me 304 132.682 ms - -
+GET /api/auth/me 304 130.764 ms - -
+Socket disconnected: JssVgtBBI-VgenyVAAIb
+Socket disconnected: Z9wy1xN9--20d0w1AAEQ
+Socket disconnected: Y77peag76fYqUPwjAABf
+Socket disconnected: TgyqDZczpMxz-3oCAAAc

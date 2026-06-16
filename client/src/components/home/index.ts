@@ -1,0 +1,9 @@
+export { HeroSection } from './Hero';
+export { LiveAstrologers } from './Live';
+export { DailyHoroscope } from './Horoscope';
+export { FreeServices } from './Services';
+export { ShopSection } from './Shop';
+export { Testimonials } from './Testimonials';
+export { BlogSection } from './Blog';
+export { FAQ } from './FAQ';
+export { CTASection } from './CTA';

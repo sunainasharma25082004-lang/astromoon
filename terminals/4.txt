@@ -1,0 +1,21 @@
+---
+pid: 6740
+cwd: "C:\Users\hi\OneDrive\Desktop\all web\project"
+command: "cd \"C:\\Users\\hi\\OneDrive\\Desktop\\all web\\project\\server\"; npm run dev"
+started_at: 2026-06-16T09:14:24.318Z
+running_for_ms: 1455003  
+---
+
+> celestial-guidance-backend@1.0.0 dev
+> node --watch src/index.js
+
+Restarting 'src/index.js'
+Restarting 'src/index.js'
+Restarting 'src/index.js'
+Restarting 'src/index.js'
+Restarting 'src/index.js'
+Restarting 'src/index.js'
+✅ MongoDB connected
+🚀 Backend running on http://localhost:5000
+   API base: http://localhost:5000/api
+   Socket.io ready for real-time chat & video

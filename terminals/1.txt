@@ -1,0 +1,16 @@
+---
+pid: 32
+cwd: "C:\Users\hi\OneDrive\Desktop\all web\project"
+command: "cd \"C:\\Users\\hi\\OneDrive\\Desktop\\all web\\project\\client\"; npm run dev"
+started_at: 2026-06-15T06:01:33.271Z
+running_for_ms: 12280038 
+---
+
+> celestial-guidance@1.0.0 dev
+> vite
+
+
+  VITE v5.4.8  ready in 487 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
