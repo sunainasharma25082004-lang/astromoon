@@ -6,6 +6,17 @@ export function isValidObjectId(id) {
   return mongoose.Types.ObjectId.isValid(id) && String(new mongoose.Types.ObjectId(id)) === id;
 }
 
+export function normalizePhone(phone) {
+  if (!phone) return '';
+  const digits = String(phone).replace(/\D/g, '');
+  if (digits.length >= 10) return digits.slice(-10);
+  return digits;
+}
+
+export function normalizeEmail(email) {
+  return String(email || '').trim().toLowerCase();
+}
+
 export function generateReferralCode(name = 'USER') {
   const prefix = name.replace(/[^a-zA-Z]/g, '').slice(0, 4).toUpperCase() || 'STAR';
   const suffix = crypto.randomBytes(3).toString('hex').toUpperCase();

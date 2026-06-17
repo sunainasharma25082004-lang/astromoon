@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useSearchParams } from 'react-router-dom';
 import {
   BadgeCheck, Clock, Globe, Heart, Share2, Award, ChevronLeft,
-  MessageCircle, Phone, Video, Calendar, Sparkles
+  MessageCircle, Phone, Video, Calendar, Sparkles, CheckCircle, Images
 } from 'lucide-react';
 import { formatDate, formatCurrency } from '../../utils/dateUtils';
 import { StarRating } from '../../components/common/StarRating';
 import { AppDownloadCTA } from '../../components/common/AppDownloadCTA';
-import { apiFetch, withId } from '../../config/api';
+import { InstallAppModal } from '../../components/common/InstallAppModal';
+import { useInstallAppModal } from '../../hooks/useInstallAppModal';
+import type { ConsultType } from '../../components/common/InstallAppModal';
+import { apiFetch, withId, mediaUrl } from '../../config/api';
 
 const SAVED_KEY = 'celestial_saved_astrologers';
 
@@ -49,11 +52,17 @@ interface Astrologer {
   is_verified: boolean;
   availability_status?: string;
   available_slots?: { day: string; start_time: string; end_time: string }[];
+  services?: string[];
+  gallery_images?: string[];
   packages?: Package[];
 }
 
+const ACTION_TYPES = new Set(['chat', 'call', 'video']);
+
 export default function AstrologerProfilePage() {
   const { id } = useParams<{ id: string }>();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { isOpen, consultType, open, close } = useInstallAppModal();
   const [astrologer, setAstrologer] = useState<Astrologer | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -63,6 +72,15 @@ export default function AstrologerProfilePage() {
   useEffect(() => {
     if (id) fetchAstrologer();
   }, [id]);
+
+  useEffect(() => {
+    const action = searchParams.get('action');
+    if (action && ACTION_TYPES.has(action)) {
+      open(action as ConsultType);
+      searchParams.delete('action');
+      setSearchParams(searchParams, { replace: true });
+    }
+  }, [searchParams, setSearchParams, open]);
 
   const fetchAstrologer = async () => {
     try {
@@ -139,7 +157,7 @@ export default function AstrologerProfilePage() {
             <div className="flex flex-col md:flex-row md:items-end gap-6 -mt-16">
               <div className="relative">
                 <img
-                  src={astrologer.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(astrologer.full_name)}&background=7c3aed&color=fff&size=200`}
+                  src={mediaUrl(astrologer.avatar_url) || `https://ui-avatars.com/api/?name=${encodeURIComponent(astrologer.full_name)}&background=7c3aed&color=fff&size=200`}
                   alt={astrologer.full_name}
                   className="w-32 h-32 rounded-2xl border-4 border-white shadow-xl object-cover"
                 />
@@ -200,15 +218,20 @@ export default function AstrologerProfilePage() {
             {/* Pricing info (informative) */}
             <div className="grid grid-cols-3 gap-3 mt-4">
               {[
-                { Icon: MessageCircle, label: 'Chat', price: astrologer.chat_price, color: 'bg-blue-50 text-blue-700' },
-                { Icon: Phone, label: 'Audio Call', price: astrologer.call_price, color: 'bg-green-50 text-green-700' },
-                { Icon: Video, label: 'Video Call', price: astrologer.video_price, color: 'bg-purple-50 text-purple-700' },
-              ].map(({ Icon, label, price, color }) => (
-                <div key={label} className={`flex flex-col items-center py-3 rounded-xl ${color}`}>
+                { type: 'chat' as const, Icon: MessageCircle, label: 'Chat', price: astrologer.chat_price, color: 'bg-blue-50 text-blue-700 hover:bg-blue-100' },
+                { type: 'call' as const, Icon: Phone, label: 'Audio Call', price: astrologer.call_price, color: 'bg-green-50 text-green-700 hover:bg-green-100' },
+                { type: 'video' as const, Icon: Video, label: 'Video Call', price: astrologer.video_price, color: 'bg-purple-50 text-purple-700 hover:bg-purple-100' },
+              ].map(({ type, Icon, label, price, color }) => (
+                <button
+                  key={label}
+                  type="button"
+                  onClick={() => open(type)}
+                  className={`flex flex-col items-center py-3 rounded-xl transition cursor-pointer ${color}`}
+                >
                   <Icon className="w-5 h-5 mb-1" />
                   <span className="text-xs font-medium">{label}</span>
                   <span className="text-sm font-bold mt-0.5">{formatCurrency(price)}/min</span>
-                </div>
+                </button>
               ))}
             </div>
           </div>
@@ -236,6 +259,35 @@ export default function AstrologerProfilePage() {
                       <h3 className="text-lg font-semibold text-gray-900 mb-3">About {astrologer.full_name}</h3>
                       <p className="text-gray-600 leading-relaxed">{astrologer.bio || 'Profile details coming soon.'}</p>
                     </div>
+
+                    {astrologer.services && astrologer.services.length > 0 && (
+                      <div>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-3">Services Offered</h3>
+                        <ul className="grid sm:grid-cols-2 gap-2">
+                          {astrologer.services.map(s => (
+                            <li key={s} className="flex items-center gap-2 px-4 py-2.5 bg-emerald-50 text-emerald-800 rounded-xl text-sm">
+                              <CheckCircle className="w-4 h-4 shrink-0 text-emerald-600" />
+                              {s}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    {astrologer.gallery_images && astrologer.gallery_images.length > 0 && (
+                      <div>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                          <Images className="w-5 h-5" /> Photos
+                        </h3>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                          {astrologer.gallery_images.map((url, i) => (
+                            <a key={i} href={mediaUrl(url)} target="_blank" rel="noreferrer" className="aspect-square rounded-xl overflow-hidden border border-gray-100 hover:opacity-90 transition">
+                              <img src={mediaUrl(url)} alt="" className="w-full h-full object-cover" />
+                            </a>
+                          ))}
+                        </div>
+                      </div>
+                    )}
 
                     {astrologer.skills && astrologer.skills.length > 0 && (
                       <div>
@@ -339,6 +391,8 @@ export default function AstrologerProfilePage() {
           </div>
         </div>
       </div>
+
+      <InstallAppModal isOpen={isOpen} onClose={close} consultType={consultType} />
     </div>
   );
 }

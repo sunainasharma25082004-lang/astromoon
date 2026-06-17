@@ -8,6 +8,8 @@ const astrologerSchema = new mongoose.Schema({
   skills: [String],
   experience: { type: Number, default: 0 },
   bio: String,
+  services: [String],
+  gallery_images: [String],
   education: String,
   certifications: [String],
   chat_price: { type: Number, default: 10 },

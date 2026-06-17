@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { ShoppingBag, Plus, Pencil, Trash2, X } from 'lucide-react';
+import { useRef, useState } from 'react';
+import { ShoppingBag, Plus, Pencil, Trash2, X, Upload, ImageIcon, Loader2 } from 'lucide-react';
 import { useAuth } from '../../context/Auth';
 import { apiFetch } from '../../config/api';
 import { useRealtimeData } from '../../hooks/useRealtimeData';
@@ -13,17 +13,30 @@ const emptyForm = {
   price: '',
   original_price: '',
   stock: '50',
-  images: '',
+  imageUrls: '',
   is_active: true,
 };
 
+function readFileAsDataUrl(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result));
+    reader.onerror = () => reject(new Error('Failed to read image file'));
+    reader.readAsDataURL(file);
+  });
+}
+
 export default function AdminProducts() {
   const { token } = useAuth();
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState<'create' | 'edit' | null>(null);
   const [editing, setEditing] = useState<any>(null);
   const [form, setForm] = useState(emptyForm);
+  const [uploadedImages, setUploadedImages] = useState<string[]>([]);
+  const [uploading, setUploading] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   const load = () => {
     if (!token) return;
@@ -35,14 +48,21 @@ export default function AdminProducts() {
 
   useRealtimeData(load, 'orders', [token]);
 
-  const openCreate = () => {
+  const resetForm = () => {
     setForm(emptyForm);
+    setUploadedImages([]);
     setEditing(null);
+  };
+
+  const openCreate = () => {
+    resetForm();
     setModal('create');
   };
 
   const openEdit = (p: any) => {
     setEditing(p);
+    const existing = p.images || [];
+    setUploadedImages(existing);
     setForm({
       name: p.name || '',
       category: p.category || 'Gemstones',
@@ -51,48 +71,107 @@ export default function AdminProducts() {
       price: String(p.price ?? ''),
       original_price: p.original_price ? String(p.original_price) : '',
       stock: String(p.stock ?? 50),
-      images: (p.images || []).join('\n'),
+      imageUrls: '',
       is_active: p.is_active !== false,
     });
     setModal('edit');
   };
 
+  const handleLocalUpload = async (files: FileList | null) => {
+    if (!files?.length || !token) return;
+    setUploading(true);
+    try {
+      const newUrls: string[] = [];
+      for (const file of Array.from(files)) {
+        if (!file.type.startsWith('image/')) {
+          toast.error(`${file.name} is not an image`);
+          continue;
+        }
+        if (file.size > 5 * 1024 * 1024) {
+          toast.error(`${file.name} is too large (max 5MB)`);
+          continue;
+        }
+        const dataUrl = await readFileAsDataUrl(file);
+        const res = await apiFetch('/upload/product-image', {
+          method: 'POST',
+          body: JSON.stringify({ image: dataUrl }),
+        }, token);
+        newUrls.push(res.url);
+      }
+      if (newUrls.length) {
+        setUploadedImages(prev => [...prev, ...newUrls]);
+        toast.success(`${newUrls.length} image(s) uploaded`);
+      }
+    } catch (err: any) {
+      toast.error(err.message || 'Image upload failed');
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
+
+  const removeImage = (url: string) => {
+    setUploadedImages(prev => prev.filter(img => img !== url));
+  };
+
   const save = async () => {
-    if (!form.name || !form.price) {
-      toast.error('Name and price required');
+    if (!token) {
+      toast.error('Please login as admin first');
       return;
     }
+    if (!form.name.trim()) {
+      toast.error('Product name is required');
+      return;
+    }
+    const price = Number(form.price);
+    if (!form.price || Number.isNaN(price) || price <= 0) {
+      toast.error('Enter a valid price');
+      return;
+    }
+
+    const urlImages = form.imageUrls.split('\n').map(s => s.trim()).filter(Boolean);
+    const images = [...uploadedImages, ...urlImages];
+
     const body = {
-      name: form.name,
+      name: form.name.trim(),
       category: form.category,
-      short_description: form.short_description,
-      description: form.description,
-      price: Number(form.price),
+      short_description: form.short_description.trim(),
+      description: form.description.trim(),
+      price,
       original_price: form.original_price ? Number(form.original_price) : undefined,
-      stock: Number(form.stock),
-      images: form.images.split('\n').map(s => s.trim()).filter(Boolean),
+      stock: Number(form.stock) || 0,
+      images,
       is_active: form.is_active,
     };
+
+    setSaving(true);
     try {
       if (modal === 'edit' && editing) {
         await apiFetch(`/products/${editing._id}`, { method: 'PATCH', body: JSON.stringify(body) }, token);
-        toast.success('Product updated');
+        toast.success('Product updated successfully');
       } else {
         await apiFetch('/products', { method: 'POST', body: JSON.stringify(body) }, token);
-        toast.success('Product added');
+        toast.success('Product added successfully');
       }
       setModal(null);
+      resetForm();
       load();
-    } catch {
-      toast.error('Failed to save product');
+    } catch (err: any) {
+      toast.error(err.message || 'Failed to save product');
+    } finally {
+      setSaving(false);
     }
   };
 
   const remove = async (id: string) => {
     if (!confirm('Deactivate this product?')) return;
-    await apiFetch(`/products/${id}`, { method: 'DELETE' }, token);
-    toast.success('Product removed');
-    load();
+    try {
+      await apiFetch(`/products/${id}`, { method: 'DELETE' }, token);
+      toast.success('Product removed');
+      load();
+    } catch (err: any) {
+      toast.error(err.message || 'Failed to remove product');
+    }
   };
 
   return (
@@ -104,7 +183,7 @@ export default function AdminProducts() {
           </div>
           <div>
             <h1 className="text-2xl font-semibold text-white">Shop Products</h1>
-            <p className="text-slate-400 text-sm">{products.length} products — upload & manage from here</p>
+            <p className="text-slate-400 text-sm">{products.length} products — upload images from your computer</p>
           </div>
         </div>
         <button onClick={openCreate} className="flex items-center gap-1.5 text-sm bg-amber-600 hover:bg-amber-500 px-4 py-2 rounded-xl text-white font-medium">
@@ -152,7 +231,7 @@ export default function AdminProducts() {
           <div className="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between p-5 border-b border-slate-800">
               <h2 className="text-lg font-semibold text-white">{modal === 'create' ? 'Add Product' : 'Edit Product'}</h2>
-              <button onClick={() => setModal(null)} className="p-1 hover:bg-slate-800 rounded-lg"><X className="w-5 h-5 text-slate-400" /></button>
+              <button onClick={() => { setModal(null); resetForm(); }} className="p-1 hover:bg-slate-800 rounded-lg"><X className="w-5 h-5 text-slate-400" /></button>
             </div>
             <div className="p-5 space-y-4">
               <div>
@@ -170,17 +249,17 @@ export default function AdminProducts() {
                 </div>
                 <div>
                   <label className="text-xs text-slate-400 mb-1 block">Stock</label>
-                  <input type="number" value={form.stock} onChange={e => setForm({ ...form, stock: e.target.value })} className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white" />
+                  <input type="number" min={0} value={form.stock} onChange={e => setForm({ ...form, stock: e.target.value })} className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white" />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="text-xs text-slate-400 mb-1 block">Price (₹) *</label>
-                  <input type="number" value={form.price} onChange={e => setForm({ ...form, price: e.target.value })} className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white" />
+                  <input type="number" min={1} value={form.price} onChange={e => setForm({ ...form, price: e.target.value })} className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white" />
                 </div>
                 <div>
                   <label className="text-xs text-slate-400 mb-1 block">Original Price (₹)</label>
-                  <input type="number" value={form.original_price} onChange={e => setForm({ ...form, original_price: e.target.value })} className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white" />
+                  <input type="number" min={0} value={form.original_price} onChange={e => setForm({ ...form, original_price: e.target.value })} className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white" />
                 </div>
               </div>
               <div>
@@ -191,10 +270,52 @@ export default function AdminProducts() {
                 <label className="text-xs text-slate-400 mb-1 block">Full Description</label>
                 <textarea rows={3} value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white resize-none" />
               </div>
+
               <div>
-                <label className="text-xs text-slate-400 mb-1 block">Image URLs (one per line)</label>
-                <textarea rows={2} value={form.images} onChange={e => setForm({ ...form, images: e.target.value })} placeholder="https://..." className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white resize-none" />
+                <label className="text-xs text-slate-400 mb-2 block">Product Images</label>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
+                  multiple
+                  className="hidden"
+                  onChange={e => handleLocalUpload(e.target.files)}
+                />
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={uploading}
+                  className="w-full flex items-center justify-center gap-2 py-3 border-2 border-dashed border-slate-600 hover:border-amber-500/60 rounded-xl text-sm text-slate-300 hover:text-white transition disabled:opacity-50"
+                >
+                  {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
+                  {uploading ? 'Uploading...' : 'Upload from Computer (JPG, PNG, WEBP — max 5MB)'}
+                </button>
+
+                {uploadedImages.length > 0 && (
+                  <div className="grid grid-cols-3 gap-2 mt-3">
+                    {uploadedImages.map(url => (
+                      <div key={url} className="relative group">
+                        <img src={url} alt="" className="w-full h-20 object-cover rounded-lg bg-slate-800" />
+                        <button
+                          type="button"
+                          onClick={() => removeImage(url)}
+                          className="absolute top-1 right-1 p-0.5 bg-red-600 rounded-full opacity-0 group-hover:opacity-100 transition"
+                        >
+                          <X className="w-3 h-3 text-white" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                <div className="mt-3">
+                  <label className="text-[11px] text-slate-500 mb-1 flex items-center gap-1">
+                    <ImageIcon className="w-3 h-3" /> Or paste image URLs (one per line)
+                  </label>
+                  <textarea rows={2} value={form.imageUrls} onChange={e => setForm({ ...form, imageUrls: e.target.value })} placeholder="https://..." className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white resize-none" />
+                </div>
               </div>
+
               {modal === 'edit' && (
                 <label className="flex items-center gap-2 text-sm text-slate-300">
                   <input type="checkbox" checked={form.is_active} onChange={e => setForm({ ...form, is_active: e.target.checked })} />
@@ -203,8 +324,11 @@ export default function AdminProducts() {
               )}
             </div>
             <div className="p-5 border-t border-slate-800 flex gap-3">
-              <button onClick={() => setModal(null)} className="flex-1 py-2.5 rounded-xl border border-slate-700 text-slate-300 text-sm">Cancel</button>
-              <button onClick={save} className="flex-1 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-sm font-medium">Save Product</button>
+              <button onClick={() => { setModal(null); resetForm(); }} className="flex-1 py-2.5 rounded-xl border border-slate-700 text-slate-300 text-sm">Cancel</button>
+              <button onClick={save} disabled={saving || uploading} className="flex-1 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-sm font-medium disabled:opacity-50 flex items-center justify-center gap-2">
+                {saving && <Loader2 className="w-4 h-4 animate-spin" />}
+                {saving ? 'Saving...' : 'Save Product'}
+              </button>
             </div>
           </div>
         </div>

@@ -44,16 +44,20 @@ router.get('/:id', async (req, res) => {
 router.post('/', protect, authorize('admin'), async (req, res) => {
   try {
     const { name, category, description, short_description, price, original_price, images, stock, specifications } = req.body;
-    if (!name || price === undefined) {
+    if (!name || price === undefined || price === null || price === '') {
       return res.status(400).json({ message: 'Name and price are required' });
     }
+    const numericPrice = Number(price);
+    if (Number.isNaN(numericPrice) || numericPrice <= 0) {
+      return res.status(400).json({ message: 'Price must be a valid positive number' });
+    }
     const product = await Product.create({
-      name,
+      name: String(name).trim(),
       slug: slugify(name) + '-' + Date.now(),
       category: category || 'Gemstones',
       description,
       short_description,
-      price: Number(price),
+      price: numericPrice,
       original_price: original_price ? Number(original_price) : undefined,
       images: images || [],
       stock: stock ?? 50,

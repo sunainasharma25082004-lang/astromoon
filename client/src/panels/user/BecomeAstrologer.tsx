@@ -1,12 +1,25 @@
 import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Sparkles, CheckCircle, Clock, XCircle, Calendar } from 'lucide-react';
 import { useAuth } from '../../context/Auth';
 import { apiFetch } from '../../config/api';
 import { useRealtimeData } from '../../hooks/useRealtimeData';
 import toast from 'react-hot-toast';
 import { formatDate } from '../../utils/dateUtils';
+import { PageHeader, PanelCard } from '../../components/user/PageHeader';
 
-export default function BecomeAstrologer() {
+const inputClass =
+  'w-full mt-1.5 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-400 transition';
+
+const DRAFT_KEY = 'astrostar_astrologer_apply_draft';
+
+interface Props {
+  embedded?: boolean;
+  publicMode?: boolean;
+}
+
+export default function BecomeAstrologer({ embedded = false, publicMode = false }: Props) {
+  const navigate = useNavigate();
   const { user, token } = useAuth();
   const [application, setApplication] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -20,18 +33,64 @@ export default function BecomeAstrologer() {
     phone: user?.phone || '',
   });
 
+  useEffect(() => {
+    try {
+      const draft = localStorage.getItem(DRAFT_KEY);
+      if (draft) {
+        const parsed = JSON.parse(draft);
+        setForm(prev => ({ ...prev, ...parsed }));
+        localStorage.removeItem(DRAFT_KEY);
+      }
+    } catch {}
+  }, []);
+
+  useEffect(() => {
+    if (user?.phone && !form.phone) {
+      setForm(prev => ({ ...prev, phone: user.phone || '' }));
+    }
+  }, [user?.phone]);
+
   const loadApplication = () => {
-    if (!token) return;
+    if (!token) {
+      setApplication(null);
+      setLoading(false);
+      return;
+    }
+    setLoading(true);
     apiFetch('/applications/astrologer/my', {}, token)
-      .then(setApplication)
-      .catch(() => {})
+      .then((data) => setApplication(data && data.status !== 'rejected' ? data : null))
+      .catch(() => setApplication(null))
       .finally(() => setLoading(false));
   };
 
   useRealtimeData(loadApplication, 'applications', [token]);
 
+  useEffect(() => {
+    if (publicMode || !token) {
+      setApplication(null);
+      setLoading(false);
+    }
+  }, [publicMode, token]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (publicMode || !token) {
+      localStorage.setItem(DRAFT_KEY, JSON.stringify(form));
+      toast('Please login to submit your application');
+      navigate(`/auth/login?redirect=${encodeURIComponent('/become-astrologer')}`);
+      return;
+    }
+
+    if (user?.role === 'admin') {
+      toast.error('Admin account cannot apply. Please create a separate user account.');
+      return;
+    }
+    if (user?.role === 'astrologer') {
+      toast.error('You are already an astrologer. Open Astro Panel from the menu.');
+      return;
+    }
+
     setSubmitting(true);
     try {
       const data = await apiFetch('/applications/astrologer', {
@@ -56,56 +115,63 @@ export default function BecomeAstrologer() {
 
   if (user?.role === 'astrologer') {
     return (
-      <div className="bg-white rounded-2xl border border-sky-100 p-10 text-center">
+      <PanelCard className="p-10 text-center">
         <CheckCircle className="w-12 h-12 text-emerald-500 mx-auto mb-3" />
-        <h2 className="text-xl font-bold">You are already an Astrologer!</h2>
-        <p className="text-gray-500 text-sm mt-2">Go to your <a href="/astro" className="text-sky-600 font-medium">Astrologer Panel</a></p>
+        <h2 className="text-xl font-bold text-slate-900">You are already an Astrologer!</h2>
+        <p className="text-slate-500 text-sm mt-2">
+          Go to your <Link to="/astro" className="text-violet-600 font-medium hover:underline">Astrologer Panel</Link>
+        </p>
+      </PanelCard>
+    );
+  }
+
+  if (loading && !publicMode && token) {
+    return (
+      <div className="p-12 text-center">
+        <div className="w-8 h-8 border-2 border-violet-200 border-t-violet-600 rounded-full animate-spin mx-auto mb-3" />
+        <p className="text-slate-400 text-sm">Loading...</p>
       </div>
     );
   }
 
-  if (loading) return <div className="p-10 text-center text-gray-400">Loading...</div>;
-
   if (application) {
     const statusConfig: Record<string, { icon: any; color: string; label: string }> = {
-      pending: { icon: Clock, color: 'text-amber-600 bg-amber-50', label: 'Under Review' },
-      interview_scheduled: { icon: Calendar, color: 'text-blue-600 bg-blue-50', label: 'Interview Scheduled' },
-      approved: { icon: CheckCircle, color: 'text-emerald-600 bg-emerald-50', label: 'Approved' },
-      rejected: { icon: XCircle, color: 'text-red-600 bg-red-50', label: 'Rejected' },
+      pending: { icon: Clock, color: 'text-amber-700 bg-amber-50 border-amber-100', label: 'Under Review' },
+      interview_scheduled: { icon: Calendar, color: 'text-blue-700 bg-blue-50 border-blue-100', label: 'Interview Scheduled' },
+      approved: { icon: CheckCircle, color: 'text-emerald-700 bg-emerald-50 border-emerald-100', label: 'Approved' },
+      rejected: { icon: XCircle, color: 'text-red-700 bg-red-50 border-red-100', label: 'Rejected' },
     };
     const cfg = statusConfig[application.status] || statusConfig.pending;
     const Icon = cfg.icon;
 
     return (
       <div>
-        <div className="mb-6 flex items-center gap-3">
-          <div className="w-10 h-10 bg-sky-100 text-sky-600 rounded-xl flex items-center justify-center"><Sparkles className="w-5 h-5" /></div>
-          <div>
-            <h1 className="text-2xl font-display font-bold text-gray-900">Become an Astrologer</h1>
-            <p className="text-gray-500 text-sm">Your application status</p>
-          </div>
-        </div>
-        <div className="bg-white rounded-2xl border border-sky-100 p-8">
-          <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6 ${cfg.color}`}>
+        {!embedded && (
+          <PageHeader
+            icon={Sparkles}
+            title="Become an Astrologer"
+            subtitle="Your application status"
+          />
+        )}
+        <PanelCard className="p-6 sm:p-8">
+          <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold border mb-6 ${cfg.color}`}>
             <Icon className="w-4 h-4" /> {cfg.label}
           </div>
 
           {application.status === 'interview_scheduled' && application.interview_date && (
             <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-4 text-sm">
               <strong>Interview:</strong> {formatDate(application.interview_date)}
-              {application.interview_notes && <p className="text-gray-600 mt-1">{application.interview_notes}</p>}
+              {application.interview_notes && <p className="text-slate-600 mt-1">{application.interview_notes}</p>}
             </div>
           )}
 
           {application.status === 'approved' && (
-            <div className="bg-emerald-50 border border-emerald-100 rounded-xl p-4 mb-4 text-sm">
-              <p className="font-semibold text-emerald-800">Congratulations! You are approved as an Astrologer.</p>
-              <div className="mt-3 bg-white rounded-lg p-3 border border-emerald-100 space-y-1">
-                <p className="text-gray-600"><span className="text-gray-500">Login ID:</span> <strong>{application.email}</strong></p>
-                <p className="text-gray-600"><span className="text-gray-500">Password:</span> <strong>Set by admin</strong> (check your notification or contact admin)</p>
-              </div>
-              <p className="text-gray-500 text-xs mt-2">Use these credentials at login → choose Astrologer → you will enter the Astro Panel.</p>
-              <a href="/auth/login?role=astrologer" className="inline-block mt-3 px-4 py-2 bg-emerald-600 text-white rounded-xl text-sm font-medium">Login to Astro Panel</a>
+            <div className="bg-emerald-50 border border-emerald-100 rounded-xl p-5 mb-4 text-sm">
+              <p className="font-semibold text-emerald-800 text-base">Congratulations! Your application is approved.</p>
+              <p className="text-emerald-700 mt-2 leading-relaxed">
+                Admin will contact you shortly with the next steps to start consulting on Astro Star.
+              </p>
+              <p className="text-slate-500 text-xs mt-3">Please keep your phone handy — our team will reach out soon.</p>
             </div>
           )}
 
@@ -116,62 +182,82 @@ export default function BecomeAstrologer() {
           )}
 
           {application.status === 'pending' && (
-            <p className="text-gray-600 text-sm">Admin is reviewing your profile. Interview will be scheduled soon. You will get a notification.</p>
+            <p className="text-slate-600 text-sm">Admin is reviewing your profile. Interview will be scheduled soon. You will get a notification.</p>
           )}
 
-          <div className="mt-6 text-xs text-gray-400 space-y-1">
+          <div className="mt-6 text-xs text-slate-400 space-y-1">
             <p>Applied: {formatDate(application.createdAt)}</p>
             <p>Experience: {application.experience} yrs • {application.expertise?.join(', ')}</p>
           </div>
-        </div>
+        </PanelCard>
       </div>
     );
   }
 
   return (
     <div>
-      <div className="mb-6 flex items-center gap-3">
-        <div className="w-10 h-10 bg-sky-100 text-sky-600 rounded-xl flex items-center justify-center"><Sparkles className="w-5 h-5" /></div>
-        <div>
-          <h1 className="text-2xl font-display font-bold text-gray-900">Become an Astrologer</h1>
-          <p className="text-gray-500 text-sm">Apply now — admin will interview &amp; approve you</p>
-        </div>
-      </div>
+      {!embedded && (
+        <PageHeader
+          icon={Sparkles}
+          title="Become an Astrologer"
+          subtitle="Apply now — admin will interview & approve you"
+        />
+      )}
 
-      <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-sky-100 p-6 space-y-4 max-w-lg">
-        <div className="bg-sky-50 rounded-xl p-4 text-sm text-sky-800">
-          After approval, admin will give you login credentials for the <strong>Astrologer Panel</strong>. Wallet payments stay in demo mode.
-        </div>
+      <PanelCard className="p-6 sm:p-8">
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div className="bg-violet-50 border border-violet-100 rounded-xl p-4 text-sm text-violet-800">
+            Submit your details — admin will review your application and contact you. Live consultations happen in the mobile app.
+          </div>
 
-        <div>
-          <label className="text-sm font-medium text-gray-700">Years of Experience</label>
-          <input type="number" min={0} value={form.experience} onChange={e => setForm({ ...form, experience: e.target.value })} required className="w-full mt-1 border rounded-xl px-4 py-2.5 text-sm" />
-        </div>
-        <div>
-          <label className="text-sm font-medium text-gray-700">Expertise (comma separated)</label>
-          <input value={form.expertise} onChange={e => setForm({ ...form, expertise: e.target.value })} className="w-full mt-1 border rounded-xl px-4 py-2.5 text-sm" />
-        </div>
-        <div>
-          <label className="text-sm font-medium text-gray-700">Languages</label>
-          <input value={form.languages} onChange={e => setForm({ ...form, languages: e.target.value })} className="w-full mt-1 border rounded-xl px-4 py-2.5 text-sm" />
-        </div>
-        <div>
-          <label className="text-sm font-medium text-gray-700">Bio</label>
-          <textarea value={form.bio} onChange={e => setForm({ ...form, bio: e.target.value })} required rows={3} className="w-full mt-1 border rounded-xl px-4 py-2.5 text-sm" placeholder="Tell us about your astrology background..." />
-        </div>
-        <div>
-          <label className="text-sm font-medium text-gray-700">Education / Certifications</label>
-          <input value={form.education} onChange={e => setForm({ ...form, education: e.target.value })} className="w-full mt-1 border rounded-xl px-4 py-2.5 text-sm" />
-        </div>
-        <div>
-          <label className="text-sm font-medium text-gray-700">Phone</label>
-          <input value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} className="w-full mt-1 border rounded-xl px-4 py-2.5 text-sm" />
-        </div>
+          <div>
+            <label className="text-sm font-medium text-slate-700">Years of Experience</label>
+            <input
+              type="number"
+              min={0}
+              value={form.experience}
+              onChange={e => setForm({ ...form, experience: e.target.value })}
+              required
+              className={inputClass}
+            />
+          </div>
+          <div>
+            <label className="text-sm font-medium text-slate-700">Expertise (comma separated)</label>
+            <input value={form.expertise} onChange={e => setForm({ ...form, expertise: e.target.value })} className={inputClass} />
+          </div>
+          <div>
+            <label className="text-sm font-medium text-slate-700">Languages</label>
+            <input value={form.languages} onChange={e => setForm({ ...form, languages: e.target.value })} className={inputClass} />
+          </div>
+          <div>
+            <label className="text-sm font-medium text-slate-700">Bio</label>
+            <textarea
+              value={form.bio}
+              onChange={e => setForm({ ...form, bio: e.target.value })}
+              required
+              rows={3}
+              className={inputClass}
+              placeholder="Tell us about your astrology background..."
+            />
+          </div>
+          <div>
+            <label className="text-sm font-medium text-slate-700">Education / Certifications</label>
+            <input value={form.education} onChange={e => setForm({ ...form, education: e.target.value })} className={inputClass} />
+          </div>
+          <div>
+            <label className="text-sm font-medium text-slate-700">Phone</label>
+            <input value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} className={inputClass} />
+          </div>
 
-        <button type="submit" disabled={submitting} className="w-full py-3 bg-gradient-to-r from-sky-600 to-blue-600 text-white rounded-xl font-semibold disabled:opacity-60">
-          {submitting ? 'Submitting...' : 'Submit Application'}
-        </button>
-      </form>
+          <button
+            type="submit"
+            disabled={submitting}
+            className="w-full py-3.5 bg-gradient-to-r from-violet-600 to-indigo-600 text-white rounded-xl font-semibold disabled:opacity-60 hover:from-violet-700 hover:to-indigo-700 transition shadow-lg shadow-violet-200"
+          >
+            {submitting ? 'Submitting...' : publicMode || !token ? 'Login & Submit Application' : 'Submit Application'}
+          </button>
+        </form>
+      </PanelCard>
     </div>
   );
 }

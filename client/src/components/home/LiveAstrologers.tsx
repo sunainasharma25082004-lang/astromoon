@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Star, ArrowRight } from 'lucide-react';
-import { apiFetch, withIds } from '../../config/api';
+import { apiFetch, withIds, mediaUrl } from '../../config/api';
 
 export function LiveAstrologers() {
   const [astrologers, setAstrologers] = useState<any[]>([]);
@@ -34,7 +34,7 @@ export function LiveAstrologers() {
           {astrologers.map((astro, index) => (
             <motion.div key={astro.id} initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }} whileHover={{ y: -5 }} className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/10 group">
               <div className="relative mb-3">
-                <img src={astro.avatar_url || 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=150'} alt={astro.full_name} className="w-full aspect-square rounded-xl object-cover" />
+                <img src={mediaUrl(astro.avatar_url) || `https://ui-avatars.com/api/?name=${encodeURIComponent(astro.full_name)}&background=7c3aed&color=fff&size=150`} alt={astro.full_name} className="w-full aspect-square rounded-xl object-cover" />
                 {astro.availability_status === 'online' && (
                   <span className="absolute bottom-2 left-2 px-2 py-1 bg-green-500 text-white text-xs rounded-full">Online</span>
                 )}

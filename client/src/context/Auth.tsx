@@ -44,6 +44,7 @@ interface AuthContextType {
   token: string | null;
   signIn: (email: string, password: string) => Promise<User>; 
   signUp: (email: string, password: string, full_name: string, role?: 'user' | 'astrologer', extra?: Record<string, unknown>) => Promise<User>;
+  registerAccount: (email: string, password: string, full_name: string, extra?: Record<string, unknown>) => Promise<void>;
   signInOtp: (phone: string, otp: string, full_name?: string) => Promise<User>;
   sendOtp: (phone: string) => Promise<void>;
   signInGoogle: (data: { google_id: string; email: string; full_name: string; avatar_url?: string }) => Promise<User>;
@@ -159,11 +160,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return loggedUser;
   };
 
+  const registerAccount = async (email: string, password: string, full_name: string, extra: Record<string, unknown> = {}): Promise<void> => {
+    const res = await apiFetch('/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password, full_name, role: 'user', ...extra })
+    });
+    const data = await parseApiResponse(res);
+    if (!res.ok) throw new Error(data.message || 'Registration failed');
+  };
+
   const sendOtp = async (phone: string) => {
+    const normalized = phone.replace(/\D/g, '').slice(-10);
     const res = await apiFetch('/auth/otp/send', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ phone }),
+      body: JSON.stringify({ phone: normalized }),
     });
     const data = await parseApiResponse(res);
     if (!res.ok) throw new Error(data.message || 'Failed to send OTP');
@@ -171,10 +183,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signInOtp = async (phone: string, otp: string, full_name?: string): Promise<User> => {
+    const normalized = phone.replace(/\D/g, '').slice(-10);
     const res = await apiFetch('/auth/otp/verify', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ phone, otp, full_name }),
+      body: JSON.stringify({ phone: normalized, otp, full_name }),
     });
     const data = await parseApiResponse(res);
     if (!res.ok) throw new Error(data.message || 'OTP verification failed');
@@ -217,6 +230,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signOut = async () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
     setToken(null);
     applyUser(null);
     setIsInitializing(false);
@@ -233,6 +247,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     token,
     signIn,
     signUp,
+    registerAccount,
     sendOtp,
     signInOtp,
     signInGoogle,

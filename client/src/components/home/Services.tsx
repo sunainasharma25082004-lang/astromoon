@@ -4,13 +4,13 @@ import { Sparkles, Heart, Calendar, Calculator, Globe, BookOpen, Home, Gift } fr
 
 const services = [
   { icon: Sparkles, title: 'Free Kundli', path: '/kundli', color: 'from-amber-400 to-orange-500' },
-  { icon: Heart, title: 'Kundli Matching', path: '/kundli/matching', color: 'from-pink-400 to-rose-500' },
-  { icon: Calendar, title: 'Panchang', path: '/panchang', color: 'from-green-400 to-emerald-500' },
-  { icon: Calculator, title: 'Calculators', path: '/calculators', color: 'from-blue-400 to-indigo-500' },
+  { icon: Heart, title: 'Kundli Matching', path: '/kundli', color: 'from-pink-400 to-rose-500' },
+  { icon: Calendar, title: 'Daily Horoscope', path: '/horoscope', color: 'from-green-400 to-emerald-500' },
+  { icon: Calculator, title: 'Birth Chart', path: '/kundli', color: 'from-blue-400 to-indigo-500' },
   { icon: Globe, title: 'Horoscope', path: '/horoscope', color: 'from-purple-400 to-violet-500' },
-  { icon: BookOpen, title: 'Learn Astrology', path: '/learn', color: 'from-cyan-400 to-teal-500' },
-  { icon: Home, title: 'Vastu Tips', path: '/vastu', color: 'from-lime-400 to-green-500' },
-  { icon: Gift, title: 'Remedies', path: '/remedies', color: 'from-red-400 to-rose-500' },
+  { icon: BookOpen, title: 'Become Astrologer', path: '/become-astrologer', color: 'from-cyan-400 to-teal-500' },
+  { icon: Home, title: 'Spiritual Shop', path: '/shop', color: 'from-lime-400 to-green-500' },
+  { icon: Gift, title: 'Browse Astrologers', path: '/astrologers', color: 'from-red-400 to-rose-500' },
 ];
 
 export function FreeServices() {

@@ -1,4 +1,4 @@
-export const APP_NAME = 'Celestial Guidance';
+export const APP_NAME = 'Astro Star';
 
 export const APP_PLAY_STORE_URL =
   import.meta.env.VITE_PLAY_STORE_URL || 'https://play.google.com/store/apps';

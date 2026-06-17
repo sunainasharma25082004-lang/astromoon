@@ -33,7 +33,8 @@ export const authorize = (...roles) => {
     if (!req.user) {
       return res.status(401).json({ message: 'Not authenticated' });
     }
-    if (!roles.includes(req.user.role)) {
+    const role = req.user.role || 'user';
+    if (!roles.includes(role)) {
       return res.status(403).json({ message: 'Forbidden: insufficient permissions' });
     }
     next();

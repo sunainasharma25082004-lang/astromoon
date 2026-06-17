@@ -28,7 +28,9 @@ import notificationRoutes from './routes/notifications.js';
 import settingsRoutes from './routes/settings.js';
 import contentRoutes from './routes/content.js';
 import applicationRoutes from './routes/applications.js';
+import uploadRoutes from './routes/upload.js';
 import { processMinuteBilling } from './utils/billing.js';
+import { ensureAdmin } from './utils/ensureAdmin.js';
 
 dotenv.config();
 
@@ -211,8 +213,11 @@ io.on('connection', (socket) => {
 
 // Middleware
 app.use(cors(corsOptions));
-app.use(express.json());
+app.use(express.json({ limit: '12mb' }));
 app.use(morgan('dev'));
+
+const uploadsPath = path.join(__dirname, '../uploads');
+app.use('/uploads', express.static(uploadsPath));
 
 // Make io available to routes if needed
 app.set('io', io);
@@ -235,11 +240,12 @@ app.use('/api/notifications', notificationRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/content', contentRoutes);
 app.use('/api/applications', applicationRoutes);
+app.use('/api/upload', uploadRoutes);
 
 app.get('/', (req, res) => {
   res.json({
     status: 'ok',
-    message: 'Celestial Guidance API',
+    message: 'Astro Star API',
     health: '/api/health',
     apiBase: '/api',
   });
@@ -247,7 +253,7 @@ app.get('/', (req, res) => {
 
 // Health
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', message: 'Celestial Guidance API running' });
+  res.json({ status: 'ok', message: 'Astro Star API running' });
 });
 
 // Serve React build in production (optional combined deploy)
@@ -273,6 +279,52 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500).json({ message: err.message || 'Server error' });
 });
 
+let isShuttingDown = false;
+
+function shutdown(signal) {
+  if (isShuttingDown) return;
+  isShuttingDown = true;
+  console.log(`\n${signal} received — closing server...`);
+  httpServer.close(() => {
+    mongoose.connection.close(false).finally(() => process.exit(0));
+  });
+  setTimeout(() => process.exit(0), 3000).unref();
+}
+
+process.on('SIGINT', () => shutdown('SIGINT'));
+process.on('SIGTERM', () => shutdown('SIGTERM'));
+
+function listenWithRetry(attempt = 1) {
+  return new Promise((resolve, reject) => {
+    const onError = (err) => {
+      httpServer.off('listening', onListening);
+      if (err.code === 'EADDRINUSE' && attempt < 4) {
+        console.warn(`Port ${PORT} busy, retrying in 1s... (${attempt}/3)`);
+        setTimeout(() => listenWithRetry(attempt + 1).then(resolve).catch(reject), 1000);
+        return;
+      }
+      if (err.code === 'EADDRINUSE') {
+        console.error(`\n❌ Port ${PORT} is already in use.`);
+        console.error('   Close other server terminals, then run: npm run kill-port');
+        console.error('   Or: npm run dev (auto-cleans port on start)\n');
+      }
+      reject(err);
+    };
+
+    const onListening = () => {
+      httpServer.off('error', onError);
+      console.log(`🚀 Backend running on http://localhost:${PORT}`);
+      console.log(`   API base: http://localhost:${PORT}/api`);
+      console.log(`   Socket.io ready for real-time chat & video`);
+      resolve();
+    };
+
+    httpServer.once('error', onError);
+    httpServer.once('listening', onListening);
+    httpServer.listen(PORT);
+  });
+}
+
 // Connect DB and start
 const start = async () => {
   try {
@@ -287,14 +339,10 @@ const start = async () => {
     }
     await mongoose.connect(mongoUri);
     console.log('✅ MongoDB connected');
-
-    httpServer.listen(PORT, () => {
-      console.log(`🚀 Backend running on http://localhost:${PORT}`);
-      console.log(`   API base: http://localhost:${PORT}/api`);
-      console.log(`   Socket.io ready for real-time chat & video`);
-    });
+    await ensureAdmin();
+    await listenWithRetry();
   } catch (err) {
-    console.error('Failed to start server:', err);
+    console.error('Failed to start server:', err.message || err);
     process.exit(1);
   }
 };

@@ -5,9 +5,11 @@
   "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "dev": "node --watch src/index.js",
+    "kill-port": "powershell -ExecutionPolicy Bypass -File scripts/kill-port.ps1",
+    "dev": "node scripts/dev.mjs",
     "start": "node src/index.js",
-    "seed": "node src/utils/seed.js"
+    "seed": "node src/utils/seed.js",
+    "reset-admin": "node scripts/reset-admin.mjs"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

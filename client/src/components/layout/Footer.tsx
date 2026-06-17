@@ -18,9 +18,9 @@ export function Footer() {
             </a>
           </div>
 
-          {[['Explore', [{ label: 'Astrologers', path: '/astrologers' }, { label: 'Shop', path: '/shop' }, { label: 'Blog', path: '/blog' }, { label: 'Free Kundli', path: '/kundli' }]],
+          {[['Explore', [{ label: 'Astrologers', path: '/astrologers' }, { label: 'Shop', path: '/shop' }, { label: 'Become Astrologer', path: '/become-astrologer' }, { label: 'Free Kundli', path: '/kundli' }]],
             ['Tools', [{ label: 'Horoscope', path: '/horoscope' }, { label: 'Kundli Generator', path: '/kundli' }]],
-            ['Support', [{ label: 'Help & FAQ', path: '/#faq' }, { label: 'Privacy', path: '/#privacy' }, { label: 'Terms', path: '/#terms' }]]].map(([title, links]: any) => (
+            ['Support', [{ label: 'Help & FAQ', path: '/#faq' }, { label: 'Privacy', path: '/privacy' }, { label: 'Terms', path: '/terms' }]]].map(([title, links]: any) => (
               <div key={title}>
                 <h3 className="font-semibold text-gold-light mb-4">{title}</h3>
                 <ul className="space-y-2">{links.map((link: any) => (<li key={link.path}><Link to={link.path} className="text-sm text-white/70 hover:text-white transition-colors">{link.label}</Link></li>))}</ul>

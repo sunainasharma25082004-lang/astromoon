@@ -1,6 +1,6 @@
 export { Button } from './Button';
 export { Modal } from './Modal';
 export { StarRating } from './StarRating';
-export { AstrologerCard } from './AstrologerCard';
 export { ProtectedRoute } from './ProtectedRoute';
-export { ConsultationModal } from './ConsultationModal';
+export { InstallAppModal } from './InstallAppModal';
+export type { ConsultType } from './InstallAppModal';

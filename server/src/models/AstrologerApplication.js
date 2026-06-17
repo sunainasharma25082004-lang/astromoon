@@ -26,6 +26,7 @@ const astrologerApplicationSchema = new mongoose.Schema({
   rejection_reason: String,
   astrologer_profile_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Astrologer' },
   approved_at: Date,
+  astrologer_login_password: String,
 }, { timestamps: true });
 
 astrologerApplicationSchema.index({ user_id: 1 });

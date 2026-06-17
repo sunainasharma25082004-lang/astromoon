@@ -1,18 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Wallet, ShoppingBag, Heart, Users, Download } from 'lucide-react';
+import { ShoppingBag, Heart, Star, Download, ArrowRight, Package, Sparkles } from 'lucide-react';
 import { useAuth } from '../../context/Auth';
 import { apiFetch } from '../../config/api';
 import { useRealtimeData } from '../../hooks/useRealtimeData';
 import { AppDownloadCTA } from '../../components/common/AppDownloadCTA';
 import { APP_PLAY_STORE_URL } from '../../constants';
+import { PanelCard } from '../../components/user/PageHeader';
 
 export default function UserDashboardHome() {
   const { user, token } = useAuth();
   const [orders, setOrders] = useState<any[]>([]);
-
-  const wallet = user?.wallet_balance || 0;
 
   const loadOrders = async () => {
     if (!token) return;
@@ -24,78 +23,125 @@ export default function UserDashboardHome() {
 
   useRealtimeData(loadOrders, 'orders', [token]);
 
+  const savedCount = JSON.parse(localStorage.getItem('celestial_saved_astrologers') || '[]').length;
+
   const stats = [
-    { label: 'Wallet Balance', value: `₹${Math.floor(wallet)}`, icon: Wallet, color: 'bg-sky-100 text-sky-600', path: '/wallet' },
-    { label: 'Shop Orders', value: orders.length.toString(), icon: ShoppingBag, color: 'bg-amber-100 text-amber-600', path: '/dashboard/orders' },
-    { label: 'Saved Astrologers', value: JSON.parse(localStorage.getItem('celestial_saved_astrologers') || '[]').length.toString(), icon: Heart, color: 'bg-rose-100 text-rose-600', path: '/dashboard/saved' },
+    { label: 'Shop Orders', value: orders.length, icon: ShoppingBag, gradient: 'from-amber-500 to-orange-500', path: '/dashboard/orders' },
+    { label: 'Saved Astrologers', value: savedCount, icon: Heart, gradient: 'from-rose-500 to-pink-500', path: '/dashboard/saved' },
   ];
 
   return (
-    <>
-      <div className="mb-6 flex justify-between items-end">
-        <div>
-          <h1 className="text-2xl font-display font-bold text-gray-900">Welcome, {user?.full_name?.split(' ')[0]}!</h1>
-          <p className="text-gray-500 text-sm mt-1">Manage your account, shop orders & saved astrologers</p>
+    <div className="space-y-6">
+      {/* Welcome banner */}
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-violet-600 via-indigo-600 to-violet-800 p-6 sm:p-8 text-white shadow-xl shadow-violet-200/40"
+      >
+        <div className="absolute top-0 right-0 w-64 h-64 bg-amber-400/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
+        <div className="relative flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <p className="text-violet-200 text-sm font-medium mb-1 flex items-center gap-1.5">
+              <Sparkles className="w-4 h-4 text-amber-300" /> Welcome back
+            </p>
+            <h1 className="text-2xl sm:text-3xl font-display font-bold">
+              {user?.full_name?.split(' ')[0] || 'User'}
+            </h1>
+            <p className="text-white/75 text-sm mt-2 max-w-md">
+              Manage orders, saved astrologers & apply to join as an astrologer on Astro Star.
+            </p>
+          </div>
+          <Link
+            to="/shop"
+            className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white text-violet-700 font-semibold rounded-xl hover:bg-violet-50 transition shadow-lg shrink-0"
+          >
+            Visit Shop <ArrowRight className="w-4 h-4" />
+          </Link>
         </div>
-        <Link to="/astrologers" className="text-sm px-4 py-2 bg-sky-600 text-white rounded-xl hover:bg-sky-700 font-medium">
-          Browse Astrologers →
-        </Link>
-      </div>
+      </motion.div>
 
-      <div className="grid sm:grid-cols-3 gap-4 mb-6">
-        {stats.map(stat => (
+      {/* Stats */}
+      <div className="grid sm:grid-cols-2 gap-4">
+        {stats.map((stat, i) => (
           <Link key={stat.label} to={stat.path}>
-            <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="bg-white rounded-xl shadow-sm border border-sky-100 p-5 hover:shadow-md transition">
-              <div className={`w-10 h-10 rounded-lg ${stat.color} flex items-center justify-center mb-3`}>
-                <stat.icon className="w-5 h-5" />
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.08 }}
+              className="group bg-white rounded-2xl border border-slate-200/80 p-5 hover:shadow-lg hover:border-violet-200 transition-all"
+            >
+              <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${stat.gradient} flex items-center justify-center mb-4 shadow-md group-hover:scale-105 transition-transform`}>
+                <stat.icon className="w-5 h-5 text-white" />
               </div>
-              <div className="text-2xl font-bold text-gray-900">{stat.value}</div>
-              <div className="text-sm text-gray-500">{stat.label}</div>
+              <div className="text-3xl font-bold text-slate-900">{stat.value}</div>
+              <div className="text-sm text-slate-500 mt-0.5">{stat.label}</div>
             </motion.div>
           </Link>
         ))}
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-6 mb-6">
-        <div className="bg-white rounded-2xl shadow-sm border border-sky-100 overflow-hidden">
-          <div className="flex items-center justify-between p-5 border-b border-sky-50">
-            <h2 className="font-semibold text-gray-900">Recent Orders</h2>
-            <Link to="/dashboard/orders" className="text-sm text-sky-600 font-medium">View All</Link>
+      {/* Become astrologer CTA */}
+      <Link to="/become-astrologer" className="block group">
+        <div className="relative overflow-hidden rounded-2xl border-2 border-violet-200 bg-gradient-to-r from-violet-50 to-indigo-50 p-5 sm:p-6 hover:border-violet-300 hover:shadow-md transition-all">
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-violet-600 flex items-center justify-center shadow-lg shadow-violet-200">
+                <Star className="w-6 h-6 text-amber-300" />
+              </div>
+              <div>
+                <h3 className="font-display font-bold text-slate-900">Become an Astrologer</h3>
+                <p className="text-sm text-slate-600 mt-0.5">Apply now — admin will review your profile</p>
+              </div>
+            </div>
+            <ArrowRight className="w-5 h-5 text-violet-600 group-hover:translate-x-1 transition-transform shrink-0" />
           </div>
-          <div className="divide-y divide-sky-50">
+        </div>
+      </Link>
+
+      <div className="grid lg:grid-cols-2 gap-6">
+        <PanelCard>
+          <div className="flex items-center justify-between p-5 border-b border-slate-100">
+            <h2 className="font-semibold text-slate-900 flex items-center gap-2">
+              <Package className="w-4 h-4 text-violet-600" /> Recent Orders
+            </h2>
+            <Link to="/dashboard/orders" className="text-sm text-violet-600 font-medium hover:underline">View all</Link>
+          </div>
+          <div className="divide-y divide-slate-50">
             {orders.length === 0 ? (
-              <div className="p-8 text-center text-sm text-gray-500">
-                No orders yet. <Link to="/shop" className="text-sky-600 font-medium">Visit the shop</Link>
+              <div className="p-8 text-center text-sm text-slate-500">
+                No orders yet.{' '}
+                <Link to="/shop" className="text-violet-600 font-semibold hover:underline">Browse shop</Link>
               </div>
             ) : (
-              orders.slice(0, 3).map((o: any) => (
-                <div key={o._id} className="p-4 flex items-center justify-between">
+              orders.slice(0, 4).map((o: any) => (
+                <div key={o._id} className="px-5 py-4 flex items-center justify-between hover:bg-slate-50/50 transition">
                   <div>
-                    <div className="font-medium text-sm">{(o.items || []).length} item(s)</div>
-                    <div className="text-xs text-gray-500 capitalize">{o.status}</div>
+                    <div className="font-medium text-sm text-slate-800">{(o.items || []).length} item(s)</div>
+                    <div className="text-xs text-slate-400 capitalize mt-0.5">{o.status}</div>
                   </div>
-                  <div className="font-semibold text-sm text-emerald-600">₹{o.total}</div>
+                  <div className="font-bold text-sm text-emerald-600">₹{o.total}</div>
                 </div>
               ))
             )}
           </div>
+        </PanelCard>
+
+        <AppDownloadCTA subtitle="Live chat, call & video with astrologers — available in our mobile app." />
+      </div>
+
+      <a
+        href={APP_PLAY_STORE_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center gap-4 p-5 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white hover:shadow-lg transition group"
+      >
+        <Download className="w-8 h-8 opacity-90 group-hover:scale-110 transition-transform" />
+        <div>
+          <h3 className="font-semibold">Download Astro Star App</h3>
+          <p className="text-white/80 text-sm">For live consultations with astrologers</p>
         </div>
-
-        <AppDownloadCTA subtitle="Chat, audio call & video consultations are available in our mobile app — not on the website." />
-      </div>
-
-      <div className="grid sm:grid-cols-2 gap-4">
-        <Link to="/astrologers" className="bg-gradient-to-r from-sky-500 to-blue-600 rounded-xl p-5 text-white hover:shadow-lg transition">
-          <Users className="w-6 h-6 mb-2 opacity-80" />
-          <h3 className="font-semibold mb-1">Explore Astrologers</h3>
-          <p className="text-white/80 text-sm">Read profiles, reviews & expertise details</p>
-        </Link>
-        <a href={APP_PLAY_STORE_URL} target="_blank" rel="noopener noreferrer" className="bg-gradient-to-r from-emerald-500 to-teal-600 rounded-xl p-5 text-white hover:shadow-lg transition">
-          <Download className="w-6 h-6 mb-2 opacity-80" />
-          <h3 className="font-semibold mb-1">Download App</h3>
-          <p className="text-white/80 text-sm">For live chat, call & video consultations</p>
-        </a>
-      </div>
-    </>
+        <ArrowRight className="w-5 h-5 ml-auto opacity-70 group-hover:translate-x-1 transition-transform" />
+      </a>
+    </div>
   );
 }

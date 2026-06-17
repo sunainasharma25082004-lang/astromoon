@@ -3,14 +3,26 @@ import AstrologerApplication from '../models/AstrologerApplication.js';
 import User from '../models/User.js';
 import Astrologer from '../models/Astrologer.js';
 import Notification from '../models/Notification.js';
-import { protect, authorize } from '../middleware/auth.js';
+import { protect } from '../middleware/auth.js';
 import { createNotification } from '../utils/helpers.js';
 import { emitPanelUpdate, RESOURCES } from '../utils/realtime.js';
 
 const router = express.Router();
 
+/** Any normal account (not admin / not already astrologer) may apply */
+function allowAstrologerApplicant(req, res, next) {
+  const role = req.user.role || 'user';
+  if (role === 'admin') {
+    return res.status(403).json({ message: 'Admin accounts cannot apply. Please register a separate user account.' });
+  }
+  if (role === 'astrologer') {
+    return res.status(400).json({ message: 'You are already an astrologer. Go to Astro Panel to login.' });
+  }
+  next();
+}
+
 // User: submit become-astrologer request
-router.post('/astrologer', protect, authorize('user'), async (req, res) => {
+router.post('/astrologer', protect, allowAstrologerApplicant, async (req, res) => {
   try {
     const existing = await AstrologerApplication.findOne({
       user_id: req.user._id,
@@ -73,6 +85,7 @@ router.post('/astrologer', protect, authorize('user'), async (req, res) => {
 // User: check own application status
 router.get('/astrologer/my', protect, async (req, res) => {
   const application = await AstrologerApplication.findOne({ user_id: req.user._id })
+    .select('-astrologer_login_password')
     .sort({ createdAt: -1 });
   res.json(application || null);
 });

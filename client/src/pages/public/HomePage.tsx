@@ -1,4 +1,4 @@
-import { HeroSection, LiveAstrologers, DailyHoroscope, FreeServices, ShopSection, Testimonials, BlogSection, FAQ, CTASection } from '../../components/home';
+import { HeroSection, LiveAstrologers, DailyHoroscope, FreeServices, ShopSection, Testimonials, BecomeAstrologerSection, FAQ, CTASection } from '../../components/home';
 
 export function HomePage() {
   return (
@@ -9,7 +9,7 @@ export function HomePage() {
       <FreeServices />
       <ShopSection />
       <Testimonials />
-      <BlogSection />
+      <BecomeAstrologerSection />
       <FAQ />
       <CTASection />
     </div>

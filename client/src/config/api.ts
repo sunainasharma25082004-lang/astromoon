@@ -23,8 +23,8 @@ export function createSocketOptions(token?: string | null) {
       transports: ['polling', 'websocket'] as ('polling' | 'websocket')[],
       auth: token ? { token } : undefined,
       reconnection: true,
-      reconnectionAttempts: 15,
-      reconnectionDelay: 1000,
+      reconnectionAttempts: 8,
+      reconnectionDelay: 3000,
       timeout: 20000,
     },
   };
@@ -47,7 +47,9 @@ export async function apiFetch(path: string, options: RequestInit = {}, token?: 
   try {
     res = await fetch(`${API_BASE}${path}`, { ...options, headers });
   } catch {
-    throw new Error('Cannot connect to server. Please check your connection.');
+    throw new Error(
+      'Cannot connect to server. Start the backend: cd server && npm run dev (or run npm run dev from project root).'
+    );
   }
   const text = await res.text();
   let data: any = {};
@@ -64,4 +66,12 @@ export function withId<T extends Record<string, any>>(item: T): T & { id: string
 
 export function withIds<T extends Record<string, any>>(items: T[]): (T & { id: string })[] {
   return Array.isArray(items) ? items.map(withId) : [];
+}
+
+/** Resolve uploaded image paths (/uploads/...) or absolute URLs */
+export function mediaUrl(path?: string | null): string {
+  if (!path) return '';
+  if (path.startsWith('http://') || path.startsWith('https://') || path.startsWith('data:')) return path;
+  if (path.startsWith('/')) return path;
+  return `/${path}`;
 }

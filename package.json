@@ -7,7 +7,7 @@
     "dev": "npm run dev:full",
     "dev:client": "cd client && npm run dev",
     "dev:server": "cd server && npm run dev",
-    "dev:full": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
+    "dev:full": "concurrently -n server,client -c magenta,cyan \"npm run dev:server\" \"npm run dev:client\"",
     "install:all": "cd client && npm install && cd ../server && npm install",
     "install:server": "cd server && npm install",
     "postinstall": "npm run install:server",

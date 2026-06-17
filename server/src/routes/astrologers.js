@@ -118,6 +118,16 @@ router.get('/earnings/summary', protect, authorize('astrologer'), async (req, re
   }
 });
 
+router.get('/me/profile', protect, authorize('astrologer'), async (req, res) => {
+  try {
+    const astro = await Astrologer.findById(req.user.astrologer_profile_id);
+    if (!astro) return res.status(404).json({ message: 'Astrologer profile not found' });
+    res.json(astro);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 router.get('/:id', async (req, res) => {
   try {
     if (!isValidObjectId(req.params.id)) {
@@ -142,11 +152,27 @@ router.get('/:id', async (req, res) => {
 
 router.patch('/profile', protect, authorize('astrologer'), async (req, res) => {
   try {
-    const allowed = ['full_name', 'bio', 'expertise', 'languages', 'skills', 'experience', 'education', 'certifications', 'avatar_url', 'available_slots'];
+    const allowed = [
+      'full_name', 'bio', 'expertise', 'languages', 'skills', 'services',
+      'experience', 'education', 'certifications', 'avatar_url', 'gallery_images',
+      'available_slots', 'documents',
+    ];
     const updates = {};
     allowed.forEach(f => { if (req.body[f] !== undefined) updates[f] = req.body[f]; });
 
+    if (updates.experience !== undefined) {
+      updates.experience = Math.max(0, Number(updates.experience) || 0);
+    }
+
     const astro = await Astrologer.findByIdAndUpdate(req.user.astrologer_profile_id, updates, { new: true });
+    const io = req.app.get('io');
+    if (io && astro) {
+      emitPanelUpdate(io, {
+        resource: RESOURCES.ASTROLOGERS,
+        astroIds: [astro._id],
+        admin: true,
+      });
+    }
     res.json(astro);
   } catch (error) {
     res.status(500).json({ message: error.message });

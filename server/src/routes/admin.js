@@ -400,13 +400,13 @@ router.post('/applications/:id/approve', async (req, res) => {
     app.astrologer_profile_id = astro._id;
     await app.save();
 
-    const credMessage = `Login ID: ${user.email} — use the password set by admin at /auth/login → Astrologer Panel.`;
+    const userMessage = 'Your application is approved. Admin will contact you shortly with the next steps.';
 
     await createNotification(Notification, user._id, {
-      title: 'Congratulations! You are now an Astrologer',
-      message: `Your application is approved. ${credMessage}`,
+      title: 'Application Approved',
+      message: userMessage,
       type: 'system',
-      action_url: '/astro',
+      action_url: '/become-astrologer',
     });
 
     const io = req.app.get('io');
@@ -420,7 +420,7 @@ router.post('/applications/:id/approve', async (req, res) => {
       emitPanelUpdate(io, {
         resource: RESOURCES.NOTIFICATIONS,
         userIds: [user._id],
-        payload: { title: 'You are now an Astrologer!', message: credMessage },
+        payload: { title: 'Application Approved', message: userMessage },
       });
     }
 

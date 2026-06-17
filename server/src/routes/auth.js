@@ -6,7 +6,7 @@ import Astrologer from '../models/Astrologer.js';
 import OtpSession from '../models/OtpSession.js';
 import PlatformSettings from '../models/PlatformSettings.js';
 import { protect } from '../middleware/auth.js';
-import { generateReferralCode, generateOtp } from '../utils/helpers.js';
+import { generateReferralCode, generateOtp, normalizePhone, normalizeEmail } from '../utils/helpers.js';
 
 const router = express.Router();
 
@@ -39,15 +39,40 @@ async function checkUserAccess(user, res) {
   return true;
 }
 
+function duplicateKeyMessage(error) {
+  if (error?.code !== 11000) return null;
+  const field = Object.keys(error.keyPattern || {})[0];
+  if (field === 'email') return 'This email is already registered. Please login instead.';
+  if (field === 'phone') return 'This phone number is already linked to another account.';
+  return 'Account already exists with these details.';
+}
+
 router.post('/register', async (req, res) => {
   try {
-    const { full_name, email, password, phone, referral_code } = req.body;
+    const full_name = String(req.body.full_name || '').trim();
+    const email = normalizeEmail(req.body.email);
+    const password = String(req.body.password || '');
+    const phone = normalizePhone(req.body.phone);
+
     if (!full_name || !email || !password) {
-      return res.status(400).json({ message: 'Please provide all fields' });
+      return res.status(400).json({ message: 'Name, email and password are required' });
+    }
+    if (password.length < 6) {
+      return res.status(400).json({ message: 'Password must be at least 6 characters' });
+    }
+    if (!phone || phone.length !== 10) {
+      return res.status(400).json({ message: 'Valid 10-digit phone number is required' });
     }
 
-    const existing = await User.findOne({ email });
-    if (existing) return res.status(400).json({ message: 'User already exists' });
+    const existingEmail = await User.findOne({ email });
+    if (existingEmail) {
+      return res.status(400).json({ message: 'This email is already registered. Please login instead.' });
+    }
+
+    const existingPhone = await User.findOne({ phone });
+    if (existingPhone) {
+      return res.status(400).json({ message: 'This phone number is already linked to another account.' });
+    }
 
     const settings = await PlatformSettings.getSettings();
     const role = ['user', 'astrologer'].includes(req.body.role) ? req.body.role : 'user';
@@ -69,13 +94,18 @@ router.post('/register', async (req, res) => {
     }
 
     const user = await User.create({
-      full_name, email, password, phone,
-      wallet_balance: settings.signup_bonus || 100,
-      role, astrologer_profile_id,
+      full_name,
+      email,
+      password,
+      phone,
+      wallet_balance: settings.signup_bonus || 0,
+      role,
+      astrologer_profile_id,
       referral_code: generateReferralCode(full_name),
       free_minutes_remaining: settings.free_trial_minutes || 5,
     });
 
+    const { referral_code } = req.body;
     if (referral_code) {
       const referrer = await User.findOne({ referral_code: referral_code.toUpperCase() });
       if (referrer && !referrer._id.equals(user._id)) {
@@ -91,13 +121,19 @@ router.post('/register', async (req, res) => {
     const token = generateToken(user._id);
     res.status(201).json({ token, user: formatUser(user) });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    const dup = duplicateKeyMessage(error);
+    res.status(dup ? 400 : 500).json({ message: dup || error.message });
   }
 });
 
 router.post('/login', async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const email = normalizeEmail(req.body.email);
+    const password = String(req.body.password || '');
+    if (!email || !password) {
+      return res.status(400).json({ message: 'Email and password are required' });
+    }
+
     const user = await User.findOne({ email });
     if (!user || !(await user.comparePassword(password))) {
       return res.status(401).json({ message: 'Invalid email or password' });
@@ -117,8 +153,10 @@ router.post('/login', async (req, res) => {
 
 router.post('/otp/send', async (req, res) => {
   try {
-    const { phone } = req.body;
-    if (!phone || phone.length < 10) return res.status(400).json({ message: 'Valid phone required' });
+    const phone = normalizePhone(req.body.phone);
+    if (!phone || phone.length !== 10) {
+      return res.status(400).json({ message: 'Valid 10-digit phone number required' });
+    }
 
     const otp = generateOtp();
     const expires_at = new Date(Date.now() + 10 * 60 * 1000);
@@ -134,7 +172,14 @@ router.post('/otp/send', async (req, res) => {
 
 router.post('/otp/verify', async (req, res) => {
   try {
-    const { phone, otp, full_name } = req.body;
+    const phone = normalizePhone(req.body.phone);
+    const otp = String(req.body.otp || '').trim();
+    const full_name = String(req.body.full_name || '').trim();
+
+    if (!phone || phone.length !== 10) {
+      return res.status(400).json({ message: 'Valid 10-digit phone number required' });
+    }
+
     const session = await OtpSession.findOne({ phone, verified: false }).sort({ createdAt: -1 });
     if (!session || session.expires_at < new Date()) {
       return res.status(400).json({ message: 'OTP expired. Please request again.' });
@@ -150,14 +195,17 @@ router.post('/otp/verify', async (req, res) => {
 
     let user = await User.findOne({ phone });
     if (!user) {
+      if (!full_name) {
+        return res.status(400).json({ message: 'Full name is required for new account' });
+      }
       const settings = await PlatformSettings.getSettings();
       user = await User.create({
-        full_name: full_name || 'User',
+        full_name,
         email: `${phone}@phone.user`,
         password: crypto.randomBytes(16).toString('hex'),
         phone,
-        wallet_balance: settings.signup_bonus || 100,
-        referral_code: generateReferralCode(full_name || 'USER'),
+        wallet_balance: settings.signup_bonus || 0,
+        referral_code: generateReferralCode(full_name),
         free_minutes_remaining: settings.free_trial_minutes || 5,
       });
     }
@@ -166,23 +214,29 @@ router.post('/otp/verify', async (req, res) => {
     const token = generateToken(user._id);
     res.json({ token, user: formatUser(user) });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    const dup = duplicateKeyMessage(error);
+    res.status(dup ? 400 : 500).json({ message: dup || error.message });
   }
 });
 
 router.post('/google', async (req, res) => {
   try {
     const { google_id, email, full_name, avatar_url } = req.body;
-    if (!google_id || !email) return res.status(400).json({ message: 'Google credentials required' });
+    const normalizedEmail = normalizeEmail(email);
+    if (!google_id || !normalizedEmail) {
+      return res.status(400).json({ message: 'Google credentials required' });
+    }
 
-    let user = await User.findOne({ $or: [{ google_id }, { email }] });
+    let user = await User.findOne({ $or: [{ google_id }, { email: normalizedEmail }] });
     if (!user) {
       const settings = await PlatformSettings.getSettings();
       user = await User.create({
-        google_id, email, full_name: full_name || 'Google User',
+        google_id,
+        email: normalizedEmail,
+        full_name: full_name || 'Google User',
         password: crypto.randomBytes(16).toString('hex'),
         avatar_url,
-        wallet_balance: settings.signup_bonus || 100,
+        wallet_balance: settings.signup_bonus || 0,
         referral_code: generateReferralCode(full_name || 'USER'),
         free_minutes_remaining: settings.free_trial_minutes || 5,
       });
@@ -196,13 +250,14 @@ router.post('/google', async (req, res) => {
     const token = generateToken(user._id);
     res.json({ token, user: formatUser(user) });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    const dup = duplicateKeyMessage(error);
+    res.status(dup ? 400 : 500).json({ message: dup || error.message });
   }
 });
 
 router.post('/forgot-password', async (req, res) => {
   try {
-    const user = await User.findOne({ email: req.body.email });
+    const user = await User.findOne({ email: normalizeEmail(req.body.email) });
     if (!user) return res.json({ success: true, message: 'If account exists, reset link sent' });
 
     const token = crypto.randomBytes(32).toString('hex');
@@ -220,6 +275,9 @@ router.post('/forgot-password', async (req, res) => {
 router.post('/reset-password', async (req, res) => {
   try {
     const { token, password } = req.body;
+    if (!password || password.length < 6) {
+      return res.status(400).json({ message: 'Password must be at least 6 characters' });
+    }
     const user = await User.findOne({
       reset_password_token: token,
       reset_password_expires: { $gt: new Date() },
@@ -253,10 +311,23 @@ router.patch('/profile', protect, async (req, res) => {
     const updates = {};
     allowed.forEach(f => { if (req.body[f] !== undefined) updates[f] = req.body[f]; });
 
+    if (updates.phone) {
+      const phone = normalizePhone(updates.phone);
+      if (phone.length !== 10) {
+        return res.status(400).json({ message: 'Valid 10-digit phone number required' });
+      }
+      const existingPhone = await User.findOne({ phone, _id: { $ne: req.user._id } });
+      if (existingPhone) {
+        return res.status(400).json({ message: 'This phone number is already linked to another account.' });
+      }
+      updates.phone = phone;
+    }
+
     const user = await User.findByIdAndUpdate(req.user._id, updates, { new: true });
     res.json({ user: formatUser(user) });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    const dup = duplicateKeyMessage(error);
+    res.status(dup ? 400 : 500).json({ message: dup || error.message });
   }
 });
 

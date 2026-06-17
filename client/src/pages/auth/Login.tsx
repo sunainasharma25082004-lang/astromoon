@@ -1,138 +1,229 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { Eye, EyeOff, Mail, Lock, Phone, ArrowRight, Sparkles, User, Shield } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, Phone, ArrowRight, User, Shield, Star, LogOut } from 'lucide-react';
 import { useAuth } from '../../context/Auth';
+import { AuthLayout } from '../../components/auth/AuthLayout';
 
-type LoginRole = 'user' | 'admin';
+type LoginRole = 'user' | 'astrologer' | 'admin';
+
+const ROLE_LABELS: Record<LoginRole, string> = {
+  user: 'User',
+  astrologer: 'Astrologer',
+  admin: 'Admin',
+};
 
 export default function LoginPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { signIn, sendOtp, signInOtp } = useAuth();
+  const { signIn, sendOtp, signInOtp, signOut, user, isAuthenticated, isInitializing } = useAuth();
   const [mode, setMode] = useState<'email' | 'phone'>('email');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const redirectTo = searchParams.get('redirect') || '';
   const [otpSent, setOtpSent] = useState(false);
   const [selectedRole, setSelectedRole] = useState<LoginRole>('user');
-  const [form, setForm] = useState({ email: '', password: '', phone: '', otp: '' });
+  const [form, setForm] = useState({ email: '', password: '', phone: '', otp: '', full_name: '' });
 
   useEffect(() => {
-    const role = searchParams.get('role');
-    if (role === 'admin') setSelectedRole('admin');
+    const roleParam = searchParams.get('role');
+    if (roleParam === 'admin' || roleParam === 'astrologer' || roleParam === 'user') {
+      setSelectedRole(roleParam);
+    }
+    if (searchParams.get('registered') === '1') {
+      setSuccess('Account created! Please sign in with your new user account.');
+    }
   }, [searchParams]);
+
+  const roleMismatchMessage = (actual: string, expected: LoginRole) => {
+    if (expected === 'user') {
+      if (actual === 'astrologer') return 'This email is an Astrologer account. Select "Astrologer" login above, or use a different email for user account.';
+      if (actual === 'admin') return 'This email is an Admin account. Select "Admin" login above.';
+    }
+    if (expected === 'astrologer') {
+      if (actual === 'user') return 'This is a regular user account. Apply at Become Astrologer first, or use User login.';
+      if (actual === 'admin') return 'This is an Admin account. Use Admin login tab.';
+    }
+    if (expected === 'admin') {
+      return 'This account is not an admin. Use User or Astrologer login, or correct admin credentials.';
+    }
+    return 'Wrong login type for this account.';
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setLoading(true);
     try {
-      if (mode === 'email') {
-        const loggedUser = await signIn(form.email, form.password);
-        const role = loggedUser.role || 'user';
+      await signOut();
 
-        // Role-based redirect (respects what is actually stored in DB)
-        if (role === 'admin') navigate('/admin');
-        else navigate('/dashboard');
-      } else if (!otpSent) {
-        await sendOtp(form.phone);
-        setOtpSent(true);
-        setError('');
+      let loggedUser;
+      if (selectedRole === 'user' && mode === 'phone') {
+        if (!otpSent) {
+          const phone = form.phone.replace(/\D/g, '').slice(-10);
+          if (phone.length !== 10) throw new Error('Enter a valid 10-digit phone number');
+          await sendOtp(phone);
+          setOtpSent(true);
+          setLoading(false);
+          return;
+        }
+        const phone = form.phone.replace(/\D/g, '').slice(-10);
+        loggedUser = await signInOtp(phone, form.otp, form.full_name || undefined);
       } else {
-        const loggedUser = await signInOtp(form.phone, form.otp);
-        const role = loggedUser.role || 'user';
-        if (role === 'admin') navigate('/admin');
-        else navigate('/dashboard');
+        loggedUser = await signIn(form.email.trim(), form.password);
       }
+
+      const role = loggedUser?.role || 'user';
+
+      if (role !== selectedRole) {
+        await signOut();
+        throw new Error(roleMismatchMessage(role, selectedRole));
+      }
+
+      if (selectedRole === 'admin') navigate('/admin');
+      else if (selectedRole === 'astrologer') navigate('/astro');
+      else if (redirectTo && redirectTo.startsWith('/')) navigate(redirectTo);
+      else navigate('/dashboard');
     } catch (err: any) {
-      setError(err.message || 'Authentication failed');
+      setError(err.message || 'Login failed. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
+  const roleOptions: { id: LoginRole; label: string; desc: string; Icon: typeof User; active: string }[] = [
+    { id: 'user', label: 'User', desc: 'Shop & dashboard', Icon: User, active: 'border-violet-500 bg-violet-50 text-violet-700' },
+    { id: 'astrologer', label: 'Astrologer', desc: 'Astro panel', Icon: Star, active: 'border-amber-500 bg-amber-50 text-amber-800' },
+    { id: 'admin', label: 'Admin', desc: 'Shop manager', Icon: Shield, active: 'border-rose-500 bg-rose-50 text-rose-700' },
+  ];
+
   return (
-    <div className="min-h-screen flex">
-      <div className="flex-1 flex items-center justify-center p-8 bg-gray-50">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md">
-          <div className="text-center mb-8">
-            <Link to="/" className="inline-flex items-center space-x-2 mb-6">
-              <div className="w-12 h-12 bg-gradient-to-br from-cosmic-purple to-secondary-600 rounded-full flex items-center justify-center"><Sparkles className="w-6 h-6 text-white" /></div>
-              <span className="font-display text-2xl font-bold">Celestial Guidance</span>
-            </Link>
-            <h1 className="text-3xl font-display font-bold mb-2">Welcome Back</h1>
-            <p className="text-gray-600">Sign in to continue your journey</p>
-          </div>
+    <AuthLayout
+      title="Welcome back"
+      subtitle="Choose account type, then sign in"
+      sideTitle="Your cosmic journey continues"
+      sideSubtitle="One email = one account type. Pick the correct login tab for your account."
+      sidePoints={['User — shop & orders', 'Astrologer — after admin approval', 'Admin — shop management only']}
+    >
+      {!isInitializing && isAuthenticated && user && (
+        <div className="mb-4 p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-sm text-amber-900 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <span>
+            Logged in as <strong>{user.email}</strong> ({user.role})
+          </span>
+          <button
+            type="button"
+            onClick={() => signOut()}
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-amber-800 hover:text-amber-950"
+          >
+            <LogOut className="w-3.5 h-3.5" /> Sign out to switch account
+          </button>
+        </div>
+      )}
 
-          <div className="mb-6">
-            <p className="text-xs font-medium text-gray-500 mb-2 tracking-wider">LOGIN AS</p>
-            <div className="grid grid-cols-2 gap-3">
-              <button
-                type="button"
-                onClick={() => setSelectedRole('user')}
-                className={`flex flex-col items-center justify-center gap-2 p-4 rounded-2xl border-2 transition-all ${selectedRole === 'user'
-                  ? 'border-primary-600 bg-primary-50 text-primary-700 shadow-sm'
-                  : 'border-gray-200 hover:border-gray-300 text-gray-600 hover:bg-gray-50'}`}
-              >
-                <User className="w-6 h-6" />
-                <div>
-                  <div className="font-semibold">User</div>
-                  <div className="text-[11px] text-gray-500">Shop, orders &amp; saved astrologers</div>
-                </div>
-              </button>
-              <button
-                type="button"
-                onClick={() => setSelectedRole('admin')}
-                className={`flex flex-col items-center justify-center gap-2 p-4 rounded-2xl border-2 transition-all ${selectedRole === 'admin'
-                  ? 'border-red-500 bg-red-50 text-red-700 shadow-sm'
-                  : 'border-gray-200 hover:border-gray-300 text-gray-600 hover:bg-gray-50'}`}
-              >
-                <Shield className="w-6 h-6" />
-                <div>
-                  <div className="font-semibold">Admin</div>
-                  <div className="text-[11px] text-gray-500">Manage site &amp; content</div>
-                </div>
-              </button>
+      <div className="mb-5">
+        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Login as</p>
+        <div className="grid grid-cols-3 gap-2">
+          {roleOptions.map(({ id, label, desc, Icon, active }) => (
+            <button
+              key={id}
+              type="button"
+              onClick={() => { setSelectedRole(id); setError(''); setOtpSent(false); }}
+              className={`flex flex-col items-center gap-1 p-3 rounded-xl border-2 text-center transition ${selectedRole === id ? active : 'border-slate-200 hover:border-slate-300 text-slate-600'}`}
+            >
+              <Icon className="w-5 h-5 shrink-0" />
+              <div className="font-semibold text-xs">{label}</div>
+              <div className="text-[10px] opacity-70 leading-tight">{desc}</div>
+            </button>
+          ))}
+        </div>
+        {selectedRole === 'admin' && (
+          <p className="mt-3 text-xs text-rose-700 bg-rose-50 border border-rose-100 rounded-xl p-3">
+            Use admin email <strong>admin@celestialguidance.com</strong> with your authorised admin password. Select this Admin tab — not User or Astrologer.
+          </p>
+        )}
+        {selectedRole === 'astrologer' && (
+          <p className="mt-3 text-xs text-amber-800 bg-amber-50 border border-amber-100 rounded-xl p-3">
+            Only after admin approves your application. Use the email & password admin shared with you.
+          </p>
+        )}
+      </div>
+
+      {selectedRole === 'user' && (
+        <div className="flex bg-slate-100 rounded-xl p-1 mb-5">
+          <button type="button" onClick={() => { setMode('email'); setOtpSent(false); }} className={`flex-1 py-2 text-sm font-medium rounded-lg transition ${mode === 'email' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500'}`}>
+            <Mail className="w-4 h-4 inline mr-1.5" />Email
+          </button>
+          <button type="button" onClick={() => { setMode('phone'); setOtpSent(false); }} className={`flex-1 py-2 text-sm font-medium rounded-lg transition ${mode === 'phone' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500'}`}>
+            <Phone className="w-4 h-4 inline mr-1.5" />Phone OTP
+          </button>
+        </div>
+      )}
+
+      {success && (
+        <div className="mb-4 p-3.5 bg-emerald-50 border border-emerald-100 rounded-xl text-emerald-700 text-sm">{success}</div>
+      )}
+
+      {error && (
+        <div className="mb-4 p-3.5 bg-red-50 border border-red-100 rounded-xl text-red-700 text-sm">{error}</div>
+      )}
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {(selectedRole !== 'user' || mode === 'email') ? (
+          <>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1.5">Email</label>
+              <div className="relative">
+                <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                <input type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500/30 focus:border-violet-400" placeholder="your@email.com" required />
+              </div>
             </div>
-            <p className="text-[10px] text-center mt-1.5 text-gray-400">Live consultations are in the mobile app only</p>
-          </div>
-
-          <div className="flex bg-gray-100 rounded-xl p-1 mb-6">
-            <button onClick={() => setMode('email')} className={`flex-1 py-2 px-4 text-sm font-medium rounded-lg ${mode === 'email' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-600'}`}><Mail className="w-4 h-4 inline mr-2" />Email</button>
-            <button onClick={() => { setMode('phone'); setOtpSent(false); }} className={`flex-1 py-2 px-4 text-sm font-medium rounded-lg ${mode === 'phone' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-600'}`}><Phone className="w-4 h-4 inline mr-2" />Phone OTP</button>
-          </div>
-
-          {error && <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">{error}</div>}
-
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {mode === 'email' ? (
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1.5">Password</label>
+              <div className="relative">
+                <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                <input type={showPassword ? 'text' : 'password'} value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} className="w-full pl-10 pr-11 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500/30 focus:border-violet-400" required minLength={6} />
+                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400">
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1.5">Phone Number</label>
+              <div className="relative">
+                <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                <input type="tel" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500/30 focus:border-violet-400" placeholder="9876543210" required />
+              </div>
+            </div>
+            {otpSent && (
               <>
-                <div><label className="block text-sm font-medium mb-1">Email</label><div className="relative"><Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" /><input type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} className="input-field pl-11" placeholder="your@email.com" required /></div></div>
-                <div><label className="block text-sm font-medium mb-1">Password</label><div className="relative"><Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" /><input type={showPassword ? 'text' : 'password'} value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} className="input-field pl-11 pr-11" required /><button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2">{showPassword ? <EyeOff className="w-5 h-5 text-gray-400" /> : <Eye className="w-5 h-5 text-gray-400" />}</button></div></div>
-              </>
-            ) : (
-              <>
-                <div><label className="block text-sm font-medium mb-1">Phone</label><div className="relative"><Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" /><input type="tel" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} className="input-field pl-11" placeholder="9876543210" required /></div></div>
-                {otpSent && <div><label className="block text-sm font-medium mb-1">OTP</label><input type="text" value={form.otp} onChange={e => setForm({ ...form, otp: e.target.value })} className="input-field" placeholder="6-digit OTP" maxLength={6} required /></div>}
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1.5">Your Name</label>
+                  <input type="text" value={form.full_name} onChange={e => setForm({ ...form, full_name: e.target.value })} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl" placeholder="Full name (new users)" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1.5">OTP</label>
+                  <input type="text" value={form.otp} onChange={e => setForm({ ...form, otp: e.target.value })} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl tracking-widest text-center text-lg" placeholder="6-digit OTP" maxLength={6} required />
+                </div>
               </>
             )}
-            <button type="submit" disabled={loading} className="btn-primary w-full">{loading ? 'Please wait...' : mode === 'phone' ? (otpSent ? 'Verify OTP' : 'Send OTP') : 'Sign In'}<ArrowRight className="w-5 h-5 ml-2" /></button>
-          </form>
+          </>
+        )}
 
-          <p className="text-center mt-6 text-gray-600">New here? <Link to="/auth/register" className="text-primary-600 font-medium">Create an Account</Link></p>
-        </motion.div>
-      </div>
+        <button type="submit" disabled={loading} className="w-full flex items-center justify-center gap-2 py-3.5 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white font-semibold rounded-xl shadow-lg shadow-violet-200 transition disabled:opacity-60">
+          {loading ? 'Please wait...' : selectedRole === 'user' && mode === 'phone' && !otpSent ? 'Send OTP' : `Sign in as ${ROLE_LABELS[selectedRole]}`}
+          <ArrowRight className="w-4 h-4" />
+        </button>
+      </form>
 
-      <div className="hidden lg:block lg:w-1/2 relative bg-gradient-to-br from-cosmic-navy via-cosmic-purple to-cosmic-light">
-        <div className="absolute inset-0 stars-pattern" />
-        <div className="relative h-full flex flex-col items-center justify-center p-12 text-center text-white">
-          <div className="w-24 h-24 mx-auto mb-8 bg-gradient-to-br from-gold-light to-gold rounded-full flex items-center justify-center"><Sparkles className="w-12 h-12 text-cosmic-dark" /></div>
-          <h2 className="text-4xl font-display font-bold mb-4">Discover Your Path</h2>
-          <p className="text-white/80 max-w-md mb-8">Browse astrologer profiles, shop spiritual products &amp; download our app for live consultations.</p>
-          <div className="flex justify-center gap-8">{[{ v: '500+', l: 'Astrologers' }, { v: '1M+', l: 'Users' }, { v: '4.9', l: 'Rating' }].map(s => <div key={s.l} className="text-center"><div className="text-3xl font-bold text-gold-light">{s.v}</div><div className="text-white/60 text-sm">{s.l}</div></div>)}</div>
-        </div>
-      </div>
-    </div>
+      {selectedRole === 'user' && (
+        <p className="text-center mt-6 text-sm text-slate-500">
+          New here? <Link to={redirectTo ? `/auth/register?redirect=${encodeURIComponent(redirectTo)}` : '/auth/register'} className="text-violet-600 font-semibold hover:underline">Create account</Link>
+        </p>
+      )}
+    </AuthLayout>
   );
 }

@@ -2,9 +2,10 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Heart, Share2, ShoppingCart, Star, Truck, Shield, RotateCcw, ChevronLeft, Minus, Plus } from 'lucide-react';
+import toast from 'react-hot-toast';
 import { formatCurrency, calculateDiscount } from '../../utils/dateUtils';
 import { Button } from '../../components/common/Button';
-
+import { useCart } from '../../context/CartContext';
 import { apiFetch } from '../../config/api';
 
 interface Product {
@@ -24,6 +25,7 @@ interface Product {
 
 export default function ProductPage() {
   const { id } = useParams<{ id: string }>();
+  const { addItem, updateQuantity } = useCart();
   const [product, setProduct] = useState<Product | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(0);
@@ -66,6 +68,27 @@ export default function ProductPage() {
       </div>
     );
   }
+
+  const handleAddToCart = () => {
+    if (!product || product.stock <= 0) return;
+    addItem({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.images?.[0] || '',
+    });
+    if (quantity > 1) updateQuantity(product.id, quantity);
+    toast.success(`Added ${quantity} × ${product.name} to cart`);
+  };
+
+  const handleShare = async () => {
+    const url = window.location.href;
+    if (navigator.share) {
+      try { await navigator.share({ title: product?.name, url }); return; } catch {}
+    }
+    await navigator.clipboard.writeText(url);
+    toast.success('Link copied!');
+  };
 
   if (!product) {
     return (
@@ -193,7 +216,7 @@ export default function ProductPage() {
 
               {/* Actions */}
               <div className="flex gap-3 mb-6">
-                <Button variant="primary" size="lg" className="flex-1">
+                <Button variant="primary" size="lg" className="flex-1" onClick={handleAddToCart} disabled={product.stock <= 0}>
                   <ShoppingCart className="w-5 h-5 mr-2" />
                   Add to Cart - {formatCurrency(product.price * quantity)}
                 </Button>
@@ -207,7 +230,7 @@ export default function ProductPage() {
                 >
                   <Heart className={`w-5 h-5 ${isWishlisted ? 'fill-current' : ''}`} />
                 </button>
-                <button className="p-3 rounded-xl border border-gray-200 text-gray-400 hover:text-gray-600 hover:border-gray-300 transition-colors">
+                <button type="button" onClick={handleShare} className="p-3 rounded-xl border border-gray-200 text-gray-400 hover:text-gray-600 hover:border-gray-300 transition-colors">
                   <Share2 className="w-5 h-5" />
                 </button>
               </div>

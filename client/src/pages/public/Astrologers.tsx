@@ -1,9 +1,14 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Star, Clock, MessageCircle, Phone, Video } from 'lucide-react';
 import { formatCurrency } from '../../utils/dateUtils';
-import { apiFetch, withIds } from '../../config/api';
+import { apiFetch, withIds, mediaUrl } from '../../config/api';
+import { InstallAppModal } from '../../components/common/InstallAppModal';
+import { useInstallAppModal } from '../../hooks/useInstallAppModal';
+import type { ConsultType } from '../../components/common/InstallAppModal';
+
+const TYPE_PARAMS = new Set(['chat', 'call', 'video']);
 
 interface Astrologer {
   id: string;
@@ -21,14 +26,27 @@ interface Astrologer {
   is_verified: boolean;
   availability_status?: 'online' | 'offline' | 'busy';
   bio?: string;
+  services?: string[];
+  gallery_images?: string[];
 }
 
 export default function AstrologersPage() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { isOpen, consultType, open, close } = useInstallAppModal();
   const [astrologers, setAstrologers] = useState<Astrologer[]>([]);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({ online: false, sortBy: 'rating' as 'rating' | 'price', search: '' });
 
   useEffect(() => { fetchAstrologers(); }, [filters.online]);
+
+  useEffect(() => {
+    const type = searchParams.get('type');
+    if (type && TYPE_PARAMS.has(type)) {
+      open(type as ConsultType);
+      searchParams.delete('type');
+      setSearchParams(searchParams, { replace: true });
+    }
+  }, [searchParams, setSearchParams, open]);
 
   const fetchAstrologers = async () => {
     setLoading(true);
@@ -87,7 +105,7 @@ export default function AstrologersPage() {
             {filtered.map((astro, index) => (
               <motion.div key={astro.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: Math.min(index * 0.03, 0.3) }} className="bg-white rounded-2xl shadow border overflow-hidden group flex flex-col">
                 <div className="relative">
-                  <img src={astro.avatar_url || 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=400'} alt={astro.full_name} className="w-full h-48 object-cover" />
+                  <img src={mediaUrl(astro.avatar_url) || `https://ui-avatars.com/api/?name=${encodeURIComponent(astro.full_name)}&background=7c3aed&color=fff&size=400`} alt={astro.full_name} className="w-full h-48 object-cover" />
                   {isAstroAvailable(astro) && (
                     <div className="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-green-500 text-white text-[10px] font-medium flex items-center">
                       <span className="w-1.5 h-1.5 bg-white rounded-full mr-1 animate-pulse" />
@@ -113,14 +131,14 @@ export default function AstrologersPage() {
                   <p className="text-xs text-gray-500 mb-2">{astro.languages?.join(' • ')}</p>
                   {astro.bio && <p className="text-xs text-gray-600 mb-3 line-clamp-2">{astro.bio}</p>}
                   <div className="flex flex-wrap gap-1 mb-3">
-                    {(astro.expertise || []).slice(0, 3).map(e => (
+                    {(astro.services || astro.expertise || []).slice(0, 3).map(e => (
                       <span key={e} className="text-[10px] px-2 py-0.5 bg-primary-50 text-primary-700 rounded-full">{e}</span>
                     ))}
                   </div>
                   <div className="flex items-center gap-3 text-[10px] text-gray-500 mb-4 mt-auto">
-                    <span className="flex items-center gap-0.5"><MessageCircle className="w-3 h-3" />{formatCurrency(astro.chat_price)}</span>
-                    <span className="flex items-center gap-0.5"><Phone className="w-3 h-3" />{formatCurrency(astro.call_price)}</span>
-                    <span className="flex items-center gap-0.5"><Video className="w-3 h-3" />{formatCurrency(astro.video_price)}</span>
+                    <button type="button" onClick={() => open('chat')} className="flex items-center gap-0.5 hover:text-blue-600"><MessageCircle className="w-3 h-3" />{formatCurrency(astro.chat_price)}</button>
+                    <button type="button" onClick={() => open('call')} className="flex items-center gap-0.5 hover:text-green-600"><Phone className="w-3 h-3" />{formatCurrency(astro.call_price)}</button>
+                    <button type="button" onClick={() => open('video')} className="flex items-center gap-0.5 hover:text-purple-600"><Video className="w-3 h-3" />{formatCurrency(astro.video_price)}</button>
                     <span className="text-gray-400">/min</span>
                   </div>
                   <Link to={`/astrologer/${astro.id}`} className="block py-2.5 text-center text-sm font-medium rounded-xl border border-primary-200 text-primary-700 hover:bg-primary-50 transition">
@@ -132,6 +150,8 @@ export default function AstrologersPage() {
           </div>
         )}
       </div>
+
+      <InstallAppModal isOpen={isOpen} onClose={close} consultType={consultType} />
     </div>
   );
 }

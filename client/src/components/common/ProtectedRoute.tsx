@@ -30,7 +30,7 @@ export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) 
 
   if (allowedRoles && allowedRoles.length > 0 && !allowedRoles.includes(role)) {
     if (role === 'admin') return <Navigate to="/admin" replace />;
-    if (role === 'astrologer') return <Navigate to="/" replace />;
+    if (role === 'astrologer') return <Navigate to="/astro" replace />;
     return <Navigate to="/dashboard" replace />;
   }
 

@@ -15,9 +15,10 @@ import HoroscopePage from './pages/public/Horoscope';
 import KundliPage from './pages/public/Kundli';
 import ShopPage from './pages/public/Shop';
 import ProductPage from './pages/public/ProductPage';
-import BlogPage from './pages/public/BlogPage';
-import BlogDetailPage from './pages/public/BlogDetailPage';
 import AstrologerProfilePage from './pages/public/AstrologerProfilePage';
+import BecomeAstrologerPage from './pages/public/BecomeAstrologerPage';
+import { TermsPage, PrivacyPage } from './pages/public/LegalPage';
+import NotFoundPage from './pages/public/NotFoundPage';
 import RoleSelectionPage from './pages/auth/RoleSelection';
 import LoginPage from './pages/auth/Login';
 import RegisterPage from './pages/auth/Register';
@@ -31,18 +32,21 @@ import UserKundlis from './panels/user/Kundlis';
 import UserSaved from './panels/user/Saved';
 import UserNotifications from './panels/user/Notifications';
 import UserSettings from './panels/user/Settings';
-import UserWallet from './panels/user/Wallet';
+import UserBecomeAstrologer from './panels/user/BecomeAstrologer';
+
+/* ── ASTROLOGER PANEL ── */
+import AstroPanelLayout from './panels/astrologer/Layout';
+import AstroDashboard from './panels/astrologer/Dashboard';
+import AstroAvailability from './panels/astrologer/Availability';
+import AstroProfile from './panels/astrologer/Profile';
+import AstroReviews from './panels/astrologer/Reviews';
 
 /* ── ADMIN PANEL ── */
 import AdminPanelLayout from './panels/admin/Layout';
 import AdminDashboard from './panels/admin/Dashboard';
-import AdminUsers from './panels/admin/Users';
-import AdminAstrologers from './panels/admin/Astrologers';
 import AdminProducts from './panels/admin/Products';
 import AdminOrders from './panels/admin/Orders';
-import AdminTransactions from './panels/admin/Transactions';
-import AdminReports from './panels/admin/Reports';
-import AdminModeration from './panels/admin/Moderation';
+import AdminApplications from './panels/admin/Applications';
 import AdminSettings from './panels/admin/Settings';
 
 export default function App() {
@@ -67,9 +71,11 @@ export default function App() {
                 <Route path="/kundli" element={<KundliPage />} />
                 <Route path="/shop" element={<ShopPage />} />
                 <Route path="/shop/product/:id" element={<ProductPage />} />
-                <Route path="/blog" element={<BlogPage />} />
-                <Route path="/blog/:slug" element={<BlogDetailPage />} />
+                <Route path="/become-astrologer" element={<BecomeAstrologerPage />} />
+                <Route path="/terms" element={<TermsPage />} />
+                <Route path="/privacy" element={<PrivacyPage />} />
                 <Route path="/profile" element={<ProtectedRoute allowedRoles={['user']}><UserProfilePage /></ProtectedRoute>} />
+                <Route path="*" element={<NotFoundPage />} />
               </Route>
 
               {/* USER PANEL */}
@@ -80,23 +86,26 @@ export default function App() {
                 <Route path="saved" element={<UserSaved />} />
                 <Route path="notifications" element={<UserNotifications />} />
                 <Route path="settings" element={<UserSettings />} />
+                <Route path="become-astrologer" element={<UserBecomeAstrologer />} />
               </Route>
-              <Route path="/wallet" element={<ProtectedRoute allowedRoles={['user']}><UserPanelLayout /></ProtectedRoute>}>
-                <Route index element={<UserWallet />} />
+
+              {/* ASTROLOGER PANEL */}
+              <Route path="/astro" element={<ProtectedRoute allowedRoles={['astrologer']}><AstroPanelLayout /></ProtectedRoute>}>
+                <Route index element={<AstroDashboard />} />
+                <Route path="availability" element={<AstroAvailability />} />
+                <Route path="profile" element={<AstroProfile />} />
+                <Route path="reviews" element={<AstroReviews />} />
               </Route>
 
               {/* ADMIN PANEL */}
               <Route path="/admin" element={<ProtectedRoute allowedRoles={['admin']}><AdminPanelLayout /></ProtectedRoute>}>
                 <Route index element={<AdminDashboard />} />
-                <Route path="users" element={<AdminUsers />} />
-                <Route path="astrologers" element={<AdminAstrologers />} />
                 <Route path="products" element={<AdminProducts />} />
                 <Route path="orders" element={<AdminOrders />} />
-                <Route path="transactions" element={<AdminTransactions />} />
-                <Route path="reports" element={<AdminReports />} />
-                <Route path="moderation" element={<AdminModeration />} />
+                <Route path="applications" element={<AdminApplications />} />
                 <Route path="settings" element={<AdminSettings />} />
               </Route>
+
             </Routes>
           </CartProvider>
           </SocketProvider>

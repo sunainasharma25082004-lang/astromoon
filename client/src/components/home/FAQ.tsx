@@ -13,7 +13,7 @@ const faqs = [
 export function FAQ() {
   const [open, setOpen] = useState<number | null>(0);
   return (
-    <section className="py-20 bg-gray-50">
+    <section id="faq" className="py-20 bg-gray-50 scroll-mt-24">
       <div className="max-w-4xl mx-auto px-4">
         <div className="text-center mb-12">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="inline-flex items-center px-4 py-2 rounded-full bg-primary-100 text-primary-700 mb-4">FAQ</motion.div>

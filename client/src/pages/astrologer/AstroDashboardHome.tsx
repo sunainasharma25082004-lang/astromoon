@@ -1,146 +1,126 @@
-import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Calendar, DollarSign, Star, Users, MessageCircle, Phone, Video } from 'lucide-react';
+import { User, Star, Clock, ImageIcon, CheckCircle, AlertCircle } from 'lucide-react';
 import { useAuth } from '../../context/Auth';
-import ConsultationRoom from '../../components/consultation/ConsultationRoom';
-import { apiFetch } from '../../config/api';
-import { useRealtimeData } from '../../hooks/useRealtimeData';
+import { mediaUrl } from '../../config/api';
+
+function profileScore(profile: Record<string, any>): number {
+  let score = 0;
+  if (profile.avatar_url) score += 20;
+  if (profile.bio?.length > 30) score += 20;
+  if (profile.services?.length > 0) score += 20;
+  if (profile.expertise?.length > 0) score += 15;
+  if (profile.gallery_images?.length > 0) score += 15;
+  if (profile.experience > 0) score += 10;
+  return Math.min(100, score);
+}
 
 export default function AstroDashboardHome() {
-  const { user, token } = useAuth();
-  const [consultations, setConsultations] = useState<any[]>([]);
-  const [activeRoom, setActiveRoom] = useState<any>(null);
-  const [earnings, setEarnings] = useState<any>(null);
+  const { user } = useAuth();
+  const profile = user?.astrologer_profile || {};
+  const score = profileScore(profile);
+  const isOnline = profile.availability_status === 'online';
+  const astroId = user?.astrologer_profile_id;
 
-  const displayName = user?.full_name || 'Astrologer';
-
-  const loadAstroConsultations = async () => {
-    if (!token) return;
-    try {
-      const data = await apiFetch('/consultations/for-astro', {}, token);
-      setConsultations(data);
-    } catch {}
-  };
-
-  const loadEarnings = () => {
-    if (!token) return;
-    apiFetch('/astrologers/earnings/summary', {}, token).then(setEarnings).catch(() => {});
-  };
-
-  useRealtimeData(loadAstroConsultations, 'consultations', [token]);
-  useRealtimeData(loadEarnings, 'earnings', [token]);
-
-  useEffect(() => {
-    const onIncoming = (e: Event) => {
-      const data = (e as CustomEvent).detail;
-      loadAstroConsultations();
-      if (data?.consultation?.status === 'pending') {
-        setActiveRoom(data.consultation);
-      }
-    };
-    window.addEventListener('astro:incoming', onIncoming);
-    return () => window.removeEventListener('astro:incoming', onIncoming);
-  }, [token]);
-
-  const stats = [
-    { label: "Today's Sessions", value: consultations.filter(c => c.status === 'active').length.toString(), icon: Calendar, color: 'bg-amber-100 text-amber-700' },
-    { label: 'Pending Requests', value: consultations.filter(c => c.status === 'pending').length.toString(), icon: Users, color: 'bg-orange-100 text-orange-700' },
-    { label: 'Avg Rating', value: (earnings?.rating || user?.astrologer_profile?.rating || 0).toString(), icon: Star, color: 'bg-yellow-100 text-yellow-700' },
-    { label: 'Total Earned', value: `₹${Math.round(earnings?.total_earnings || 0)}`, icon: DollarSign, color: 'bg-emerald-100 text-emerald-700' },
+  const checklist = [
+    { done: !!profile.avatar_url, label: 'Profile photo uploaded', link: '/astro/profile' },
+    { done: (profile.bio?.length || 0) > 30, label: 'Bio written', link: '/astro/profile' },
+    { done: (profile.services?.length || 0) > 0, label: 'Services listed', link: '/astro/profile' },
+    { done: (profile.gallery_images?.length || 0) > 0, label: 'Gallery photos added', link: '/astro/profile' },
+    { done: isOnline, label: 'Set to Online', link: '/astro/availability' },
   ];
 
-  const typeIcon = (type: string) => {
-    if (type === 'video') return <Video className="w-4 h-4" />;
-    if (type === 'call') return <Phone className="w-4 h-4" />;
-    return <MessageCircle className="w-4 h-4" />;
-  };
-
-  const joinLabel = (type: string, status: string) => {
-    const prefix = status === 'pending' ? 'Accept' : 'Join';
-    if (type === 'video') return `${prefix} Video`;
-    if (type === 'call') return `${prefix} Audio`;
-    return `${prefix} Chat`;
-  };
+  const stats = [
+    { label: 'Rating', value: (profile.rating || 0).toFixed(1), icon: Star },
+    { label: 'Reviews', value: String(profile.total_reviews || 0), icon: Star },
+    { label: 'Experience', value: `${profile.experience || 0} yrs`, icon: Clock },
+    { label: 'Photos', value: String(profile.gallery_images?.length || 0), icon: ImageIcon },
+  ];
 
   return (
-    <>
+    <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-display font-bold text-gray-900">Namaste, {displayName.split(' ')[0]}!</h1>
-        <p className="text-gray-500 text-sm mt-1">Manage your consultations — chat, audio and video sessions</p>
+        <h1 className="text-2xl font-display font-bold text-gray-900">
+          Namaste, {(user?.full_name || 'Astrologer').split(' ')[0]}!
+        </h1>
+        <p className="text-gray-500 text-sm mt-1">Complete your profile so users can find and trust you</p>
       </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="bg-white rounded-2xl border border-amber-100 p-6 mb-6"
+      >
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+          <div>
+            <h2 className="font-semibold text-gray-900">Profile Completion</h2>
+            <p className="text-sm text-gray-500">Users see your profile on the website</p>
+          </div>
+          <div className="text-3xl font-bold text-amber-600">{score}%</div>
+        </div>
+        <div className="h-2.5 bg-amber-100 rounded-full overflow-hidden mb-5">
+          <div className="h-full bg-gradient-to-r from-amber-500 to-orange-500 rounded-full transition-all" style={{ width: `${score}%` }} />
+        </div>
+        <div className="space-y-2">
+          {checklist.map(item => (
+            <Link key={item.label} to={item.link} className="flex items-center gap-3 p-3 rounded-xl hover:bg-amber-50 transition text-sm">
+              {item.done ? (
+                <CheckCircle className="w-5 h-5 text-emerald-500 shrink-0" />
+              ) : (
+                <AlertCircle className="w-5 h-5 text-amber-500 shrink-0" />
+              )}
+              <span className={item.done ? 'text-gray-600' : 'text-gray-900 font-medium'}>{item.label}</span>
+            </Link>
+          ))}
+        </div>
+        {astroId && (
+          <Link
+            to={`/astrologer/${astroId}`}
+            className="inline-block mt-4 text-sm text-amber-700 font-semibold hover:underline"
+          >
+            Preview how users see your profile →
+          </Link>
+        )}
+      </motion.div>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         {stats.map((stat, i) => (
-          <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }} className="bg-white rounded-2xl shadow-sm border border-amber-100 p-5">
-            <div className={`w-10 h-10 rounded-xl ${stat.color} flex items-center justify-center mb-3`}>
-              <stat.icon className="w-5 h-5" />
-            </div>
+          <motion.div
+            key={stat.label}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.04 }}
+            className="bg-white rounded-2xl shadow-sm border border-amber-100 p-5"
+          >
+            <stat.icon className="w-5 h-5 text-amber-600 mb-2" />
             <div className="text-2xl font-bold">{stat.value}</div>
             <div className="text-sm text-gray-500">{stat.label}</div>
           </motion.div>
         ))}
       </div>
 
-      <div className="grid md:grid-cols-3 gap-4 mb-6">
-        <Link to="/astro/consultations" className="bg-white border border-amber-100 hover:border-amber-300 rounded-2xl p-5 transition">
-          <Calendar className="w-5 h-5 text-amber-600 mb-2" />
-          <div className="font-semibold">All Consultations</div>
-          <div className="text-xs text-gray-500">{consultations.length} total sessions</div>
-        </Link>
-        <Link to="/astro/earnings" className="bg-white border border-amber-100 hover:border-amber-300 rounded-2xl p-5 transition">
-          <DollarSign className="w-5 h-5 text-emerald-600 mb-2" />
-          <div className="font-semibold">Earnings</div>
-          <div className="text-xs text-gray-500">View payouts &amp; withdrawals</div>
-        </Link>
-        <Link to="/astro/availability" className="bg-white border border-amber-100 hover:border-amber-300 rounded-2xl p-5 transition">
-          <Calendar className="w-5 h-5 text-orange-600 mb-2" />
-          <div className="font-semibold">Availability</div>
-          <div className="text-xs text-gray-500">Set your online hours</div>
-        </Link>
-      </div>
-
-      <div className="bg-white rounded-2xl shadow-sm border border-amber-100 overflow-hidden">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-amber-50">
-          <h2 className="font-semibold text-gray-900">Incoming / Active Sessions</h2>
-          <button onClick={loadAstroConsultations} className="text-sm text-amber-700 font-medium hover:underline">Refresh</button>
+      <Link
+        to="/astro/profile"
+        className="flex items-center gap-4 bg-gradient-to-r from-amber-600 to-orange-600 text-white rounded-2xl p-6 hover:from-amber-700 hover:to-orange-700 transition shadow-lg shadow-amber-200"
+      >
+        <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+          <User className="w-6 h-6" />
         </div>
-        <div className="divide-y divide-amber-50">
-          {consultations.length === 0 && (
-            <div className="p-8 text-center text-sm text-gray-500">No sessions yet. Stay online to receive requests.</div>
-          )}
-          {consultations.map((c: any) => {
-            const canJoin = ['active', 'pending', 'payment_required'].includes(c.status);
-            return (
-              <div key={c._id} className="px-5 py-4 flex items-center">
-                <div className={`w-9 h-9 rounded-xl flex items-center justify-center mr-3 ${
-                  c.type === 'video' ? 'bg-purple-100 text-purple-600' : c.type === 'call' ? 'bg-green-100 text-green-600' : 'bg-blue-100 text-blue-600'
-                }`}>
-                  {typeIcon(c.type)}
-                </div>
-                <div className="flex-1">
-                  <div className="font-medium text-sm">{c.user_id?.full_name || 'Client'}</div>
-                  <div className="text-xs text-gray-500 capitalize">{c.type} • {c.status}</div>
-                </div>
-                <div className="text-sm font-semibold text-emerald-600 mr-3">₹{c.per_minute_rate}/min</div>
-                {canJoin && (
-                  <button onClick={() => setActiveRoom(c)} className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-sm rounded-xl font-medium">
-                    {joinLabel(c.type, c.status)}
-                  </button>
-                )}
-              </div>
-            );
-          })}
+        <div>
+          <div className="font-semibold text-lg">Edit Profile & Upload Photos</div>
+          <div className="text-amber-100 text-sm">Bio, services, gallery — sab kuch yahan update karo</div>
         </div>
-      </div>
+      </Link>
 
-      {activeRoom && (
-        <ConsultationRoom
-          consultation={activeRoom}
-          onClose={() => { setActiveRoom(null); loadAstroConsultations(); }}
-          onComplete={() => { setActiveRoom(null); loadAstroConsultations(); }}
-        />
+      {profile.avatar_url && (
+        <div className="mt-6 bg-white rounded-2xl border border-amber-100 p-4 flex items-center gap-4">
+          <img src={mediaUrl(profile.avatar_url)} alt="" className="w-16 h-16 rounded-xl object-cover" />
+          <div className="min-w-0">
+            <p className="font-medium text-gray-900 truncate">{profile.full_name || user?.full_name}</p>
+            <p className="text-sm text-gray-500 line-clamp-2">{profile.bio || 'Add your bio in profile'}</p>
+          </div>
+        </div>
       )}
-    </>
+    </div>
   );
 }
