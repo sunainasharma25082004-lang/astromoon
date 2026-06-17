@@ -1,12 +1,13 @@
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, ShoppingBag, Package, Settings, LogOut, Lock, UserCheck } from 'lucide-react';
+import { LayoutDashboard, ShoppingBag, Package, Settings, LogOut, Lock, UserCheck, Users } from 'lucide-react';
 import { useAuth } from '../../context/Auth';
 
 const sidebar = [
   { label: 'Overview', path: '/admin', icon: LayoutDashboard },
   { label: 'Shop Products', path: '/admin/products', icon: ShoppingBag },
   { label: 'Shop Orders', path: '/admin/orders', icon: Package },
-  { label: 'Astrologer Applications', path: '/admin/applications', icon: UserCheck },
+  { label: 'All Astrologers', path: '/admin/astrologers', icon: Users },
+  { label: 'Applications', path: '/admin/applications', icon: UserCheck },
   { label: 'Settings', path: '/admin/settings', icon: Settings },
 ];
 

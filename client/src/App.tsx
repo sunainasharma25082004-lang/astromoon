@@ -47,6 +47,7 @@ import AdminDashboard from './panels/admin/Dashboard';
 import AdminProducts from './panels/admin/Products';
 import AdminOrders from './panels/admin/Orders';
 import AdminApplications from './panels/admin/Applications';
+import AdminAstrologers from './panels/admin/Astrologers';
 import AdminSettings from './panels/admin/Settings';
 
 export default function App() {
@@ -102,6 +103,7 @@ export default function App() {
                 <Route index element={<AdminDashboard />} />
                 <Route path="products" element={<AdminProducts />} />
                 <Route path="orders" element={<AdminOrders />} />
+                <Route path="astrologers" element={<AdminAstrologers />} />
                 <Route path="applications" element={<AdminApplications />} />
                 <Route path="settings" element={<AdminSettings />} />
               </Route>

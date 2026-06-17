@@ -103,10 +103,25 @@ router.delete('/users/:id', async (req, res) => {
 });
 
 router.get('/astrologers', async (req, res) => {
-  const { status } = req.query;
-  const filter = status ? { approval_status: status } : {};
-  const astros = await Astrologer.find(filter).sort({ createdAt: -1 });
-  res.json(astros);
+  try {
+    const { status } = req.query;
+    const filter = status ? { approval_status: status } : {};
+    const astros = await Astrologer.find(filter).sort({ createdAt: -1 }).lean();
+    const astroIds = astros.map((a) => a._id);
+    const users = await User.find({ astrologer_profile_id: { $in: astroIds } })
+      .select('email phone full_name astrologer_profile_id role')
+      .lean();
+    const userByAstro = Object.fromEntries(
+      users.map((u) => [String(u.astrologer_profile_id), u])
+    );
+    const enriched = astros.map((a) => ({
+      ...a,
+      user: userByAstro[String(a._id)] || null,
+    }));
+    res.json(enriched);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
 router.post('/astrologers', async (req, res) => {
@@ -193,9 +208,35 @@ router.post('/astrologers/:id/reject', async (req, res) => {
 });
 
 router.patch('/astrologers/:id', async (req, res) => {
-  const astro = await Astrologer.findByIdAndUpdate(req.params.id, req.body, { new: true });
-  adminBroadcast(req.app.get('io'), RESOURCES.ASTROLOGERS);
-  res.json(astro);
+  try {
+    const allowed = [
+      'full_name', 'bio', 'expertise', 'languages', 'skills', 'services', 'experience',
+      'education', 'certifications', 'avatar_url', 'gallery_images', 'is_active',
+      'is_verified', 'is_available', 'approval_status', 'availability_status', 'is_online',
+      'chat_price', 'call_price', 'video_price', 'is_featured',
+    ];
+    const updates = {};
+    allowed.forEach((f) => {
+      if (req.body[f] !== undefined) updates[f] = req.body[f];
+    });
+
+    if (updates.is_active === false) {
+      updates.is_available = false;
+      updates.is_online = false;
+      updates.availability_status = 'offline';
+    }
+    if (updates.is_active === true && updates.approval_status === undefined) {
+      updates.is_verified = true;
+      updates.approval_status = 'approved';
+    }
+
+    const astro = await Astrologer.findByIdAndUpdate(req.params.id, updates, { new: true });
+    if (!astro) return res.status(404).json({ message: 'Astrologer not found' });
+    adminBroadcast(req.app.get('io'), [RESOURCES.ASTROLOGERS, RESOURCES.STATS]);
+    res.json(astro);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
 router.post('/users/:id/wallet', async (req, res) => {

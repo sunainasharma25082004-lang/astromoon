@@ -1,0 +1,124 @@
+---
+pid: 4072
+cwd: "C:\Users\hi\OneDrive\Desktop\all web\project"
+command: "cd \"C:\\Users\\hi\\OneDrive\\Desktop\\all web\\project\\server\"; npm run kill-port; npm run dev"
+started_at: 2026-06-17T06:52:42.601Z
+running_for_ms: 11575002 
+---
+
+> celestial-guidance-backend@1.0.0 kill-port
+> powershell -ExecutionPolicy Bypass -File scripts/kill-port.ps1
+
+Cannot overwrite variable PID because it is read-only or constant.
+At C:\Users\hi\OneDrive\Desktop\all web\project\server\scripts\kill-port.ps1:7 char:12
++   foreach ($pid in $pids) {
++            ~~~~
+    + CategoryInfo          : WriteError: (PID:String) [], SessionStateUnauthorizedAccessException
+    + FullyQualifiedErrorId : VariableNotWritable
+ 
+Warning: port 5000 may still be in use
+
+> celestial-guidance-backend@1.0.0 dev
+> node scripts/dev.mjs
+
+Cannot overwrite variable PID because it is read-only or constant.
+At C:\Users\hi\OneDrive\Desktop\all web\project\server\scripts\kill-port.ps1:7 char:12
++   foreach ($pid in $pids) {
++            ~~~~
+    + CategoryInfo          : WriteError: (PID:String) [], SessionStateUnauthorizedAccessException
+    + FullyQualifiedErrorId : VariableNotWritable
+ 
+Warning: port 5000 may still be in use
+✅ MongoDB connected
+Port 5000 busy, retrying in 1s... (1/3)
+Port 5000 busy, retrying in 1s... (2/3)
+Port 5000 busy, retrying in 1s... (3/3)
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+
+❌ Port 5000 is already in use.
+   Close other server terminals, then run: npm run kill-port
+   Or: npm run dev (auto-cleans port on start)
+
+Failed to start server: listen EADDRINUSE: address already in use :::5000
+Restarting 'src/index.js'
+✅ MongoDB connected
+Port 5000 busy, retrying in 1s... (1/3)
+Port 5000 busy, retrying in 1s... (2/3)
+Port 5000 busy, retrying in 1s... (3/3)
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+
+❌ Port 5000 is already in use.
+   Close other server terminals, then run: npm run kill-port
+   Or: npm run dev (auto-cleans port on start)
+
+Failed to start server: listen EADDRINUSE: address already in use :::5000
+Restarting 'src/index.js'
+✅ MongoDB connected
+Port 5000 busy, retrying in 1s... (1/3)
+Port 5000 busy, retrying in 1s... (2/3)
+Port 5000 busy, retrying in 1s... (3/3)
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+
+❌ Port 5000 is already in use.
+   Close other server terminals, then run: npm run kill-port
+   Or: npm run dev (auto-cleans port on start)
+
+Failed to start server: listen EADDRINUSE: address already in use :::5000
+Restarting 'src/index.js'
+Restarting 'src/index.js'
+✅ MongoDB connected
+Port 5000 busy, retrying in 1s... (1/3)
+Port 5000 busy, retrying in 1s... (2/3)
+Port 5000 busy, retrying in 1s... (3/3)
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+
+❌ Port 5000 is already in use.
+   Close other server terminals, then run: npm run kill-port
+   Or: npm run dev (auto-cleans port on start)
+
+Failed to start server: listen EADDRINUSE: address already in use :::5000
+Restarting 'src/index.js'
+✅ MongoDB connected
+✅ Admin ready → admin@celestialguidance.com
+Port 5000 busy, retrying in 1s... (1/3)
+Port 5000 busy, retrying in 1s... (2/3)
+Port 5000 busy, retrying in 1s... (3/3)
+
+❌ Port 5000 is already in use.
+   Close other server terminals, then run: npm run kill-port
+   Or: npm run dev (auto-cleans port on start)
+
+Failed to start server: listen EADDRINUSE: address already in use :::5000
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+Restarting 'src/index.js'
+✅ MongoDB connected
+✅ Admin ready → admin@celestialguidance.com
+🚀 Backend running on http://localhost:5000
+   API base: http://localhost:5000/api
+   Socket.io ready for real-time chat & video
+Socket connected: tdQnB17joN9OYzljAAAB
+Socket tdQnB17joN9OYzljAAAB joined panel rooms {
+  userId: '6a326b66bf9ea59df85d7480',
+  role: 'user',
+  astrologerProfileId: null,
+  rooms: [ 'user_6a326b66bf9ea59df85d7480' ]
+}
+Socket tdQnB17joN9OYzljAAAB joined panel rooms {
+  userId: '6a326b66bf9ea59df85d7480',
+  role: 'user',
+  astrologerProfileId: null,
+  rooms: [ 'user_6a326b66bf9ea59df85d7480' ]
+}
+Restarting 'src/index.js'
+✅ MongoDB connected
+✅ Admin ready → admin@celestialguidance.com
+Port 5000 busy, retrying in 1s... (1/3)
+Port 5000 busy, retrying in 1s... (2/3)
+Port 5000 busy, retrying in 1s... (3/3)
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+
+❌ Port 5000 is already in use.
+   Close other server terminals, then run: npm run kill-port
+   Or: npm run dev (auto-cleans port on start)
+
+Failed to start server: listen EADDRINUSE: address already in use :::5000

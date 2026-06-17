@@ -40,6 +40,7 @@ const astrologerSchema = new mongoose.Schema({
   }],
   is_featured: { type: Boolean, default: false },
   is_new: { type: Boolean, default: true },
+  is_active: { type: Boolean, default: true },
 }, { timestamps: true });
 
 export default mongoose.model('Astrologer', astrologerSchema);

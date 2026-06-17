@@ -1,0 +1,658 @@
+---
+pid: 12036
+cwd: "C:\Users\hi\OneDrive\Desktop\all web\project"
+command: "cd \"C:\\Users\\hi\\OneDrive\\Desktop\\all web\\project\\server\"; npm run dev"
+started_at: 2026-06-17T05:33:56.843Z
+running_for_ms: 16300007 
+---
+
+> celestial-guidance-backend@1.0.0 dev
+> node --watch src/index.js
+
+✅ MongoDB connected
+node:events:487
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE: address already in use :::5000
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at Server.listen (node:net:2170:7)
+    at start (file:///C:/Users/hi/OneDrive/Desktop/all%20web/project/server/src/index.js:291:16)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+Emitted 'error' event on Server instance at:
+    at emitErrorNT (node:net:2044:8)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+  code: 'EADDRINUSE',
+  errno: -4091,
+  syscall: 'listen',
+  address: '::',
+  port: 5000
+}
+
+Node.js v25.9.0
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+Restarting 'src/index.js'
+✅ MongoDB connected
+✅ Admin ready → admin@celestialguidance.com
+🚀 Backend running on http://localhost:5000
+   API base: http://localhost:5000/api
+   Socket.io ready for real-time chat & video
+POST /api/auth/login 200 226.529 ms - 401
+POST /api/auth/register 400 40.988 ms - 69
+POST /api/auth/login 200 190.340 ms - 401
+POST /api/products 201 110.596 ms - 285
+Restarting 'src/index.js'
+✅ MongoDB connected
+🚀 Backend running on http://localhost:5000
+   API base: http://localhost:5000/api
+   Socket.io ready for real-time chat & video
+Restarting 'src/index.js'
+✅ MongoDB connected
+🚀 Backend running on http://localhost:5000
+   API base: http://localhost:5000/api
+   Socket.io ready for real-time chat & video
+POST /api/auth/login 200 320.308 ms - 401
+POST /api/upload/product-image 201 48.234 ms - 94
+POST /api/products 401 0.610 ms - 38
+GET /api/products 200 46.986 ms - 2710
+GET /api/auth/me 200 74.592 ms - 372
+Socket connected: H6KQRiCZ3eQ-BMj_AAAE
+Socket connected: n3gU_GJn0dkN6GHQAAAF
+Socket n3gU_GJn0dkN6GHQAAAF joined panel rooms {
+  userId: '6a32320aabf9eb800e35d341',
+  role: 'admin',
+  astrologerProfileId: null,
+  rooms: [ 'user_6a32320aabf9eb800e35d341', 'admin_panel' ]
+}
+GET /api/products 304 39.048 ms - -
+GET /api/auth/me 200 83.014 ms - 317
+Socket H6KQRiCZ3eQ-BMj_AAAE joined panel rooms {
+  userId: '6a323472150b90c5191d1d35',
+  role: 'user',
+  astrologerProfileId: null,
+  rooms: [ 'user_6a323472150b90c5191d1d35' ]
+}
+Socket connected: yc6li95XM8ytfs8zAAAH
+GET /api/auth/me 304 81.927 ms - -
+Socket disconnected: n3gU_GJn0dkN6GHQAAAF
+Socket disconnected: H6KQRiCZ3eQ-BMj_AAAE
+Socket yc6li95XM8ytfs8zAAAH joined panel rooms {
+  userId: '6a323472150b90c5191d1d35',
+  role: 'user',
+  astrologerProfileId: null,
+  rooms: [ 'user_6a323472150b90c5191d1d35' ]
+}
+Socket disconnected: yc6li95XM8ytfs8zAAAH
+GET /api/auth/me 304 71.616 ms - -
+Socket connected: Z7j8y-NdG6SAGX-2AAAJ
+Socket connected: id48a84Jsfq-txUNAAAL
+Socket disconnected: Z7j8y-NdG6SAGX-2AAAJ
+Socket connected: Nj08ree0f30GlJ6lAAAN
+Socket id48a84Jsfq-txUNAAAL joined panel rooms {
+  userId: '6a323472150b90c5191d1d35',
+  role: 'user',
+  astrologerProfileId: null,
+  rooms: [ 'user_6a323472150b90c5191d1d35' ]
+}
+Socket Nj08ree0f30GlJ6lAAAN joined panel rooms {
+  userId: '6a32320aabf9eb800e35d341',
+  role: 'admin',
+  astrologerProfileId: null,
+  rooms: [ 'user_6a32320aabf9eb800e35d341', 'admin_panel' ]
+}
+GET /api/admin/applications?status=pending 200 80.187 ms - 2
+GET /api/admin/applications?status=pending 304 71.864 ms - -
+GET /api/admin/settings 200 71.348 ms - 356
+GET /api/admin/settings 304 71.525 ms - -
+PATCH /api/admin/settings 200 120.165 ms - 356
+GET /api/admin/applications?status=pending 304 78.042 ms - -
+GET /api/admin/applications?status=pending 304 69.054 ms - -
+GET /api/admin/orders 200 123.420 ms - 1366
+GET /api/admin/orders 304 117.090 ms - -
+GET /api/products/admin/all 200 73.581 ms - 2710
+GET /api/products/admin/all 304 73.927 ms - -
+POST /api/products 201 108.584 ms - 2379
+GET /api/products/admin/all 200 74.199 ms - 5090
+GET /api/products/admin/all 304 75.269 ms - -
+Socket disconnected: id48a84Jsfq-txUNAAAL
+GET /api/products 200 38.127 ms - 5090
+GET /api/products 200 38.093 ms - 5090
+GET /api/auth/me 200 73.084 ms - 372
+GET /api/auth/me 200 70.497 ms - 372
+Socket connected: nkqJ8WGchdRU_yv4AAAQ
+Socket nkqJ8WGchdRU_yv4AAAQ joined panel rooms {
+  userId: '6a323472150b90c5191d1d35',
+  role: 'user',
+  astrologerProfileId: null,
+  rooms: [ 'user_6a323472150b90c5191d1d35' ]
+}
+Socket disconnected: nkqJ8WGchdRU_yv4AAAQ
+Socket connected: Dt_jAGoa_ytY-MuAAAAS
+Socket Dt_jAGoa_ytY-MuAAAAS joined panel rooms {
+  userId: '6a323472150b90c5191d1d35',
+  role: 'user',
+  astrologerProfileId: null,
+  rooms: [ 'user_6a323472150b90c5191d1d35' ]
+}
+GET /api/astrologers 200 53.428 ms - 4442
+GET /api/astrologers 304 40.621 ms - -
+GET /api/products 304 44.172 ms - -
+GET /api/blogs 200 46.463 ms - 3868
+GET /api/products 304 39.781 ms - -
+GET /api/blogs 304 38.408 ms - -
+GET /api/astrologers/sections/home 200 314.044 ms - 10043
+GET /api/astrologers/sections/home 304 51.996 ms - -
+GET /api/products 304 43.308 ms - -
+GET /api/products 304 37.097 ms - -
+GET /api/blogs 304 38.371 ms - -
+GET /api/blogs 304 38.685 ms - -
+GET /api/orders/my 200 77.070 ms - 2
+GET /api/notifications/unread-count 200 79.966 ms - 11
+GET /api/orders/my 304 76.816 ms - -
+GET /api/notifications/unread-count 304 83.250 ms - -
+GET /api/orders/my 304 73.928 ms - -
+GET /api/orders/my 304 73.081 ms - -
+GET /api/notifications 200 76.250 ms - 2
+GET /api/notifications 304 81.263 ms - -
+GET /api/applications/astrologer/my 200 81.036 ms - 4
+GET /api/applications/astrologer/my 304 75.212 ms - -
+GET /api/applications/astrologer/my 304 90.577 ms - -
+POST /api/applications/astrologer 201 232.327 ms - 404
+GET /api/notifications/unread-count 200 71.193 ms - 11
+GET /api/applications/astrologer/my 200 74.623 ms - 373
+GET /api/notifications/unread-count 304 74.546 ms - -
+GET /api/applications/astrologer/my 304 78.201 ms - -
+GET /api/notifications/unread-count 304 71.174 ms - -
+GET /api/admin/applications?status=pending 200 118.701 ms - 465
+GET /api/admin/applications?status=pending 304 122.312 ms - -
+Socket disconnected: Dt_jAGoa_ytY-MuAAAAS
+Socket disconnected: Nj08ree0f30GlJ6lAAAN
+Socket connected: 0ADTAXf7bV-r3wS-AAAV
+Socket connected: CRkftO7uC1f9-LwaAAAW
+Socket 0ADTAXf7bV-r3wS-AAAV joined panel rooms {
+  userId: '6a323472150b90c5191d1d35',
+  role: 'user',
+  astrologerProfileId: null,
+  rooms: [ 'user_6a323472150b90c5191d1d35' ]
+}
+Socket CRkftO7uC1f9-LwaAAAW joined panel rooms {
+  userId: '6a32320aabf9eb800e35d341',
+  role: 'admin',
+  astrologerProfileId: null,
+  rooms: [ 'user_6a32320aabf9eb800e35d341', 'admin_panel' ]
+}
+PATCH /api/admin/applications/6a32367f78f44e9be6e65567/interview 200 159.169 ms - 499
+GET /api/applications/astrologer/my 200 79.904 ms - 420
+GET /api/notifications/unread-count 200 77.869 ms - 11
+GET /api/admin/applications?status=pending 200 75.115 ms - 2
+GET /api/admin/applications?status=pending 304 72.013 ms - -
+Socket disconnected: CRkftO7uC1f9-LwaAAAW
+GET /api/auth/me 304 75.535 ms - -
+GET /api/auth/me 304 68.417 ms - -
+GET /api/applications/astrologer/my 304 68.092 ms - -
+Socket connected: 6lx4FnWDOSuovt8UAAAZ
+Socket 6lx4FnWDOSuovt8UAAAZ joined panel rooms {
+  userId: '6a32320aabf9eb800e35d341',
+  role: 'admin',
+  astrologerProfileId: null,
+  rooms: [ 'user_6a32320aabf9eb800e35d341', 'admin_panel' ]
+}
+Socket connected: UnK9wb7Gh2tE1m3mAAAb
+Socket UnK9wb7Gh2tE1m3mAAAb joined panel rooms {
+  userId: '6a32320aabf9eb800e35d341',
+  role: 'admin',
+  astrologerProfileId: null,
+  rooms: [ 'user_6a32320aabf9eb800e35d341', 'admin_panel' ]
+}
+Socket disconnected: 6lx4FnWDOSuovt8UAAAZ
+GET /api/admin/applications?status=pending 304 81.818 ms - -
+GET /api/admin/applications?status=pending 304 67.701 ms - -
+GET /api/admin/orders 200 107.565 ms - 1366
+GET /api/admin/orders 304 103.779 ms - -
+GET /api/admin/applications?status=pending 304 68.105 ms - -
+GET /api/admin/applications?status=pending 304 68.517 ms - -
+GET /api/admin/applications 200 120.606 ms - 512
+POST /api/admin/applications/6a32367f78f44e9be6e65567/approve 200 693.087 ms - 1332
+GET /api/admin/applications 200 104.039 ms - 593
+GET /api/admin/applications 304 102.709 ms - -
+GET /api/applications/astrologer/my 200 74.549 ms - 501
+GET /api/notifications/unread-count 200 71.804 ms - 11
+GET /api/notifications/unread-count 304 135.804 ms - -
+GET /api/applications/astrologer/my 304 142.769 ms - -
+GET /api/notifications/unread-count 304 72.033 ms - -
+GET /api/applications/astrologer/my 304 70.912 ms - -
+POST /api/auth/login 200 186.784 ms - 1603
+Socket disconnected: 0ADTAXf7bV-r3wS-AAAV
+Socket connected: lVlcY8DegsCgWLZFAAAd
+GET /api/auth/me 200 115.757 ms - 1548
+Socket lVlcY8DegsCgWLZFAAAd joined panel rooms {
+  userId: '6a3139988610bd3babde7044',
+  role: 'astrologer',
+  astrologerProfileId: '6a3139978610bd3babde7031',
+  rooms: [
+    'user_6a3139988610bd3babde7044',
+    'astrologers_live',
+    'astro_6a3139978610bd3babde7031'
+  ]
+}
+GET /api/astrologers/sections/home 200 55.338 ms - 11285
+GET /api/products 304 59.758 ms - -
+Socket disconnected: lVlcY8DegsCgWLZFAAAd
+Socket connected: BAfEMMLrHlV1mFsZAAAf
+Socket BAfEMMLrHlV1mFsZAAAf joined panel rooms {
+  userId: '6a3139988610bd3babde7044',
+  role: 'astrologer',
+  astrologerProfileId: '6a3139978610bd3babde7031',
+  rooms: [
+    'user_6a3139988610bd3babde7044',
+    'astrologers_live',
+    'astro_6a3139978610bd3babde7031'
+  ]
+}
+GET /api/auth/me 304 128.848 ms - -
+GET /api/products 304 43.166 ms - -
+GET /api/astrologers/sections/home 304 49.750 ms - -
+Socket disconnected: BAfEMMLrHlV1mFsZAAAf
+Socket connected: wRyyawhpThflqvyGAAAh
+Socket wRyyawhpThflqvyGAAAh joined panel rooms {
+  userId: '6a3139988610bd3babde7044',
+  role: 'astrologer',
+  astrologerProfileId: '6a3139978610bd3babde7031',
+  rooms: [
+    'user_6a3139988610bd3babde7044',
+    'astrologers_live',
+    'astro_6a3139978610bd3babde7031'
+  ]
+}
+GET /api/astrologers/sections/home 304 48.500 ms - -
+GET /api/products 304 48.593 ms - -
+GET /api/astrologers/sections/home 304 45.310 ms - -
+GET /api/products 304 36.741 ms - -
+GET /api/products 304 35.644 ms - -
+GET /api/products 304 35.266 ms - -
+GET /api/astrologers/sections/home 304 49.534 ms - -
+GET /api/products 304 39.520 ms - -
+GET /api/astrologers/sections/home 304 47.912 ms - -
+GET /api/products 304 42.252 ms - -
+Socket disconnected: wRyyawhpThflqvyGAAAh
+GET /api/astrologers/sections/home 200 52.142 ms - 11285
+GET /api/products 200 50.266 ms - 5090
+GET /api/auth/me 200 118.960 ms - 1548
+GET /api/auth/me 200 117.245 ms - 1548
+Socket connected: EhnaKEQ3rJoLQovhAAAk
+GET /api/products 200 380.031 ms - 5090
+GET /api/astrologers/sections/home 200 412.312 ms - 11285
+Socket EhnaKEQ3rJoLQovhAAAk joined panel rooms {
+  userId: '6a3139988610bd3babde7044',
+  role: 'astrologer',
+  astrologerProfileId: '6a3139978610bd3babde7031',
+  rooms: [
+    'user_6a3139988610bd3babde7044',
+    'astrologers_live',
+    'astro_6a3139978610bd3babde7031'
+  ]
+}
+Socket disconnected: EhnaKEQ3rJoLQovhAAAk
+Socket connected: F2qcnhDTmJWNKqVQAAAn
+Socket F2qcnhDTmJWNKqVQAAAn joined panel rooms {
+  userId: '6a3139988610bd3babde7044',
+  role: 'astrologer',
+  astrologerProfileId: '6a3139978610bd3babde7031',
+  rooms: [
+    'user_6a3139988610bd3babde7044',
+    'astrologers_live',
+    'astro_6a3139978610bd3babde7031'
+  ]
+}
+GET /api/astrologers/sections/home 304 55.500 ms - -
+GET /api/products 304 52.958 ms - -
+GET /api/astrologers/sections/home 304 56.509 ms - -
+GET /api/products 304 44.489 ms - -
+Socket disconnected: F2qcnhDTmJWNKqVQAAAn
+Socket disconnected: UnK9wb7Gh2tE1m3mAAAb
+Socket connected: ZMWzVRz3lQ1kgCZcAAAq
+Socket ZMWzVRz3lQ1kgCZcAAAq joined panel rooms {
+  userId: '6a32320aabf9eb800e35d341',
+  role: 'admin',
+  astrologerProfileId: null,
+  rooms: [ 'user_6a32320aabf9eb800e35d341', 'admin_panel' ]
+}
+GET /api/auth/me 304 89.606 ms - -
+GET /api/auth/me 304 87.742 ms - -
+Socket connected: hdyPzetUUUWZSB8AAAAs
+Socket disconnected: ZMWzVRz3lQ1kgCZcAAAq
+Socket hdyPzetUUUWZSB8AAAAs joined panel rooms {
+  userId: '6a32320aabf9eb800e35d341',
+  role: 'admin',
+  astrologerProfileId: null,
+  rooms: [ 'user_6a32320aabf9eb800e35d341', 'admin_panel' ]
+}
+Socket disconnected: hdyPzetUUUWZSB8AAAAs
+Socket connected: vxni7gLHEcDUV8HXAAAu
+Socket vxni7gLHEcDUV8HXAAAu joined panel rooms {
+  userId: '6a32320aabf9eb800e35d341',
+  role: 'admin',
+  astrologerProfileId: null,
+  rooms: [ 'user_6a32320aabf9eb800e35d341', 'admin_panel' ]
+}
+GET /api/admin/applications?status=pending 304 75.385 ms - -
+GET /api/admin/applications?status=pending 304 78.089 ms - -
+GET /api/astrologers/sections/home 304 52.652 ms - -
+GET /api/products 304 48.220 ms - -
+GET /api/products 304 40.739 ms - -
+GET /api/astrologers/sections/home 304 52.614 ms - -
+Restarting 'src/index.js'
+✅ MongoDB connected
+🚀 Backend running on http://localhost:5000
+   API base: http://localhost:5000/api
+   Socket.io ready for real-time chat & video
+GET /api/admin/applications?status=interview_scheduled 200 91.140 ms - 2
+Socket connected: DoPEjDKf2A83Yf7HAAAB
+Socket DoPEjDKf2A83Yf7HAAAB joined panel rooms {
+  userId: '6a32320aabf9eb800e35d341',
+  role: 'admin',
+  astrologerProfileId: null,
+  rooms: [ 'user_6a32320aabf9eb800e35d341', 'admin_panel' ]
+}
+Socket DoPEjDKf2A83Yf7HAAAB joined panel rooms {
+  userId: '6a32320aabf9eb800e35d341',
+  role: 'admin',
+  astrologerProfileId: null,
+  rooms: [ 'user_6a32320aabf9eb800e35d341', 'admin_panel' ]
+}
+GET /api/admin/applications?status=approved 200 113.962 ms - 593
+GET /api/admin/applications?status=rejected 200 75.442 ms - 2
+GET /api/admin/applications 304 108.283 ms - -
+Socket disconnected: DoPEjDKf2A83Yf7HAAAB
+GET /api/admin/settings 200 76.188 ms - 356
+GET /api/auth/me 304 72.204 ms - -
+GET /api/auth/me 304 70.700 ms - -
+Socket connected: p1TwZfkdSWAxMi7vAAAE
+Socket p1TwZfkdSWAxMi7vAAAE joined panel rooms {
+  userId: '6a32320aabf9eb800e35d341',
+  role: 'admin',
+  astrologerProfileId: null,
+  rooms: [ 'user_6a32320aabf9eb800e35d341', 'admin_panel' ]
+}
+Socket connected: YkXPzquLJNRej5NQAAAH
+Socket YkXPzquLJNRej5NQAAAH joined panel rooms {
+  userId: '6a32320aabf9eb800e35d341',
+  role: 'admin',
+  astrologerProfileId: null,
+  rooms: [ 'user_6a32320aabf9eb800e35d341', 'admin_panel' ]
+}
+Socket disconnected: p1TwZfkdSWAxMi7vAAAE
+GET /api/admin/applications?status=pending 304 71.909 ms - -
+GET /api/admin/applications?status=pending 304 68.685 ms - -
+GET /api/astrologers/sections/home 304 58.016 ms - -
+GET /api/products 304 58.530 ms - -
+GET /api/products 304 38.632 ms - -
+GET /api/astrologers/sections/home 304 475.270 ms - -
+GET /api/products 304 36.828 ms - -
+GET /api/astrologers/sections/home 304 53.446 ms - -
+GET /api/products 304 48.795 ms - -
+GET /api/astrologers/sections/home 304 65.980 ms - -
+POST /api/auth/login 200 382.050 ms - 1603
+Socket connected: R3hftIBg20nDkqeFAAAJ
+GET /api/auth/me 304 113.610 ms - -
+Socket R3hftIBg20nDkqeFAAAJ joined panel rooms {
+  userId: '6a3139988610bd3babde7044',
+  role: 'astrologer',
+  astrologerProfileId: '6a3139978610bd3babde7031',
+  rooms: [
+    'user_6a3139988610bd3babde7044',
+    'astrologers_live',
+    'astro_6a3139978610bd3babde7031'
+  ]
+}
+Socket disconnected: R3hftIBg20nDkqeFAAAJ
+GET /api/astrologers/sections/home 304 51.898 ms - -
+GET /api/products 304 49.125 ms - -
+Socket connected: HJc_FARO61GNd8maAAAL
+GET /api/auth/me 304 132.622 ms - -
+GET /api/astrologers/sections/home 304 61.569 ms - -
+GET /api/products 304 51.473 ms - -
+Socket disconnected: HJc_FARO61GNd8maAAAL
+Socket connected: qaF8RHbkIm5h-tWjAAAN
+Socket qaF8RHbkIm5h-tWjAAAN joined panel rooms {
+  userId: '6a3139988610bd3babde7044',
+  role: 'astrologer',
+  astrologerProfileId: '6a3139978610bd3babde7031',
+  rooms: [
+    'user_6a3139988610bd3babde7044',
+    'astrologers_live',
+    'astro_6a3139978610bd3babde7031'
+  ]
+}
+GET /api/astrologers/6a3139978610bd3babde7034 200 137.258 ms - 2108
+GET /api/astrologers/6a3139978610bd3babde7034 304 120.032 ms - -
+GET /api/astrologers/sections/home 304 51.494 ms - -
+GET /api/products 304 61.428 ms - -
+GET /api/astrologers/sections/home 304 62.261 ms - -
+GET /api/products 304 58.692 ms - -
+GET /api/products 304 41.279 ms - -
+GET /api/astrologers/sections/home 304 56.572 ms - -
+GET /api/astrologers/sections/home 304 55.330 ms - -
+GET /api/products 304 62.442 ms - -
+GET /api/products 304 37.748 ms - -
+GET /api/astrologers/sections/home 304 55.614 ms - -
+GET /api/products 304 50.269 ms - -
+GET /api/astrologers/sections/home 304 50.587 ms - -
+GET /api/astrologers/sections/home 304 54.431 ms - -
+GET /api/products 304 58.961 ms - -
+GET /api/products 304 37.108 ms - -
+GET /api/astrologers/sections/home 304 56.024 ms - -
+GET /api/astrologers/sections/home 304 52.548 ms - -
+GET /api/products 304 43.941 ms - -
+GET /api/astrologers/sections/home 304 51.567 ms - -
+GET /api/products 304 42.399 ms - -
+GET /api/astrologers/sections/home 304 59.686 ms - -
+GET /api/products 304 48.503 ms - -
+GET /api/astrologers/sections/home 304 52.173 ms - -
+GET /api/products 304 48.876 ms - -
+GET /api/products 304 37.608 ms - -
+GET /api/astrologers/sections/home 304 50.536 ms - -
+GET /api/astrologers/sections/home 304 48.592 ms - -
+GET /api/products 304 54.789 ms - -
+Socket disconnected: qaF8RHbkIm5h-tWjAAAN
+GET /api/products 200 36.587 ms - 5090
+GET /api/astrologers/sections/home 200 48.060 ms - 11285
+GET /api/astrologers/sections/home 200 49.681 ms - 11285
+GET /api/products 200 47.617 ms - 5090
+GET /api/auth/me 200 148.349 ms - 1548
+GET /api/auth/me 200 117.780 ms - 1548
+Socket connected: HYnXFetG9L1HmxS8AAAQ
+Socket HYnXFetG9L1HmxS8AAAQ joined panel rooms {
+  userId: '6a3139988610bd3babde7044',
+  role: 'astrologer',
+  astrologerProfileId: '6a3139978610bd3babde7031',
+  rooms: [
+    'user_6a3139988610bd3babde7044',
+    'astrologers_live',
+    'astro_6a3139978610bd3babde7031'
+  ]
+}
+Socket disconnected: HYnXFetG9L1HmxS8AAAQ
+Socket connected: Z1y4f8dkmifbeUKuAAAS
+Socket Z1y4f8dkmifbeUKuAAAS joined panel rooms {
+  userId: '6a3139988610bd3babde7044',
+  role: 'astrologer',
+  astrologerProfileId: '6a3139978610bd3babde7031',
+  rooms: [
+    'user_6a3139988610bd3babde7044',
+    'astrologers_live',
+    'astro_6a3139978610bd3babde7031'
+  ]
+}
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+Restarting 'src/index.js'
+✅ MongoDB connected
+🚀 Backend running on http://localhost:5000
+   API base: http://localhost:5000/api
+   Socket.io ready for real-time chat & video
+Socket connected: MLUP0olerOy-vT8JAAAC
+Socket MLUP0olerOy-vT8JAAAC joined panel rooms {
+  userId: '6a3139988610bd3babde7044',
+  role: 'astrologer',
+  astrologerProfileId: '6a3139978610bd3babde7031',
+  rooms: [
+    'user_6a3139988610bd3babde7044',
+    'astrologers_live',
+    'astro_6a3139978610bd3babde7031'
+  ]
+}
+Socket MLUP0olerOy-vT8JAAAC joined panel rooms {
+  userId: '6a3139988610bd3babde7044',
+  role: 'astrologer',
+  astrologerProfileId: '6a3139978610bd3babde7031',
+  rooms: [
+    'user_6a3139988610bd3babde7044',
+    'astrologers_live',
+    'astro_6a3139978610bd3babde7031'
+  ]
+}
+Socket connected: plYFeqrZ6kCsBS_TAAAD
+Socket plYFeqrZ6kCsBS_TAAAD joined panel rooms {
+  userId: '6a32320aabf9eb800e35d341',
+  role: 'admin',
+  astrologerProfileId: null,
+  rooms: [ 'user_6a32320aabf9eb800e35d341', 'admin_panel' ]
+}
+Socket plYFeqrZ6kCsBS_TAAAD joined panel rooms {
+  userId: '6a32320aabf9eb800e35d341',
+  role: 'admin',
+  astrologerProfileId: null,
+  rooms: [ 'user_6a32320aabf9eb800e35d341', 'admin_panel' ]
+}
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+Restarting 'src/index.js'
+Restarting 'src/index.js'
+Restarting 'src/index.js'
+Restarting 'src/index.js'
+✅ MongoDB connected
+
+❌ Port 5000 is already in use.
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+   Another server is still running. Fix (PowerShell):
+   netstat -ano | findstr :5000
+   taskkill /PID <PID> /F
+   Or run: npm run kill-port
+
+Restarting 'src/index.js'
+✅ MongoDB connected
+
+❌ Port 5000 is already in use.
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+   Another server is still running. Fix (PowerShell):
+   netstat -ano | findstr :5000
+   taskkill /PID <PID> /F
+   Or run: npm run kill-port
+
+Restarting 'src/index.js'
+✅ MongoDB connected
+
+❌ Port 5000 is already in use.
+   Another server is still running. Fix (PowerShell):
+   netstat -ano | findstr :5000
+   taskkill /PID <PID> /F
+   Or run: npm run kill-port
+
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+Restarting 'src/index.js'
+✅ MongoDB connected
+
+❌ Port 5000 is already in use.
+   Another server is still running. Fix (PowerShell):
+   netstat -ano | findstr :5000
+   taskkill /PID <PID> /F
+   Or run: npm run kill-port
+
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+Restarting 'src/index.js'
+✅ MongoDB connected
+Port 5000 busy, retrying in 1s... (1/3)
+Port 5000 busy, retrying in 1s... (2/3)
+Port 5000 busy, retrying in 1s... (3/3)
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+
+❌ Port 5000 is already in use.
+   Close other server terminals, then run: npm run kill-port
+   Or: npm run dev (auto-cleans port on start)
+
+Failed to start server: listen EADDRINUSE: address already in use :::5000
+Restarting 'src/index.js'
+✅ MongoDB connected
+Port 5000 busy, retrying in 1s... (1/3)
+Port 5000 busy, retrying in 1s... (2/3)
+Port 5000 busy, retrying in 1s... (3/3)
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+
+❌ Port 5000 is already in use.
+   Close other server terminals, then run: npm run kill-port
+   Or: npm run dev (auto-cleans port on start)
+
+Failed to start server: listen EADDRINUSE: address already in use :::5000
+Restarting 'src/index.js'
+✅ MongoDB connected
+Port 5000 busy, retrying in 1s... (1/3)
+Port 5000 busy, retrying in 1s... (2/3)
+Port 5000 busy, retrying in 1s... (3/3)
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+
+❌ Port 5000 is already in use.
+   Close other server terminals, then run: npm run kill-port
+   Or: npm run dev (auto-cleans port on start)
+
+Failed to start server: listen EADDRINUSE: address already in use :::5000
+Restarting 'src/index.js'
+✅ MongoDB connected
+Port 5000 busy, retrying in 1s... (1/3)
+Port 5000 busy, retrying in 1s... (2/3)
+Port 5000 busy, retrying in 1s... (3/3)
+
+❌ Port 5000 is already in use.
+   Close other server terminals, then run: npm run kill-port
+   Or: npm run dev (auto-cleans port on start)
+
+Failed to start server: listen EADDRINUSE: address already in use :::5000
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+Restarting 'src/index.js'
+✅ MongoDB connected
+✅ Admin ready → admin@celestialguidance.com
+Port 5000 busy, retrying in 1s... (1/3)
+Port 5000 busy, retrying in 1s... (2/3)
+Port 5000 busy, retrying in 1s... (3/3)
+
+❌ Port 5000 is already in use.
+   Close other server terminals, then run: npm run kill-port
+   Or: npm run dev (auto-cleans port on start)
+
+Failed to start server: listen EADDRINUSE: address already in use :::5000
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+Restarting 'src/index.js'
+✅ MongoDB connected
+✅ Admin ready → admin@celestialguidance.com
+Port 5000 busy, retrying in 1s... (1/3)
+Port 5000 busy, retrying in 1s... (2/3)
+Port 5000 busy, retrying in 1s... (3/3)
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+
+❌ Port 5000 is already in use.
+   Close other server terminals, then run: npm run kill-port
+   Or: npm run dev (auto-cleans port on start)
+
+Failed to start server: listen EADDRINUSE: address already in use :::5000
+Restarting 'src/index.js'
+✅ MongoDB connected
+✅ Admin ready → admin@celestialguidance.com
+Port 5000 busy, retrying in 1s... (1/3)
+Port 5000 busy, retrying in 1s... (2/3)
+Port 5000 busy, retrying in 1s... (3/3)
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+
+❌ Port 5000 is already in use.
+   Close other server terminals, then run: npm run kill-port
+   Or: npm run dev (auto-cleans port on start)
+
+Failed to start server: listen EADDRINUSE: address already in use :::5000

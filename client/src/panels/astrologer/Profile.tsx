@@ -4,12 +4,40 @@ import { useAuth } from '../../context/Auth';
 import { apiFetch, mediaUrl } from '../../config/api';
 import toast from 'react-hot-toast';
 
-function readFileAsDataUrl(file: File): Promise<string> {
+function compressImage(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(String(reader.result));
-    reader.onerror = () => reject(new Error('Failed to read image'));
-    reader.readAsDataURL(file);
+    const img = new Image();
+    const blobUrl = URL.createObjectURL(file);
+    img.onload = () => {
+      URL.revokeObjectURL(blobUrl);
+      const max = 1200;
+      let { width, height } = img;
+      if (width > max || height > max) {
+        if (width >= height) {
+          height = Math.round((height * max) / width);
+          width = max;
+        } else {
+          width = Math.round((width * max) / height);
+          height = max;
+        }
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) {
+        reject(new Error('Could not process image'));
+        return;
+      }
+      ctx.drawImage(img, 0, 0, width, height);
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.82);
+      resolve(dataUrl);
+    };
+    img.onerror = () => {
+      URL.revokeObjectURL(blobUrl);
+      reject(new Error('Could not read image file'));
+    };
+    img.src = blobUrl;
   });
 }
 
@@ -45,6 +73,7 @@ export default function AstroProfile() {
   const [uploadingGallery, setUploadingGallery] = useState(false);
   const [newService, setNewService] = useState('');
   const [serviceList, setServiceList] = useState<string[]>([]);
+  const [avatarPreview, setAvatarPreview] = useState('');
   const [form, setForm] = useState<ProfileForm>({
     full_name: '',
     bio: '',
@@ -84,27 +113,34 @@ export default function AstroProfile() {
   }, [token]);
 
   const uploadImage = async (file: File) => {
-    if (!file.type.startsWith('image/')) throw new Error('Only image files allowed');
-    if (file.size > 5 * 1024 * 1024) throw new Error('Image max 5MB');
-    const dataUrl = await readFileAsDataUrl(file);
+    if (!file.type.startsWith('image/') && !/\.(jpe?g|png|webp|gif)$/i.test(file.name)) {
+      throw new Error('Only image files allowed (JPG, PNG, WEBP)');
+    }
+    const dataUrl = await compressImage(file);
     const res = await apiFetch('/upload/astrologer-image', {
       method: 'POST',
       body: JSON.stringify({ image: dataUrl }),
     }, token);
-    return res.url as string;
+    return (res.url || dataUrl) as string;
   };
 
   const handleAvatarUpload = async (files: FileList | null) => {
     if (!files?.[0] || !token) return;
+    const file = files[0];
+    const localPreview = URL.createObjectURL(file);
+    setAvatarPreview(localPreview);
     setUploadingAvatar(true);
     try {
-      const url = await uploadImage(files[0]);
+      const url = await uploadImage(file);
       setForm(f => ({ ...f, avatar_url: url }));
-      toast.success('Profile photo uploaded');
+      setAvatarPreview(url.startsWith('data:') ? url : mediaUrl(url));
+      toast.success('Profile photo uploaded — click Save Profile below');
     } catch (e: any) {
-      toast.error(e.message);
+      toast.error(e.message || 'Upload failed');
+      setAvatarPreview('');
     } finally {
       setUploadingAvatar(false);
+      URL.revokeObjectURL(localPreview);
       if (avatarRef.current) avatarRef.current.value = '';
     }
   };
@@ -112,15 +148,28 @@ export default function AstroProfile() {
   const handleGalleryUpload = async (files: FileList | null) => {
     if (!files?.length || !token) return;
     setUploadingGallery(true);
+    let added = 0;
     try {
-      const urls: string[] = [];
       for (const file of Array.from(files)) {
-        urls.push(await uploadImage(file));
+        const local = URL.createObjectURL(file);
+        setForm(f => ({ ...f, gallery_images: [...f.gallery_images, local] }));
+        try {
+          const url = await uploadImage(file);
+          setForm(f => ({
+            ...f,
+            gallery_images: f.gallery_images.map((img) => (img === local ? url : img)),
+          }));
+          added += 1;
+        } catch (err) {
+          setForm(f => ({ ...f, gallery_images: f.gallery_images.filter((img) => img !== local) }));
+          throw err;
+        } finally {
+          URL.revokeObjectURL(local);
+        }
       }
-      setForm(f => ({ ...f, gallery_images: [...f.gallery_images, ...urls] }));
-      toast.success(`${urls.length} photo(s) added`);
+      toast.success(`${added} photo(s) added — click Save Profile below`);
     } catch (e: any) {
-      toast.error(e.message);
+      toast.error(e.message || 'Upload failed');
     } finally {
       setUploadingGallery(false);
       if (galleryRef.current) galleryRef.current.value = '';
@@ -176,9 +225,9 @@ export default function AstroProfile() {
     }
   };
 
-  const avatarSrc = form.avatar_url
-    ? mediaUrl(form.avatar_url)
-    : `https://ui-avatars.com/api/?name=${encodeURIComponent(form.full_name || 'A')}&background=d97706&color=fff&size=200`;
+  const avatarSrc = avatarPreview
+    || (form.avatar_url ? mediaUrl(form.avatar_url) : '')
+    || `https://ui-avatars.com/api/?name=${encodeURIComponent(form.full_name || 'A')}&background=d97706&color=fff&size=200`;
 
   if (loading) {
     return (
@@ -217,7 +266,7 @@ export default function AstroProfile() {
                 {uploadingAvatar ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
                 {uploadingAvatar ? 'Uploading...' : 'Upload Photo'}
               </button>
-              <p className="text-xs text-gray-500 mt-2">JPG, PNG or WEBP — max 5MB. This shows on your public profile.</p>
+              <p className="text-xs text-gray-500 mt-2">JPG, PNG or WEBP — max 2MB. Upload ke baad &quot;Save Profile&quot; zaroor dabao.</p>
             </div>
           </div>
         </section>
@@ -339,7 +388,7 @@ export default function AstroProfile() {
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
               {form.gallery_images.map((url, i) => (
                 <div key={i} className="relative group aspect-square rounded-xl overflow-hidden border border-gray-200">
-                  <img src={mediaUrl(url)} alt="" className="w-full h-full object-cover" />
+                  <img src={url.startsWith('blob:') || url.startsWith('data:') ? url : mediaUrl(url)} alt="" className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
                   <button
                     type="button"
                     onClick={() => setForm(f => ({ ...f, gallery_images: f.gallery_images.filter((_, j) => j !== i) }))}

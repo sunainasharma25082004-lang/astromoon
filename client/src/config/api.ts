@@ -68,10 +68,19 @@ export function withIds<T extends Record<string, any>>(items: T[]): (T & { id: s
   return Array.isArray(items) ? items.map(withId) : [];
 }
 
-/** Resolve uploaded image paths (/uploads/...) or absolute URLs */
+/** Backend origin for static uploads (Render / production) */
+export function uploadOrigin(): string {
+  if (rawApiUrl.startsWith('http')) {
+    return rawApiUrl.replace(/\/api$/, '');
+  }
+  return '';
+}
+
+/** Resolve data URLs, absolute URLs, or /uploads paths */
 export function mediaUrl(path?: string | null): string {
   if (!path) return '';
-  if (path.startsWith('http://') || path.startsWith('https://') || path.startsWith('data:')) return path;
-  if (path.startsWith('/')) return path;
-  return `/${path}`;
+  if (path.startsWith('data:') || path.startsWith('http://') || path.startsWith('https://')) return path;
+  const normalized = path.startsWith('/') ? path : `/${path}`;
+  const origin = uploadOrigin();
+  return origin ? `${origin}${normalized}` : normalized;
 }

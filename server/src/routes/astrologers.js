@@ -12,7 +12,7 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   try {
     const { online, language, expertise, min_rating, min_experience, max_price, category, search } = req.query;
-    let query = { approval_status: 'approved', is_verified: true };
+    let query = { approval_status: 'approved', is_verified: true, is_active: { $ne: false } };
 
     if (online === 'true') query.availability_status = 'online';
     if (language) query.languages = language;
@@ -39,7 +39,7 @@ router.get('/', async (req, res) => {
 
 router.get('/sections/home', async (req, res) => {
   try {
-    const base = { approval_status: 'approved', is_verified: true };
+    const base = { approval_status: 'approved', is_verified: true, is_active: { $ne: false } };
     const [featured, online, topRated, newest] = await Promise.all([
       Astrologer.find({ ...base, is_featured: true }).limit(6),
       Astrologer.find({ ...base, availability_status: 'online' }).limit(8),
